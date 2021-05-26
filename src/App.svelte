@@ -76,7 +76,7 @@
 					<p>答え:</p>
 					<ul>
 						{#each qa.answers as answer}
-							<li>{qa.selections[answer]}</li>
+							<li>{qa.selections[answer - 1]}</li>
 						{/each}
 					</ul>
 				</li>
