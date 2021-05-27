@@ -10,7 +10,8 @@
 
 	function parseQAString (qaString) {
 		const result = qaString
-			.split('\r\n')
+			.replace(/\r?\n/g, '\n')
+			.split('\n')
 			.filter(v => v !== '' && v[0] !== '#')
 			.map(v => v.split(':='))
 			.filter(v => v.length >= 2)
