@@ -3,6 +3,8 @@
 	import '@exampledev/new.css'
 
 	let clipboardHandler, file, qas = []
+	let isHiddenAnswer = false
+	let isHiddenSelection = false
 
 	function parseQAString (qaString) {
 		const result = qaString
@@ -75,31 +77,45 @@
 	<header>
 		<input bind:this={file} type="file">
 		<button bind:this={clipboardHandler}>クリップボードから読み込む</button>
+		<label>
+			<input bind:checked={isHiddenSelection} type="checkbox">
+			選択肢を隠す
+		</label>
+		<label>
+			<input bind:checked={isHiddenAnswer} type="checkbox">
+			答えを隠す
+		</label>
 	</header>
 	{#each qas as qa, i}
 		{#if qa.type === 'exact-match'}
 			<p><span style="font-weight: bold;">＜問 {i + 1}＞</span> {qa.question}</p>
-			<p><span style="font-weight: bold;">＜答え＞</span></p>
-			<ul>
-				{#each qa.answers as answer}
-					<li>{answer}</li>
-				{/each}
-			</ul>
+			{#if !isHiddenAnswer}
+				<p><span style="font-weight: bold;">＜答え＞</span></p>
+				<ul>
+					{#each qa.answers as answer}
+						<li>{answer}</li>
+					{/each}
+				</ul>
+			{/if}
 			<br>
 		{:else if qa.type === 'exact-match-selection'}
 			<p><span style="font-weight: bold;">＜問 {i + 1}＞</span> {qa.question}</p>
-			<p><span style="font-weight: bold;">＜選択肢＞</span></p>
-			<ol>
-				{#each qa.selections as selection}
-					<li>{selection}</li>
-				{/each}
-			</ol>
-			<p><span style="font-weight: bold;">＜答え＞</span></p>
-			<ul>
-				{#each qa.answers as answer}
-					<li>{qa.selections[answer - 1]}</li>
-				{/each}
-			</ul>
+			{#if !isHiddenSelection}
+				<p><span style="font-weight: bold;">＜選択肢＞</span></p>
+				<ol>
+					{#each qa.selections as selection}
+						<li>{selection}</li>
+					{/each}
+				</ol>
+			{/if}
+			{#if !isHiddenAnswer}
+				<p><span style="font-weight: bold;">＜答え＞</span></p>
+				<ul>
+					{#each qa.answers as answer}
+						<li>{qa.selections[answer - 1]}</li>
+					{/each}
+				</ul>
+			{/if}
 			<br>
 		{/if}
 	{/each}
