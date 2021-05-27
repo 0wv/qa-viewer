@@ -3,6 +3,7 @@
 	import '@exampledev/new.css'
 
 	let clipboardHandler, file, qas = []
+	let isAnswerForm = false
 	let isHiddenAnswer = false
 	let isHiddenSelection = false
 
@@ -85,6 +86,10 @@
 			<input bind:checked={isHiddenAnswer} type="checkbox">
 			答えを隠す
 		</label>
+		<label>
+			<input bind:checked={isAnswerForm} type="checkbox">
+			解答欄を表示する
+		</label>
 	</header>
 	{#each qas as qa, i}
 		{#if qa.type === 'exact-match'}
@@ -96,6 +101,9 @@
 						<li>{answer}</li>
 					{/each}
 				</ul>
+			{/if}
+			{#if isAnswerForm}
+				<div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;"></div>
 			{/if}
 			<br>
 		{:else if qa.type === 'exact-match-selection'}
@@ -115,6 +123,9 @@
 						<li>{qa.selections[answer - 1]}</li>
 					{/each}
 				</ul>
+			{/if}
+			{#if isAnswerForm}
+				<div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;"></div>
 			{/if}
 			<br>
 		{/if}
