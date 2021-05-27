@@ -102,5 +102,9 @@
 </main>
 
 <style>
-	/* pass */
+	@media print {
+		header {
+			display: none;
+		}
+	}
 </style>
