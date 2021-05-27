@@ -1,9 +1,9 @@
 <script>
 	import { onMount } from 'svelte'
 
-	let file, qas = []
+	let clipboardHandler, file, qas = []
 
-	function parseQAString (qaString) {
+	function parseQA (qaString) {
 		const result = qaString
 			.split('\r\n')
 			.filter(v => v !== '' && v[0] !== '#')
@@ -39,6 +39,16 @@
 	}
 
 	onMount(() => {
+		clipboardHandler.addEventListener('click', () => {
+			navigator.clipboard.readText()
+				.then(text => {
+					qas = parseQAString(text)
+				})
+				.catch(e => {
+					alert(e)
+				})
+		})
+
 		file.addEventListener('change', () => {
 			const firstFile = file.files[0]
 
@@ -58,6 +68,7 @@
 
 <main>
 	<input bind:this={file} type="file">
+	<button bind:this={clipboardHandler}>クリップボードから読み込む</button>
 	<ol>
 		{#each qas as qa}
 			{#if qa.type === 'exact-match'}
