@@ -3,6 +3,41 @@
 
 	let file, qas = []
 
+	function parseQAString (qaString) {
+		const result = qaString
+			.split('\r\n')
+			.filter(v => v !== '' && v[0] !== '#')
+			.map(v => v.split(':='))
+			.filter(v => v.length >= 2)
+			.map(v => [v[0].split(':-'), v.slice(1, v.length)])
+			.map(v => {
+				const answers = v[1]
+				const question = v[0][0]
+
+				if (v[0].length >= 2) {
+					const selections = v[0].slice(1, v[0].length)
+					const result = {
+						answers,
+						question,
+						selections,
+						type: 'exact-match-selection',
+					}
+
+					return result
+				} else {
+					const result = {
+						answers,
+						question,
+						type: 'exact-match',
+					}
+
+					return result
+				}
+			})
+
+		return result
+	}
+
 	onMount(() => {
 		file.addEventListener('change', () => {
 			const firstFile = file.files[0]
@@ -12,36 +47,7 @@
 
 				reader.onload = event => {
 					const result = event.target.result
-					qas = result
-						.split('\r\n')
-						.filter(v => v !== '' && v[0] !== '#')
-						.map(v => v.split(':='))
-						.filter(v => v.length >= 2)
-						.map(v => [v[0].split(':-'), v.slice(1, v.length)])
-						.map(v => {
-							const answers = v[1]
-							const question = v[0][0]
-
-							if (v[0].length >= 2) {
-								const selections = v[0].slice(1, v[0].length)
-								const result = {
-									answers,
-									question,
-									selections,
-									type: 'exact-match-selection',
-								}
-
-								return result
-							} else {
-								const result = {
-									answers,
-									question,
-									type: 'exact-match',
-								}
-
-								return result
-							}
-						})
+					qas = parseQAString(result)
 				}
 
 				reader.readAsText(firstFile)
