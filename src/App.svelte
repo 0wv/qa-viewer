@@ -3,7 +3,7 @@
 
 	let clipboardHandler, file, qas = []
 
-	function parseQA (qaString) {
+	function parseQAString (qaString) {
 		const result = qaString
 			.split('\r\n')
 			.filter(v => v !== '' && v[0] !== '#')
