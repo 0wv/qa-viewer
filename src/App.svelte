@@ -6,6 +6,7 @@
 	let isAnswerForm = false
 	let isHiddenAnswer = false
 	let isHiddenSelection = false
+	let printHandler
 
 	function parseQAString (qaString) {
 		const result = qaString
@@ -67,6 +68,10 @@
 				reader.readAsText(firstFile)
 			}
 		}, false)
+
+		printHandler.addEventListener('click', () => {
+			window.print()
+		})
 	})
 </script>
 
@@ -78,6 +83,7 @@
 	<header>
 		<input bind:this={file} type="file">
 		<button bind:this={clipboardHandler}>クリップボードから読み込む</button>
+		<button bind:this={printHandler}>印刷</button>
 		<label>
 			<input bind:checked={isHiddenSelection} type="checkbox">
 			選択肢を隠す
