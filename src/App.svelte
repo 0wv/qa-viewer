@@ -67,6 +67,10 @@
 	})
 </script>
 
+<svelte:head>
+	<title>QA Viewer</title>
+</svelte:head>
+
 <main>
 	<header>
 		<input bind:this={file} type="file">
