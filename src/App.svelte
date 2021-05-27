@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte'
+	import '@exampledev/new.css'
 
 	let clipboardHandler, file, qas = []
 
@@ -67,39 +68,37 @@
 </script>
 
 <main>
-	<input bind:this={file} type="file">
-	<button bind:this={clipboardHandler}>クリップボードから読み込む</button>
-	<ol>
-		{#each qas as qa}
-			{#if qa.type === 'exact-match'}
-				<li>
-					<p>問: {qa.question}</p>
-					<p>答え:</p>
-					<ul>
-						{#each qa.answers as answer}
-							<li>{answer}</li>
-						{/each}
-					</ul>
-				</li>
-			{:else if qa.type === 'exact-match-selection'}
-				<li>
-					<p>問: {qa.question}</p>
-					<p>選択肢:</p>
-					<ol>
-						{#each qa.selections as selection}
-							<li>{selection}</li>
-						{/each}
-					</ol>
-					<p>答え:</p>
-					<ul>
-						{#each qa.answers as answer}
-							<li>{qa.selections[answer - 1]}</li>
-						{/each}
-					</ul>
-				</li>
-			{/if}
-		{/each}
-	</ol>
+	<header>
+		<input bind:this={file} type="file">
+		<button bind:this={clipboardHandler}>クリップボードから読み込む</button>
+	</header>
+	{#each qas as qa, i}
+		{#if qa.type === 'exact-match'}
+			<p><span style="font-weight: bold;">＜問 {i + 1}＞</span> {qa.question}</p>
+			<p><span style="font-weight: bold;">＜答え＞</span></p>
+			<ul>
+				{#each qa.answers as answer}
+					<li>{answer}</li>
+				{/each}
+			</ul>
+			<br>
+		{:else if qa.type === 'exact-match-selection'}
+			<p><span style="font-weight: bold;">＜問 {i + 1}＞</span> {qa.question}</p>
+			<p><span style="font-weight: bold;">＜選択肢＞</span></p>
+			<ol>
+				{#each qa.selections as selection}
+					<li>{selection}</li>
+				{/each}
+			</ol>
+			<p><span style="font-weight: bold;">＜答え＞</span></p>
+			<ul>
+				{#each qa.answers as answer}
+					<li>{qa.selections[answer - 1]}</li>
+				{/each}
+			</ul>
+			<br>
+		{/if}
+	{/each}
 </main>
 
 <style>
