@@ -101,6 +101,9 @@
 	{#each qas as qa, i}
 		{#if qa.type === 'exact-match'}
 			<p><span style="font-weight: bold;">＜問 {i + 1}＞</span> {qa.question}</p>
+			{#if isAnswerForm}
+				<div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;"></div>
+			{/if}
 			{#if !isHiddenAnswer}
 				<p><span style="font-weight: bold;">＜答え＞</span></p>
 				<ul>
@@ -108,9 +111,6 @@
 						<li>{answer}</li>
 					{/each}
 				</ul>
-			{/if}
-			{#if isAnswerForm}
-				<div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;"></div>
 			{/if}
 			<br>
 		{:else if qa.type === 'exact-match-selection'}
@@ -123,6 +123,9 @@
 					{/each}
 				</ol>
 			{/if}
+			{#if isAnswerForm}
+				<div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;"></div>
+			{/if}
 			{#if !isHiddenAnswer}
 				<p><span style="font-weight: bold;">＜答え＞</span></p>
 				<ul>
@@ -130,9 +133,6 @@
 						<li>{qa.selections[answer - 1]}</li>
 					{/each}
 				</ul>
-			{/if}
-			{#if isAnswerForm}
-				<div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;"></div>
 			{/if}
 			<br>
 		{/if}
