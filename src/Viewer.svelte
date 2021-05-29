@@ -1,8 +1,9 @@
 <script>
 	import { onMount } from 'svelte'
+	import { qas } from './stores'
 	import '@exampledev/new.css'
 
-	let clipboardHandler, file, qas = []
+	let clipboardHandler, file
 	let isAnswerForm = false
 	let isHiddenAnswer = false
 	let isHiddenSelection = false
@@ -48,7 +49,7 @@
 		clipboardHandler.addEventListener('click', () => {
 			navigator.clipboard.readText()
 				.then(text => {
-					qas = parseQAString(text)
+					qas.set(parseQAString(text))
 				})
 				.catch(e => {
 					alert(e)
@@ -63,7 +64,7 @@
 
 				reader.onload = event => {
 					const result = event.target.result
-					qas = parseQAString(result)
+					qas.set(parseQAString(result))
 				}
 
 				reader.readAsText(firstFile)
@@ -97,7 +98,7 @@
 		解答欄を表示する
 	</label>
 </header>
-{#each qas as qa, i}
+{#each $qas as qa, i}
 	{#if qa.type === 'exact-match'}
 		<p><span style="font-weight: bold;">＜問 {i + 1}＞</span> {qa.question}</p>
 		{#if isAnswerForm}
