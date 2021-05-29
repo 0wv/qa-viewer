@@ -7,6 +7,7 @@
 	let isAnswerForm = false
 	let isHiddenAnswer = false
 	let isHiddenSelection = false
+	let playHandler
 	let printHandler
 
 	function parseQAString (qaString) {
@@ -71,6 +72,10 @@
 			}
 		}, false)
 
+		playHandler.addEventListener('click', () => {
+			window.location.href = '/#/play'
+		})
+
 		printHandler.addEventListener('click', () => {
 			window.print()
 		})
@@ -85,6 +90,7 @@
 	<input bind:this={file} type="file">
 	<button bind:this={clipboardHandler}>クリップボードから読み込む</button>
 	<button bind:this={printHandler}>印刷</button>
+	<button bind:this={playHandler} disabled={$qas.length === 0}>Play!</button>
 	<label>
 		<input bind:checked={isHiddenSelection} type="checkbox">
 		選択肢を隠す
