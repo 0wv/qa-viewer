@@ -110,55 +110,65 @@
 	</label>
 </header>
 {#each $qas as qa, i}
-	{#if qa.type === "exact-match"}
-		<p>
-			<span style="font-weight: bold;">＜問 {i + 1}＞</span>
-			{qa.question}
-		</p>
-		{#if isAnswerForm}
-			<div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;" />
+	<div class="question">
+		{#if qa.type === "exact-match"}
+			<p>
+				<span style="font-weight: bold;">＜問 {i + 1}＞</span>
+				{qa.question}
+			</p>
+			{#if isAnswerForm}
+				<div
+					style="border: 1px solid; height: 2cm; margin-bottom: 1rem;"
+				/>
+			{/if}
+			{#if !isHiddenAnswer}
+				<p><span style="font-weight: bold;">＜答え＞</span></p>
+				<ul>
+					{#each qa.answers as answer}
+						<li>{answer}</li>
+					{/each}
+				</ul>
+			{/if}
+			<br />
+		{:else if qa.type === "exact-match-selection"}
+			<p>
+				<span style="font-weight: bold;">＜問 {i + 1}＞</span>
+				{qa.question}
+			</p>
+			{#if !isHiddenSelection}
+				<p><span style="font-weight: bold;">＜選択肢＞</span></p>
+				<ol>
+					{#each qa.selections as selection}
+						<li>{selection}</li>
+					{/each}
+				</ol>
+			{/if}
+			{#if isAnswerForm}
+				<div
+					style="border: 1px solid; height: 2cm; margin-bottom: 1rem;"
+				/>
+			{/if}
+			{#if !isHiddenAnswer}
+				<p><span style="font-weight: bold;">＜答え＞</span></p>
+				<ul>
+					{#each qa.answers as answer}
+						<li>{qa.selections[answer - 1]}</li>
+					{/each}
+				</ul>
+			{/if}
+			<br />
 		{/if}
-		{#if !isHiddenAnswer}
-			<p><span style="font-weight: bold;">＜答え＞</span></p>
-			<ul>
-				{#each qa.answers as answer}
-					<li>{answer}</li>
-				{/each}
-			</ul>
-		{/if}
-		<br />
-	{:else if qa.type === "exact-match-selection"}
-		<p>
-			<span style="font-weight: bold;">＜問 {i + 1}＞</span>
-			{qa.question}
-		</p>
-		{#if !isHiddenSelection}
-			<p><span style="font-weight: bold;">＜選択肢＞</span></p>
-			<ol>
-				{#each qa.selections as selection}
-					<li>{selection}</li>
-				{/each}
-			</ol>
-		{/if}
-		{#if isAnswerForm}
-			<div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;" />
-		{/if}
-		{#if !isHiddenAnswer}
-			<p><span style="font-weight: bold;">＜答え＞</span></p>
-			<ul>
-				{#each qa.answers as answer}
-					<li>{qa.selections[answer - 1]}</li>
-				{/each}
-			</ul>
-		{/if}
-		<br />
-	{/if}
+	</div>
 {/each}
 
 <style>
 	@media print {
 		header {
 			display: none;
+		}
+
+		.question {
+			page-break-inside: avoid;
 		}
 	}
 </style>
