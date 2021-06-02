@@ -75,7 +75,10 @@
 					};
 
 					reader.readAsText(firstFile);
-				} else if (firstFile.type === "application/x-zip-compressed") {
+				} else if (
+					firstFile.type === "application/x-zip-compressed" ||
+					firstFile.type === "application/zip"
+				) {
 					const reader = new zip.ZipReader(
 						new zip.BlobReader(firstFile)
 					);
