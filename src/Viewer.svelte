@@ -1,10 +1,13 @@
 <script>
+	import { Base64 } from "js-base64";
 	import { onMount } from "svelte";
 	import { qas } from "./stores";
+	import * as zip from "@zip.js/zip.js";
 	import "@exampledev/new.css";
 
 	let clipboardHandler, file;
 	let isAnswerForm = false;
+	let isEnableInnerHTML = false;
 	let isHiddenAnswer = false;
 	let isHiddenSelection = false;
 	let playHandler;
@@ -72,6 +75,63 @@
 					};
 
 					reader.readAsText(firstFile);
+				} else if (firstFile.type === "application/x-zip-compressed") {
+					const reader = new zip.ZipReader(
+						new zip.BlobReader(firstFile)
+					);
+
+					reader
+						.getEntries()
+						.then(
+							(entries) =>
+								entries.filter(
+									(entry) => entry.filename === "main.txt"
+								)[0]
+						)
+						.then((qaString) => {
+							qaString
+								.getData(new zip.TextWriter())
+								.then((data) => {
+									let result = data;
+									const matches = data.match(/\.\/[^\s]+/g);
+
+									matches.forEach((match) => {
+										reader
+											.getEntries()
+											.then(
+												(entries) =>
+													entries.filter(
+														(entry) =>
+															`./${entry.filename}` ===
+															match
+													)[0]
+											)
+											.then((matched) => {
+												if (!matched) {
+													return;
+												}
+
+												matched
+													.getData(
+														new zip.Uint8ArrayWriter()
+													)
+													.then((data) => {
+														result = result.replace(
+															match,
+															`<img src="data:image/png;base64,${Base64.fromUint8Array(
+																data
+															)}">`
+														);
+														qas.set(
+															parseQAString(
+																result
+															)
+														);
+													});
+											});
+									});
+								});
+						});
 				}
 			},
 			false
@@ -108,13 +168,21 @@
 		<input bind:checked={isAnswerForm} type="checkbox" />
 		解答欄を表示する
 	</label>
+	<label>
+		<input bind:checked={isEnableInnerHTML} type="checkbox" />
+		innerHTMLを有効化
+	</label>
 </header>
 {#each $qas as qa, i}
 	<div class="question">
 		{#if qa.type === "exact-match"}
 			<p>
 				<span style="font-weight: bold;">＜問 {i + 1}＞</span>
-				{qa.question}
+				{#if !isEnableInnerHTML}
+					{qa.question}
+				{:else}
+					<span bind:innerHTML={qa.question} contenteditable />
+				{/if}
 			</p>
 			{#if isAnswerForm}
 				<div
@@ -125,7 +193,13 @@
 				<p><span style="font-weight: bold;">＜答え＞</span></p>
 				<ul>
 					{#each qa.answers as answer}
-						<li>{answer}</li>
+						<li>
+							{#if !isEnableInnerHTML}
+								{answer}
+							{:else}
+								<span bind:innerHTML={answer} contenteditable />
+							{/if}
+						</li>
 					{/each}
 				</ul>
 			{/if}
@@ -133,13 +207,26 @@
 		{:else if qa.type === "exact-match-selection"}
 			<p>
 				<span style="font-weight: bold;">＜問 {i + 1}＞</span>
-				{qa.question}
+				{#if !isEnableInnerHTML}
+					{qa.question}
+				{:else}
+					<span bind:innerHTML={qa.question} contenteditable />
+				{/if}
 			</p>
 			{#if !isHiddenSelection}
 				<p><span style="font-weight: bold;">＜選択肢＞</span></p>
 				<ol>
 					{#each qa.selections as selection}
-						<li>{selection}</li>
+						<li>
+							{#if !isEnableInnerHTML}
+								{selection}
+							{:else}
+								<span
+									bind:innerHTML={selection}
+									contenteditable
+								/>
+							{/if}
+						</li>
 					{/each}
 				</ol>
 			{/if}
@@ -152,7 +239,16 @@
 				<p><span style="font-weight: bold;">＜答え＞</span></p>
 				<ul>
 					{#each qa.answers as answer}
-						<li>{qa.selections[answer - 1]}</li>
+						<li>
+							{#if !isEnableInnerHTML}
+								{answer}
+							{:else}
+								<span
+									bind:innerHTML={qa.selections[answer - 1]}
+									contenteditable
+								/>
+							{/if}
+						</li>
 					{/each}
 				</ul>
 			{/if}
