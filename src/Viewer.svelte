@@ -2,12 +2,15 @@
 	import { Base64 } from "js-base64";
 	import { onMount } from "svelte";
 	import { qas } from "./stores";
+	import katex from "katex";
 	import * as zip from "@zip.js/zip.js";
+	import "../node_modules/katex/dist/katex.css";
 	import "@exampledev/new.css";
 
 	let clipboardHandler, file;
 	let isAnswerForm = false;
 	let isEnableInnerHTML = false;
+	let isEnableKatex = false;
 	let isHiddenAnswer = false;
 	let isHiddenSelection = false;
 	let playHandler;
@@ -54,7 +57,27 @@
 			navigator.clipboard
 				.readText()
 				.then((text) => {
-					qas.set(parseQAString(text));
+					if (!isEnableKatex) {
+						qas.set(parseQAString(text));
+					} else {
+						let result = text;
+						const matches = result.match(/\$.+\$/g);
+
+						matches.forEach((match) => {
+							result = result.replace(
+								match,
+								katex.renderToString(
+									match.slice(1).slice(0, -1),
+									{
+										output: "html",
+										throwOnError: false,
+									}
+								)
+							);
+						});
+
+						qas.set(parseQAString(result));
+					}
 				})
 				.catch((e) => {
 					alert(e);
@@ -71,7 +94,28 @@
 
 					reader.onload = (event) => {
 						const result = event.target.result;
-						qas.set(parseQAString(result));
+
+						if (!isEnableKatex) {
+							qas.set(parseQAString(result));
+						} else {
+							let newResult = result;
+							const matches = result.match(/\$.+\$/g);
+
+							matches.forEach((match) => {
+								newResult = newResult.replace(
+									match,
+									katex.renderToString(
+										match.slice(1).slice(0, -1),
+										{
+											output: "html",
+											throwOnError: false,
+										}
+									)
+								);
+							});
+
+							qas.set(parseQAString(newResult));
+						}
 					};
 
 					reader.readAsText(firstFile);
@@ -174,6 +218,10 @@
 	<label>
 		<input bind:checked={isEnableInnerHTML} type="checkbox" />
 		innerHTMLを有効化
+	</label>
+	<label>
+		<input bind:checked={isEnableKatex} type="checkbox" />
+		KaTeXを有効化
 	</label>
 </header>
 {#each $qas as qa, i}
