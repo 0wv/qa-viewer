@@ -61,7 +61,7 @@
 						qas.set(parseQAString(text));
 					} else {
 						let result = text;
-						const matches = result.match(/\$.+\$/g);
+						const matches = result.match(/\$.+?\$/g);
 
 						matches.forEach((match) => {
 							result = result.replace(
@@ -99,7 +99,7 @@
 							qas.set(parseQAString(result));
 						} else {
 							let newResult = result;
-							const matches = result.match(/\$.+\$/g);
+							const matches = result.match(/\$.+?\$/g);
 
 							matches.forEach((match) => {
 								newResult = newResult.replace(
