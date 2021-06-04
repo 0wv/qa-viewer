@@ -52,6 +52,37 @@
 		return result;
 	}
 
+	function qaEscape(qaString) {
+		const result = qaString.replace(/:-/g, "[:__colon_hyphen__:]");
+
+		return result;
+	}
+
+	function qaUnescape(qas) {
+		const result = qas.map(qa => {
+			if (qa.type === 'exact-match') {
+				const result = {
+					answers: qa.answers.map(answer => answer.replace(/\[:__colon_hyphen__:\]/g, ":-")),
+					question: qa.question.replace(/\[:__colon_hyphen__:\]/g, ":-"),
+					type: qa.type,
+				}
+
+				return result
+			} else if (qa.type === 'exact-match-selection') {
+				const result = {
+					answers: qa.answers.map(answer => answer.replace(/\[:__colon_hyphen__:\]/g, ":-")),
+					question: qa.question.replace(/\[:__colon_hyphen__:\]/g, ":-"),
+					selections: qa.selections.map(selection => selection.replace(/\[:__colon_hyphen__:\]/g, ":-")),
+					type: qa.type,
+				}
+
+				return result
+			}
+		})
+
+		return result;
+	}
+
 	onMount(() => {
 		clipboardHandler.addEventListener("click", () => {
 			navigator.clipboard
@@ -76,7 +107,7 @@
 							);
 						});
 
-						qas.set(parseQAString(result));
+						qas.set(qaUnescape(parseQAString(qaEscape(result))));
 					}
 				})
 				.catch((e) => {
@@ -114,7 +145,7 @@
 								);
 							});
 
-							qas.set(parseQAString(newResult));
+							qas.set(qaUnescape(parseQAString(qaEscape(newResult))));
 						}
 					};
 
