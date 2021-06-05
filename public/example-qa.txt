@@ -37,7 +37,7 @@ q3:-a1:-a2:-a3:=1
 q4:-a1:-a2:-a3:=1:=2
 
 # "q4" の答えは "a1" と "a2" です。
-#
+
 # 数式の入力
 #
 # 数式は "$" と "$" で囲みます。
@@ -55,7 +55,7 @@ $\frac{\sin{4}}{\sqrt{2}}$:=$\frac{\sin{4}\sqrt{2}}{2}$
 正しい数式を答えよう。:-$\sin{\theta}=\frac{\cos{\theta}}{\tan{\theta}}$:-$\tan{\theta}=\frac{\sin{\theta}}{\cos{\theta}}$:-$\cos{\theta}=\frac{\tan{\theta}}{\sin{\theta}}$:=2
 
 # 選択問題形式でも数式の入力ができます。
-#
+
 # 画像の入力と出力
 #
 # 1. 次のような構造の ZIP ファイルを用意します:
