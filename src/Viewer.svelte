@@ -21,10 +21,8 @@
 	}
 
 	function parseQAString(qaString) {
-		const result = qaString
-			.replace(/\r?\n/g, "\n")
+		const result = convertQAString(qaString)
 			.split("\n")
-			.filter((v) => v !== "" && v[0] !== "#")
 			.map((v) => v.split(":="))
 			.filter((v) => v.length >= 2)
 			.map((v) => [v[0].split(":-"), v.slice(1, v.length)])
@@ -95,6 +93,16 @@
 				return result;
 			}
 		});
+
+		return result;
+	}
+
+	function convertQAString(qaString) {
+		const result = qaString
+			.replace(/\r?\n/g, "\n")
+			.split("\n")
+			.filter((v) => v !== "" && v[0] !== "#")
+			.join("\n");
 
 		return result;
 	}
