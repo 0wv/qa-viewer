@@ -55,3 +55,17 @@ $\frac{\sin{4}}{\sqrt{2}}$:=$\frac{\sin{4}\sqrt{2}}{2}$
 正しい数式を答えよう。:-$\sin{\theta}=\frac{\cos{\theta}}{\tan{\theta}}$:-$\tan{\theta}=\frac{\sin{\theta}}{\cos{\theta}}$:-$\cos{\theta}=\frac{\tan{\theta}}{\sin{\theta}}$:=2
 
 # 選択問題形式でも数式の入力ができます。
+#
+# 画像の入力と出力
+#
+# 1. 次のような構造の ZIP ファイルを用意します:
+#
+# - ./main.txt
+# - ./a.png
+#
+# 2. main.txt には次のような内容を記述します。
+q7:=./a.png
+
+# ヒント: 画像ファイルが存在しない場合は文字列として出力されます。
+#
+# 3. 「ファイルの選択」からその構造の ZIP ファイルを選択します。
