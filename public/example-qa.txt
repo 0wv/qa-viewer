@@ -37,3 +37,21 @@ q3:-a1:-a2:-a3:=1
 q4:-a1:-a2:-a3:=1:=2
 
 # "q4" の答えは "a1" と "a2" です。
+#
+# 数式の入力
+#
+# 数式は "$" と "$" で囲みます。
+# 例５）
+q5:=$\sqrt{42}$
+
+# sqrt(42) を出力します。
+#
+# 例５）
+$\frac{\sin{4}}{\sqrt{2}}$:=$\frac{\sin{4}\sqrt{2}}{2}$
+
+# 問にも数式を入力できます。
+#
+# 例６）
+正しい数式を答えよう。:-$\sin{\theta}=\frac{\cos{\theta}}{\tan{\theta}}$:-$\tan{\theta}=\frac{\sin{\theta}}{\cos{\theta}}$:-$\cos{\theta}=\frac{\tan{\theta}}{\sin{\theta}}$:=2
+
+# 選択問題形式でも数式の入力ができます。
