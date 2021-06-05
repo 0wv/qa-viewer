@@ -109,19 +109,21 @@
 						matches.forEach((match) => {
 							result = result.replace(
 								match,
-								katex.renderToString(
-									match.slice(1).slice(0, -1),
-									{
-										output: "html",
-										throwOnError: false,
-									}
+								qaEscape(
+									katex.renderToString(
+										match.slice(1).slice(0, -1),
+										{
+											output: "html",
+											throwOnError: false,
+										}
+									)
 								)
 							);
 						});
 
 						result = result.replace(/\n/g, "");
 
-						qas.set(qaUnescape(parseQAString(qaEscape(result))));
+						qas.set(qaUnescape(parseQAString(result)));
 					}
 				})
 				.catch((e) => {
@@ -149,21 +151,21 @@
 							matches.forEach((match) => {
 								newResult = newResult.replace(
 									match,
-									katex.renderToString(
-										match.slice(1).slice(0, -1),
-										{
-											output: "html",
-											throwOnError: false,
-										}
+									qaEscape(
+										katex.renderToString(
+											match.slice(1).slice(0, -1),
+											{
+												output: "html",
+												throwOnError: false,
+											}
+										)
 									)
 								);
 							});
 
 							newResult = newResult.replace(/\n/g, "");
 
-							qas.set(
-								qaUnescape(parseQAString(qaEscape(newResult)))
-							);
+							qas.set(qaUnescape(parseQAString(newResult)));
 						}
 					};
 
