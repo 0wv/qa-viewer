@@ -114,18 +114,18 @@
 							result = result.replace(
 								match,
 								qaEscape(
-									katex.renderToString(
-										match.slice(1).slice(0, -1),
-										{
-											output: "html",
-											throwOnError: false,
-										}
-									)
+									katex
+										.renderToString(
+											match.slice(1).slice(0, -1),
+											{
+												output: "html",
+												throwOnError: false,
+											}
+										)
+										.replace(/\n/g, "")
 								)
 							);
 						});
-
-						result = result.replace(/\n/g, "");
 
 						qas.set(qaUnescape(parseQAString(result)));
 					}
@@ -156,18 +156,18 @@
 								newResult = newResult.replace(
 									match,
 									qaEscape(
-										katex.renderToString(
-											match.slice(1).slice(0, -1),
-											{
-												output: "html",
-												throwOnError: false,
-											}
-										)
+										katex
+											.renderToString(
+												match.slice(1).slice(0, -1),
+												{
+													output: "html",
+													throwOnError: false,
+												}
+											)
+											.replace(/\n/g, "")
 									)
 								);
 							});
-
-							newResult = newResult.replace(/\n/g, "");
 
 							qas.set(qaUnescape(parseQAString(newResult)));
 						}
