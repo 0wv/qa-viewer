@@ -16,6 +16,10 @@
 	let playHandler;
 	let printHandler;
 
+	function helpClick() {
+		window.location.href = "/#/help";
+	}
+
 	function parseQAString(qaString) {
 		const result = qaString
 			.replace(/\r?\n/g, "\n")
@@ -251,6 +255,7 @@
 
 <header>
 	<input bind:this={file} type="file" />
+	<button on:click={helpClick}>ヘルプ</button>
 	<button bind:this={clipboardHandler}>クリップボードから読み込む</button>
 	<button bind:this={printHandler}>印刷</button>
 	<button bind:this={playHandler} disabled={$qas.length === 0}>Play!</button>
