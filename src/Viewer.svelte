@@ -111,6 +111,7 @@
 		clipboardHandler.addEventListener("click", () => {
 			navigator.clipboard
 				.readText()
+				.then((text) => convertQAString(text))
 				.then((text) => {
 					if (!isEnableKatex) {
 						qas.set(parseQAString(text));
