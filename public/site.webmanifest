@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "QA Viewer",
+    "short_name": "QA",
     "icons": [
        {
           "src": "/android-chrome-192x192.png",
