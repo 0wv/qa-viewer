@@ -73,3 +73,12 @@ q7:=./a.png
 # ヒント: 画像ファイルが存在しない場合は文字列として出力されます。
 #
 # 3. 「ファイルの選択」からその構造の ZIP ファイルを選択します。
+
+# HTML を埋め込む
+#
+# ！正しく表示するために "innerHTMLを有効化" を ON にします。
+#
+# 例８）
+q8:=<span style="color: red;">赤<span style="color: green;">緑<span style="color: blue;">青</span></span></span>
+
+# 任意の HTML コードを入力できます。
