@@ -1,9 +1,8 @@
 <script>
     const fetchExample = (async () => {
       const responce = await fetch('/example-qa.txt')
-      const result = await responce.text()
 
-      return result
+      return await responce.text()
     })()
 </script>
 
