@@ -187,31 +187,38 @@
 </svelte:head>
 
 <header>
+	<h1>QA Viewer</h1>
+	<hr>
 	<input bind:this={file} type="file" />
-	<button on:click={helpClick}>ヘルプ</button>
 	<button bind:this={clipboardHandler}>クリップボードから読み込む</button>
+	<hr>
+	<button on:click={helpClick}>ヘルプ</button>
 	<button bind:this={printHandler}>印刷</button>
 	<button bind:this={playHandler} disabled={$qas.length === 0}>Play!</button>
-	<label>
-		<input bind:checked={isHiddenSelection} type="checkbox" />
-		選択肢を隠す
-	</label>
-	<label>
-		<input bind:checked={isHiddenAnswer} type="checkbox" />
-		答えを隠す
-	</label>
-	<label>
-		<input bind:checked={isAnswerForm} type="checkbox" />
-		解答欄を表示する
-	</label>
-	<label>
-		<input bind:checked={isEnableInnerHTML} type="checkbox" />
-		innerHTMLを有効化
-	</label>
-	<label>
-		<input bind:checked={isEnableKatex} type="checkbox" />
-		KaTeXを有効化
-	</label>
+	<hr>
+	<details>
+		<summary>追加の設定</summary>
+		<label>
+			<input bind:checked={isHiddenSelection} type="checkbox" />
+			選択肢を隠す
+		</label>
+		<label>
+			<input bind:checked={isHiddenAnswer} type="checkbox" />
+			答えを隠す
+		</label>
+		<label>
+			<input bind:checked={isAnswerForm} type="checkbox" />
+			解答欄を表示する
+		</label>
+		<label>
+			<input bind:checked={isEnableInnerHTML} type="checkbox" />
+			innerHTMLを有効化
+		</label>
+		<label>
+			<input bind:checked={isEnableKatex} type="checkbox" />
+			KaTeXを有効化
+		</label>
+	</details>
 </header>
 {#each $qas as qa, i}
 	<div class="question">
