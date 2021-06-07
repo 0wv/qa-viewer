@@ -11,6 +11,7 @@
 {#await fetchExample}
     <p>...waiting</p>
 {:then text}
+    <h2>例</h2>
     <button on:click={() => navigator.clipboard.writeText(text)}>例の内容をすべてコピー</button>
     <pre>
     <code>{text}</code>
