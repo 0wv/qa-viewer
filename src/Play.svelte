@@ -20,9 +20,7 @@
 	    return
 	  }
 
-	  if (
-	    $qas[currentIndex].type === 'exact-match-selection' && $qas[currentIndex].answers.length >= 2
-	  ) {
+	  if ($qas[currentIndex].type === 'exact-match-selection' && $qas[currentIndex].answers.length >= 2) {
 	    myAnswers[currentIndex] = []
 	  }
 	}

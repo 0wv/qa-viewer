@@ -21,7 +21,7 @@
 	}
 
 	function parseQAString (qaString) {
-	  const result = convertQAString(qaString)
+	  return convertQAString(qaString)
 	    .split('\n')
 	    .map((v) => v.split(':='))
 	    .filter((v) => v.length >= 2)
@@ -32,80 +32,53 @@
 
 	      if (v[0].length >= 2) {
 	        const selections = v[0].slice(1, v[0].length)
-	        const result = {
+
+	        return {
 	          answers,
 	          question,
 	          selections,
 	          type: 'exact-match-selection'
 	        }
-
-	        return result
 	      } else {
-	        const result = {
+	        return {
 	          answers,
 	          question,
 	          type: 'exact-match'
 	        }
-
-	        return result
 	      }
 	    })
-
-	  return result
 	}
 
 	function qaEscape (qaString) {
-	  const result = qaString.replace(/:-/g, '[:__colon_hyphen__:]')
-
-	  return result
+	  return qaString.replace(/:-/g, '[:__colon_hyphen__:]')
 	}
 
 	function qaUnescape (qas) {
 	  // eslint-disable-next-line array-callback-return
-	  const result = qas.map((qa) => {
+	  return qas.map((qa) => {
 	    if (qa.type === 'exact-match') {
-	      const result = {
-	        answers: qa.answers.map((answer) =>
-	          answer.replace(/\[:__colon_hyphen__:\]/g, ':-')
-	        ),
-	        question: qa.question.replace(
-	          /\[:__colon_hyphen__:\]/g,
-	          ':-'
-	        ),
+	      return {
+	        answers: qa.answers.map((answer) => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+	        question: qa.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
 	        type: qa.type
 	      }
-
-	      return result
 	    } else if (qa.type === 'exact-match-selection') {
-	      const result = {
-	        answers: qa.answers.map((answer) =>
-	          answer.replace(/\[:__colon_hyphen__:\]/g, ':-')
-	        ),
-	        question: qa.question.replace(
-	          /\[:__colon_hyphen__:\]/g,
-	          ':-'
-	        ),
-	        selections: qa.selections.map((selection) =>
-	          selection.replace(/\[:__colon_hyphen__:\]/g, ':-')
-	        ),
+	      return {
+	        answers: qa.answers.map((answer) => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+	        question: qa.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
+	        selections: qa.selections.map((selection) => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
 	        type: qa.type
 	      }
-
-	      return result
 	    }
 	  })
-
-	  return result
 	}
 
 	function convertQAString (qaString) {
-	  const result = qaString
+	  return qaString
 	    .replace(/\r?\n/g, '\n')
 	    .split('\n')
 	    .filter((v) => v !== '' && v[0] !== '#')
 	    .join('\n')
-
-	  return result
 	}
 
 	onMount(() => {
@@ -121,20 +94,10 @@
 	          const matches = result.match(/\$.+?\$/g)
 
 	          matches.forEach((match) => {
-	            result = result.replace(
-	              match,
-	              qaEscape(
-	                katex
-	                  .renderToString(
-	                    match.slice(1).slice(0, -1),
-	                    {
-	                      output: 'html',
-	                      throwOnError: false
-	                    }
-	                  )
-	                  .replace(/\n/g, '')
-	              )
-	            )
+	            result = result.replace(match, qaEscape(katex.renderToString(match.slice(1).slice(0, -1), {
+	              output: 'html',
+	              throwOnError: false
+	            }).replace(/\n/g, '')))
 	          })
 
 	          qas.set(qaUnescape(parseQAString(result)))
@@ -145,102 +108,68 @@
 	      })
 	  })
 
-	  file.addEventListener(
-	    'change',
-	    () => {
-	      const firstFile = file.files[0]
+	  file.addEventListener('change', () => {
+	    const firstFile = file.files[0]
 
-	      if (firstFile.type === 'text/plain') {
-	        const reader = new FileReader()
+	    if (firstFile.type === 'text/plain') {
+	      const reader = new FileReader()
 
-	        reader.onload = (event) => {
-	          const result = event.target.result
+	      reader.onload = (event) => {
+	        const result = event.target.result
 
-	          if (!isEnableKatex) {
-	            qas.set(parseQAString(result))
-	          } else {
-	            let newResult = result
-	            const matches = result.match(/\$.+?\$/g)
+	        if (!isEnableKatex) {
+	          qas.set(parseQAString(result))
+	        } else {
+	          let newResult = result
+	          const matches = result.match(/\$.+?\$/g)
 
-	            matches.forEach((match) => {
-	              newResult = newResult.replace(
-	                match,
-	                qaEscape(
-	                  katex
-	                    .renderToString(
-	                      match.slice(1).slice(0, -1),
-	                      {
-	                        output: 'html',
-	                        throwOnError: false
-	                      }
-	                    )
-	                    .replace(/\n/g, '')
-	                )
-	              )
-	            })
-
-	            qas.set(qaUnescape(parseQAString(newResult)))
-	          }
-	        }
-
-	        reader.readAsText(firstFile)
-	      } else if (
-	        firstFile.type === 'application/x-zip-compressed' || firstFile.type === 'application/zip'
-	      ) {
-	        const reader = new zip.ZipReader(
-	          new zip.BlobReader(firstFile)
-	        )
-
-	        reader
-	          .getEntries()
-	          .then(
-	            (entries) =>
-	              entries.filter(
-	                (entry) => entry.filename === 'main.txt'
-	              )[0]
-	          )
-	          .then((qaString) => {
-	            qaString
-	              .getData(new zip.TextWriter())
-	              .then((data) => {
-	                let result = data
-	                const matches = data.match(/\.\/[^\s]+/g)
-
-	                matches.forEach((match) => {
-	                  reader
-	                    .getEntries()
-	                    .then(
-	                      (entries) =>
-	                        entries.filter(
-	                          (entry) => `./${entry.filename}` === match
-	                        )[0]
-	                    )
-	                    .then((matched) => {
-	                      if (!matched) {
-	                        return
-	                      }
-
-	                      matched
-	                        .getData(
-	                          new zip.Uint8ArrayWriter()
-	                        )
-	                        .then((data) => {
-	                          result = result.replace(
-	                            match, `<img src="data:image/png;base64,${Base64.fromUint8Array(data)}">`
-	                          )
-	                          qas.set(
-	                            parseQAString(
-	                              result
-	                            )
-	                          )
-	                        })
-	                    })
-	                })
-	              })
+	          matches.forEach((match) => {
+	            newResult = newResult.replace(match, qaEscape(katex.renderToString(match.slice(1).slice(0, -1), {
+	              output: 'html',
+	              throwOnError: false
+	            }).replace(/\n/g, '')))
 	          })
+
+	          qas.set(qaUnescape(parseQAString(newResult)))
+	        }
 	      }
-	    },
-	    false
+
+	      reader.readAsText(firstFile)
+	    } else if (firstFile.type === 'application/x-zip-compressed' || firstFile.type === 'application/zip') {
+	      const reader = new zip.ZipReader(new zip.BlobReader(firstFile))
+
+	      reader
+	        .getEntries()
+	        .then((entries) => entries.filter((entry) => entry.filename === 'main.txt')[0])
+	        .then((qaString) => {
+	          qaString
+	            .getData(new zip.TextWriter())
+	            .then((data) => {
+	              let result = data
+	              const matches = data.match(/\.\/[^\s]+/g)
+
+	              matches.forEach((match) => {
+	                reader
+	                  .getEntries()
+	                  .then((entries) => entries.filter((entry) => `./${entry.filename}` === match)[0])
+	                  .then((matched) => {
+	                    if (!matched) {
+	                      return
+	                    }
+
+	                    matched
+	                      .getData(new zip.Uint8ArrayWriter())
+	                      .then((data) => {
+	                        result = result.replace(match, `<img src="data:image/png;base64,${Base64.fromUint8Array(data)}">`)
+	                        qas.set(parseQAString(result))
+	                      })
+	                  })
+	              })
+	            })
+	        })
+	    }
+	  },
+	  false
 	  )
 
 	  playHandler.addEventListener('click', () => {
@@ -296,9 +225,7 @@
 				{/if}
 			</p>
 			{#if isAnswerForm}
-				<div
-					style="border: 1px solid; height: 2cm; margin-bottom: 1rem;"
-				/>
+				<div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;" />
 			{/if}
 			{#if !isHiddenAnswer}
 				<p><span style="font-weight: bold;">＜答え＞</span></p>
@@ -332,19 +259,14 @@
 							{#if !isEnableInnerHTML}
 								{selection}
 							{:else}
-								<span
-									bind:innerHTML={selection}
-									contenteditable
-								/>
+								<span bind:innerHTML={selection} contenteditable />
 							{/if}
 						</li>
 					{/each}
 				</ol>
 			{/if}
 			{#if isAnswerForm}
-				<div
-					style="border: 1px solid; height: 2cm; margin-bottom: 1rem;"
-				/>
+				<div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;" />
 			{/if}
 			{#if !isHiddenAnswer}
 				<p><span style="font-weight: bold;">＜答え＞</span></p>
@@ -354,10 +276,7 @@
 							{#if !isEnableInnerHTML}
 								{answer}
 							{:else}
-								<span
-									bind:innerHTML={qa.selections[answer - 1]}
-									contenteditable
-								/>
+								<span bind:innerHTML={qa.selections[answer - 1]} contenteditable />
 							{/if}
 						</li>
 					{/each}
