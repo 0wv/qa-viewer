@@ -5,9 +5,9 @@
 	import Viewer from './Viewer.svelte'
 
 	const routes = {
-		'/': Viewer,
-		'/help': Help,
-		'/play': Play,
+	  '/': Viewer,
+	  '/help': Help,
+	  '/play': Play
 	}
 </script>
 

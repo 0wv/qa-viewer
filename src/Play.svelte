@@ -1,47 +1,46 @@
 <script>
-	import { qas } from "./stores";
+	import { qas } from './stores'
 
 	if ($qas.length === 0) {
-		window.location.href = "/";
+	  window.location.href = '/'
 	}
 
-	let answer;
-	let currentIndex = 0;
-	let isShowAnswer = false;
-	let myAnswers = Array($qas.length);
-	let myResults = [];
+	let answer
+	let currentIndex = 0
+	let isShowAnswer = false
+	const myAnswers = Array($qas.length)
+	const myResults = []
 
-	function nextQuestion() {
-		answer = "";
-		isShowAnswer = false;
-		currentIndex++;
+	function nextQuestion () {
+	  answer = ''
+	  isShowAnswer = false
+	  currentIndex++
 
-		if (myAnswers.length === currentIndex) {
-			return;
-		}
+	  if (myAnswers.length === currentIndex) {
+	    return
+	  }
 
-		if (
-			$qas[currentIndex].type === "exact-match-selection" &&
-			$qas[currentIndex].answers.length >= 2
-		) {
-			myAnswers[currentIndex] = [];
-		}
+	  if (
+	    $qas[currentIndex].type === 'exact-match-selection' && $qas[currentIndex].answers.length >= 2
+	  ) {
+	    myAnswers[currentIndex] = []
+	  }
 	}
 
-	function okClick() {
-		isShowAnswer = true;
+	function okClick () {
+	  isShowAnswer = true
 	}
 
-	function pushToResultsAndReturn(v) {
-		myResults.push(v);
+	function pushToResultsAndReturn (v) {
+	  myResults.push(v)
 
-		return v;
+	  return v
 	}
 </script>
 
 {#if myAnswers.length !== currentIndex}
 	<button onclick="window.location.href = '/'">戻る</button>
-	{#if $qas[currentIndex].type === "exact-match"}
+	{#if $qas[currentIndex].type === 'exact-match'}
 		<p>＜問 {currentIndex + 1}＞ {$qas[currentIndex].question}</p>
 		<textarea bind:value={answer} placeholder="答えを入力してください" />
 		{#if !isShowAnswer}
@@ -57,7 +56,7 @@
 			</p>
 			<button on:click={nextQuestion}>次の問題</button>
 		{/if}
-	{:else if $qas[currentIndex].type === "exact-match-selection"}
+	{:else if $qas[currentIndex].type === 'exact-match-selection'}
 		<p>＜問 {currentIndex + 1}＞ {$qas[currentIndex].question}</p>
 		{#if $qas[currentIndex].answers.length === 1}
 			<p>答えをひとつ選択してください</p>
@@ -99,9 +98,7 @@
 				<button on:click={okClick}>OK</button>
 			{:else}
 				<p>
-					{#if pushToResultsAndReturn(myAnswers[currentIndex].join("") === $qas[currentIndex].answers
-								.map((v) => $qas[currentIndex].selections[v - 1])
-								.join(""))}
+					{#if pushToResultsAndReturn(myAnswers[currentIndex].join('') === $qas[currentIndex].answers.map((v) => $qas[currentIndex].selections[v - 1]).join(''))}
 						正解です！
 					{:else}
 						不正解です…
@@ -115,7 +112,7 @@
 	<p>＜結果＞</p>
 	<ol>
 		{#each $qas as _, i}
-			<li>{myResults[i] ? "正解" : "不正解"}</li>
+			<li>{myResults[i] ? '正解' : '不正解'}</li>
 		{/each}
 	</ol>
 	<button onclick="window.location.href = '/'">戻る</button>

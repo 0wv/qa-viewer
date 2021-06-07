@@ -1,261 +1,256 @@
 <script>
-	import { Base64 } from "js-base64";
-	import { onMount } from "svelte";
-	import { qas } from "./stores";
-	import katex from "katex";
-	import * as zip from "@zip.js/zip.js";
-	import "../node_modules/katex/dist/katex.css";
-	import "@exampledev/new.css";
+	import { Base64 } from 'js-base64'
+	import { onMount } from 'svelte'
+	import { qas } from './stores'
+	import katex from 'katex'
+	import * as zip from '@zip.js/zip.js'
+	import '../node_modules/katex/dist/katex.css'
+	import '@exampledev/new.css'
 
-	let clipboardHandler, file;
-	let isAnswerForm = false;
-	let isEnableInnerHTML = false;
-	let isEnableKatex = false;
-	let isHiddenAnswer = false;
-	let isHiddenSelection = false;
-	let playHandler;
-	let printHandler;
+	let clipboardHandler, file
+	let isAnswerForm = false
+	let isEnableInnerHTML = false
+	let isEnableKatex = false
+	let isHiddenAnswer = false
+	let isHiddenSelection = false
+	let playHandler
+	let printHandler
 
-	function helpClick() {
-		window.location.href = "/#/help";
+	function helpClick () {
+	  window.location.href = '/#/help'
 	}
 
-	function parseQAString(qaString) {
-		const result = convertQAString(qaString)
-			.split("\n")
-			.map((v) => v.split(":="))
-			.filter((v) => v.length >= 2)
-			.map((v) => [v[0].split(":-"), v.slice(1, v.length)])
-			.map((v) => {
-				const answers = v[1];
-				const question = v[0][0];
+	function parseQAString (qaString) {
+	  const result = convertQAString(qaString)
+	    .split('\n')
+	    .map((v) => v.split(':='))
+	    .filter((v) => v.length >= 2)
+	    .map((v) => [v[0].split(':-'), v.slice(1, v.length)])
+	    .map((v) => {
+	      const answers = v[1]
+	      const question = v[0][0]
 
-				if (v[0].length >= 2) {
-					const selections = v[0].slice(1, v[0].length);
-					const result = {
-						answers,
-						question,
-						selections,
-						type: "exact-match-selection",
-					};
+	      if (v[0].length >= 2) {
+	        const selections = v[0].slice(1, v[0].length)
+	        const result = {
+	          answers,
+	          question,
+	          selections,
+	          type: 'exact-match-selection'
+	        }
 
-					return result;
-				} else {
-					const result = {
-						answers,
-						question,
-						type: "exact-match",
-					};
+	        return result
+	      } else {
+	        const result = {
+	          answers,
+	          question,
+	          type: 'exact-match'
+	        }
 
-					return result;
-				}
-			});
+	        return result
+	      }
+	    })
 
-		return result;
+	  return result
 	}
 
-	function qaEscape(qaString) {
-		const result = qaString.replace(/:-/g, "[:__colon_hyphen__:]");
+	function qaEscape (qaString) {
+	  const result = qaString.replace(/:-/g, '[:__colon_hyphen__:]')
 
-		return result;
+	  return result
 	}
 
-	function qaUnescape(qas) {
-		const result = qas.map((qa) => {
-			if (qa.type === "exact-match") {
-				const result = {
-					answers: qa.answers.map((answer) =>
-						answer.replace(/\[:__colon_hyphen__:\]/g, ":-")
-					),
-					question: qa.question.replace(
-						/\[:__colon_hyphen__:\]/g,
-						":-"
-					),
-					type: qa.type,
-				};
+	function qaUnescape (qas) {
+	  // eslint-disable-next-line array-callback-return
+	  const result = qas.map((qa) => {
+	    if (qa.type === 'exact-match') {
+	      const result = {
+	        answers: qa.answers.map((answer) =>
+	          answer.replace(/\[:__colon_hyphen__:\]/g, ':-')
+	        ),
+	        question: qa.question.replace(
+	          /\[:__colon_hyphen__:\]/g,
+	          ':-'
+	        ),
+	        type: qa.type
+	      }
 
-				return result;
-			} else if (qa.type === "exact-match-selection") {
-				const result = {
-					answers: qa.answers.map((answer) =>
-						answer.replace(/\[:__colon_hyphen__:\]/g, ":-")
-					),
-					question: qa.question.replace(
-						/\[:__colon_hyphen__:\]/g,
-						":-"
-					),
-					selections: qa.selections.map((selection) =>
-						selection.replace(/\[:__colon_hyphen__:\]/g, ":-")
-					),
-					type: qa.type,
-				};
+	      return result
+	    } else if (qa.type === 'exact-match-selection') {
+	      const result = {
+	        answers: qa.answers.map((answer) =>
+	          answer.replace(/\[:__colon_hyphen__:\]/g, ':-')
+	        ),
+	        question: qa.question.replace(
+	          /\[:__colon_hyphen__:\]/g,
+	          ':-'
+	        ),
+	        selections: qa.selections.map((selection) =>
+	          selection.replace(/\[:__colon_hyphen__:\]/g, ':-')
+	        ),
+	        type: qa.type
+	      }
 
-				return result;
-			}
-		});
+	      return result
+	    }
+	  })
 
-		return result;
+	  return result
 	}
 
-	function convertQAString(qaString) {
-		const result = qaString
-			.replace(/\r?\n/g, "\n")
-			.split("\n")
-			.filter((v) => v !== "" && v[0] !== "#")
-			.join("\n");
+	function convertQAString (qaString) {
+	  const result = qaString
+	    .replace(/\r?\n/g, '\n')
+	    .split('\n')
+	    .filter((v) => v !== '' && v[0] !== '#')
+	    .join('\n')
 
-		return result;
+	  return result
 	}
 
 	onMount(() => {
-		clipboardHandler.addEventListener("click", () => {
-			navigator.clipboard
-				.readText()
-				.then((text) => convertQAString(text))
-				.then((text) => {
-					if (!isEnableKatex) {
-						qas.set(parseQAString(text));
-					} else {
-						let result = text;
-						const matches = result.match(/\$.+?\$/g);
+	  clipboardHandler.addEventListener('click', () => {
+	    navigator.clipboard
+	      .readText()
+	      .then((text) => convertQAString(text))
+	      .then((text) => {
+	        if (!isEnableKatex) {
+	          qas.set(parseQAString(text))
+	        } else {
+	          let result = text
+	          const matches = result.match(/\$.+?\$/g)
 
-						matches.forEach((match) => {
-							result = result.replace(
-								match,
-								qaEscape(
-									katex
-										.renderToString(
-											match.slice(1).slice(0, -1),
-											{
-												output: "html",
-												throwOnError: false,
-											}
-										)
-										.replace(/\n/g, "")
-								)
-							);
-						});
+	          matches.forEach((match) => {
+	            result = result.replace(
+	              match,
+	              qaEscape(
+	                katex
+	                  .renderToString(
+	                    match.slice(1).slice(0, -1),
+	                    {
+	                      output: 'html',
+	                      throwOnError: false
+	                    }
+	                  )
+	                  .replace(/\n/g, '')
+	              )
+	            )
+	          })
 
-						qas.set(qaUnescape(parseQAString(result)));
-					}
-				})
-				.catch((e) => {
-					alert(e);
-				});
-		});
+	          qas.set(qaUnescape(parseQAString(result)))
+	        }
+	      })
+	      .catch((e) => {
+	        alert(e)
+	      })
+	  })
 
-		file.addEventListener(
-			"change",
-			() => {
-				const firstFile = file.files[0];
+	  file.addEventListener(
+	    'change',
+	    () => {
+	      const firstFile = file.files[0]
 
-				if (firstFile.type === "text/plain") {
-					const reader = new FileReader();
+	      if (firstFile.type === 'text/plain') {
+	        const reader = new FileReader()
 
-					reader.onload = (event) => {
-						const result = event.target.result;
+	        reader.onload = (event) => {
+	          const result = event.target.result
 
-						if (!isEnableKatex) {
-							qas.set(parseQAString(result));
-						} else {
-							let newResult = result;
-							const matches = result.match(/\$.+?\$/g);
+	          if (!isEnableKatex) {
+	            qas.set(parseQAString(result))
+	          } else {
+	            let newResult = result
+	            const matches = result.match(/\$.+?\$/g)
 
-							matches.forEach((match) => {
-								newResult = newResult.replace(
-									match,
-									qaEscape(
-										katex
-											.renderToString(
-												match.slice(1).slice(0, -1),
-												{
-													output: "html",
-													throwOnError: false,
-												}
-											)
-											.replace(/\n/g, "")
-									)
-								);
-							});
+	            matches.forEach((match) => {
+	              newResult = newResult.replace(
+	                match,
+	                qaEscape(
+	                  katex
+	                    .renderToString(
+	                      match.slice(1).slice(0, -1),
+	                      {
+	                        output: 'html',
+	                        throwOnError: false
+	                      }
+	                    )
+	                    .replace(/\n/g, '')
+	                )
+	              )
+	            })
 
-							qas.set(qaUnescape(parseQAString(newResult)));
-						}
-					};
+	            qas.set(qaUnescape(parseQAString(newResult)))
+	          }
+	        }
 
-					reader.readAsText(firstFile);
-				} else if (
-					firstFile.type === "application/x-zip-compressed" ||
-					firstFile.type === "application/zip"
-				) {
-					const reader = new zip.ZipReader(
-						new zip.BlobReader(firstFile)
-					);
+	        reader.readAsText(firstFile)
+	      } else if (
+	        firstFile.type === 'application/x-zip-compressed' || firstFile.type === 'application/zip'
+	      ) {
+	        const reader = new zip.ZipReader(
+	          new zip.BlobReader(firstFile)
+	        )
 
-					reader
-						.getEntries()
-						.then(
-							(entries) =>
-								entries.filter(
-									(entry) => entry.filename === "main.txt"
-								)[0]
-						)
-						.then((qaString) => {
-							qaString
-								.getData(new zip.TextWriter())
-								.then((data) => {
-									let result = data;
-									const matches = data.match(/\.\/[^\s]+/g);
+	        reader
+	          .getEntries()
+	          .then(
+	            (entries) =>
+	              entries.filter(
+	                (entry) => entry.filename === 'main.txt'
+	              )[0]
+	          )
+	          .then((qaString) => {
+	            qaString
+	              .getData(new zip.TextWriter())
+	              .then((data) => {
+	                let result = data
+	                const matches = data.match(/\.\/[^\s]+/g)
 
-									matches.forEach((match) => {
-										reader
-											.getEntries()
-											.then(
-												(entries) =>
-													entries.filter(
-														(entry) =>
-															`./${entry.filename}` ===
-															match
-													)[0]
-											)
-											.then((matched) => {
-												if (!matched) {
-													return;
-												}
+	                matches.forEach((match) => {
+	                  reader
+	                    .getEntries()
+	                    .then(
+	                      (entries) =>
+	                        entries.filter(
+	                          (entry) => `./${entry.filename}` === match
+	                        )[0]
+	                    )
+	                    .then((matched) => {
+	                      if (!matched) {
+	                        return
+	                      }
 
-												matched
-													.getData(
-														new zip.Uint8ArrayWriter()
-													)
-													.then((data) => {
-														result = result.replace(
-															match,
-															`<img src="data:image/png;base64,${Base64.fromUint8Array(
-																data
-															)}">`
-														);
-														qas.set(
-															parseQAString(
-																result
-															)
-														);
-													});
-											});
-									});
-								});
-						});
-				}
-			},
-			false
-		);
+	                      matched
+	                        .getData(
+	                          new zip.Uint8ArrayWriter()
+	                        )
+	                        .then((data) => {
+	                          result = result.replace(
+	                            match, `<img src="data:image/png;base64,${Base64.fromUint8Array(data)}">`
+	                          )
+	                          qas.set(
+	                            parseQAString(
+	                              result
+	                            )
+	                          )
+	                        })
+	                    })
+	                })
+	              })
+	          })
+	      }
+	    },
+	    false
+	  )
 
-		playHandler.addEventListener("click", () => {
-			window.location.href = "/#/play";
-		});
+	  playHandler.addEventListener('click', () => {
+	    window.location.href = '/#/play'
+	  })
 
-		printHandler.addEventListener("click", () => {
-			window.print();
-		});
-	});
+	  printHandler.addEventListener('click', () => {
+	    window.print()
+	  })
+	})
 </script>
 
 <svelte:head>
@@ -291,7 +286,7 @@
 </header>
 {#each $qas as qa, i}
 	<div class="question">
-		{#if qa.type === "exact-match"}
+		{#if qa.type === 'exact-match'}
 			<p>
 				<span style="font-weight: bold;">＜問 {i + 1}＞</span>
 				{#if !isEnableInnerHTML}
@@ -320,7 +315,7 @@
 				</ul>
 			{/if}
 			<br />
-		{:else if qa.type === "exact-match-selection"}
+		{:else if qa.type === 'exact-match-selection'}
 			<p>
 				<span style="font-weight: bold;">＜問 {i + 1}＞</span>
 				{#if !isEnableInnerHTML}
