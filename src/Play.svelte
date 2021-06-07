@@ -60,11 +60,7 @@
 			<p>答えをひとつ選択してください</p>
 			{#each $qas[currentIndex].selections as selection, i}
 				<label>
-					<input
-						bind:group={myAnswers[currentIndex]}
-						type="radio"
-						value={i}
-					/>
+					<input bind:group={myAnswers[currentIndex]} type="radio" value={i} />
 					{selection}
 				</label>
 			{/each}
@@ -84,11 +80,7 @@
 			<p>答えを選択してください</p>
 			{#each $qas[currentIndex].selections as selection}
 				<label>
-					<input
-						bind:group={myAnswers[currentIndex]}
-						type="checkbox"
-						value={selection}
-					/>
+					<input bind:group={myAnswers[currentIndex]} type="checkbox" value={selection} />
 					{selection}
 				</label>
 			{/each}
