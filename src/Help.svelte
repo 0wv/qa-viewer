@@ -17,3 +17,5 @@
     <code>{text}</code>
 </pre>
 {/await}
+<h2>バージョン</h2>
+<p>v0.13.2</p>
