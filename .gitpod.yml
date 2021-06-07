@@ -13,3 +13,4 @@ ports:
 vscode:
   extensions:
     - svelte.svelte-vscode
+    - dbaeumer.vscode-eslint
