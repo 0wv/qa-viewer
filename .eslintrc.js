@@ -20,5 +20,7 @@ module.exports = {
     'svelte3'
   ],
   rules: {
+    // ref: https://github.com/sveltejs/eslint-plugin-svelte3/issues/41#issuecomment-572503966
+    'no-multiple-empty-lines': ['error', { max: 1, maxBOF: 2, maxEOF: 0 }] // standard
   }
 }
