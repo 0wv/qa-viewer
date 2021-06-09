@@ -194,11 +194,11 @@
   <hr>
   <details>
     <summary>追加の設定</summary>
-    <ConfigBool key="isHiddenSelection" value={false}>選択肢を隠す</ConfigBool>
-    <ConfigBool key="isHiddenAnswer" value={false}>答えを隠す</ConfigBool>
-    <ConfigBool key="isAnswerForm" value={false}>解答欄を表示する</ConfigBool>
-    <ConfigBool key="isEnableInnerHTML" value={false}>innerHTMLを有効化</ConfigBool>
-    <ConfigBool key="isEnableKatex" value={false}>KaTeXを有効化</ConfigBool>
+    <ConfigBool key="isHiddenSelection">選択肢を隠す</ConfigBool>
+    <ConfigBool key="isHiddenAnswer">答えを隠す</ConfigBool>
+    <ConfigBool key="isAnswerForm">解答欄を表示する</ConfigBool>
+    <ConfigBool key="isEnableInnerHTML">innerHTMLを有効化</ConfigBool>
+    <ConfigBool key="isEnableKatex">KaTeXを有効化</ConfigBool>
   </details>
 </header>
 {#each $qas as qa, i}
