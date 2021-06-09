@@ -1,18 +1,14 @@
 <script>
 	import { Base64 } from 'js-base64'
 	import { onMount } from 'svelte'
-	import { qas } from '../stores'
+	import { config, qas } from '../stores'
 	import katex from 'katex'
 	import * as zip from '@zip.js/zip.js'
 	import '../../node_modules/katex/dist/katex.css'
 	import '@exampledev/new.css'
+	import ConfigBool from './ConfigBool.svelte'
 
 	let clipboardHandler, file
-	let isAnswerForm = false
-	let isEnableInnerHTML = false
-	let isEnableKatex = false
-	let isHiddenAnswer = false
-	let isHiddenSelection = false
 	let playHandler
 	let printHandler
 
@@ -87,7 +83,7 @@
 	      .readText()
 	      .then((text) => convertQAString(text))
 	      .then((text) => {
-	        if (!isEnableKatex) {
+	        if (!$config.isEnableKatex) {
 	          qas.set(parseQAString(text))
 	        } else {
 	          let result = text
@@ -117,7 +113,7 @@
 	      reader.onload = (event) => {
 	        const result = event.target.result
 
-	        if (!isEnableKatex) {
+	        if (!$config.isEnableKatex) {
 	          qas.set(parseQAString(result))
 	        } else {
 	          let newResult = result
@@ -198,26 +194,11 @@
 	<hr>
 	<details>
 		<summary>追加の設定</summary>
-		<label>
-			<input bind:checked={isHiddenSelection} type="checkbox" />
-			選択肢を隠す
-		</label>
-		<label>
-			<input bind:checked={isHiddenAnswer} type="checkbox" />
-			答えを隠す
-		</label>
-		<label>
-			<input bind:checked={isAnswerForm} type="checkbox" />
-			解答欄を表示する
-		</label>
-		<label>
-			<input bind:checked={isEnableInnerHTML} type="checkbox" />
-			innerHTMLを有効化
-		</label>
-		<label>
-			<input bind:checked={isEnableKatex} type="checkbox" />
-			KaTeXを有効化
-		</label>
+    <ConfigBool key="isHiddenSelection" value={false}>選択肢を隠す</ConfigBool>
+    <ConfigBool key="isHiddenAnswer" value={false}>答えを隠す</ConfigBool>
+    <ConfigBool key="isAnswerForm" value={false}>解答欄を表示する</ConfigBool>
+    <ConfigBool key="isEnableInnerHTML" value={false}>innerHTMLを有効化</ConfigBool>
+    <ConfigBool key="isEnableKatex" value={false}>KaTeXを有効化</ConfigBool>
 	</details>
 </header>
 {#each $qas as qa, i}
@@ -225,21 +206,21 @@
 		{#if qa.type === 'exact-match'}
 			<p>
 				<span style="font-weight: bold;">＜問 {i + 1}＞</span>
-				{#if !isEnableInnerHTML}
+				{#if !$config.isEnableInnerHTML}
 					{qa.question}
 				{:else}
 					<span bind:innerHTML={qa.question} contenteditable />
 				{/if}
 			</p>
-			{#if isAnswerForm}
+			{#if $config.isAnswerForm}
 				<div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;" />
 			{/if}
-			{#if !isHiddenAnswer}
+			{#if !$config.isHiddenAnswer}
 				<p><span style="font-weight: bold;">＜答え＞</span></p>
 				<ul>
 					{#each qa.answers as answer}
 						<li>
-							{#if !isEnableInnerHTML}
+							{#if !$config.isEnableInnerHTML}
 								{answer}
 							{:else}
 								<span bind:innerHTML={answer} contenteditable />
@@ -252,18 +233,18 @@
 		{:else if qa.type === 'exact-match-selection'}
 			<p>
 				<span style="font-weight: bold;">＜問 {i + 1}＞</span>
-				{#if !isEnableInnerHTML}
+				{#if !$config.isEnableInnerHTML}
 					{qa.question}
 				{:else}
 					<span bind:innerHTML={qa.question} contenteditable />
 				{/if}
 			</p>
-			{#if !isHiddenSelection}
+			{#if !$config.isHiddenSelection}
 				<p><span style="font-weight: bold;">＜選択肢＞</span></p>
 				<ol>
 					{#each qa.selections as selection}
 						<li>
-							{#if !isEnableInnerHTML}
+							{#if !$config.isEnableInnerHTML}
 								{selection}
 							{:else}
 								<span bind:innerHTML={selection} contenteditable />
@@ -272,15 +253,15 @@
 					{/each}
 				</ol>
 			{/if}
-			{#if isAnswerForm}
+			{#if $config.isAnswerForm}
 				<div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;" />
 			{/if}
-			{#if !isHiddenAnswer}
+			{#if !$config.isHiddenAnswer}
 				<p><span style="font-weight: bold;">＜答え＞</span></p>
 				<ul>
 					{#each qa.answers as answer}
 						<li>
-							{#if !isEnableInnerHTML}
+							{#if !$config.isEnableInnerHTML}
 								{answer}
 							{:else}
 								<span bind:innerHTML={qa.selections[answer - 1]} contenteditable />
