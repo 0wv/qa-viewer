@@ -1,5 +1,5 @@
 <script>
-  import { qas } from '../stores'
+  import { config, qas } from '../stores'
 
   if ($qas.length === 0) {
     window.location.href = '/'
@@ -39,7 +39,14 @@
 {#if myAnswers.length !== currentIndex}
   <button onclick="window.location.href = '/'">戻る</button>
   {#if $qas[currentIndex].type === 'exact-match'}
-    <p>＜問 {currentIndex + 1}＞ {$qas[currentIndex].question}</p>
+    <p>
+      ＜問 {currentIndex + 1}＞
+      {#if !$config.isEnableInnerHTML}
+        {$qas[currentIndex].question}
+      {:else}
+        <span bind:innerHTML={$qas[currentIndex].question} contenteditable="true"></span>
+      {/if}
+    </p>
     <textarea bind:value={answer} placeholder="答えを入力してください" />
     {#if !isShowAnswer}
       <br />
@@ -61,7 +68,11 @@
       {#each $qas[currentIndex].selections as selection, i}
         <label>
           <input bind:group={myAnswers[currentIndex]} type="radio" value={i} />
-          {selection}
+          {#if !$config.isEnableInnerHTML}
+            {selection}
+          {:else}
+            <span bind:innerHTML={selection} contenteditable="true"></span>
+          {/if}
         </label>
       {/each}
       {#if !isShowAnswer}
@@ -81,7 +92,11 @@
       {#each $qas[currentIndex].selections as selection}
         <label>
           <input bind:group={myAnswers[currentIndex]} type="checkbox" value={selection} />
-          {selection}
+          {#if !$config.isEnableInnerHTML}
+            {selection}
+          {:else}
+            <span bind:innerHTML={selection} contenteditable="true"></span>
+          {/if}
         </label>
       {/each}
       {#if !isShowAnswer}
