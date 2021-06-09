@@ -1,10 +1,10 @@
 <script>
 	import { Base64 } from 'js-base64'
 	import { onMount } from 'svelte'
-	import { qas } from './stores'
+	import { qas } from '../stores'
 	import katex from 'katex'
 	import * as zip from '@zip.js/zip.js'
-	import '../node_modules/katex/dist/katex.css'
+	import '../../node_modules/katex/dist/katex.css'
 	import '@exampledev/new.css'
 
 	let clipboardHandler, file

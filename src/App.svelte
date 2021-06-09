@@ -1,8 +1,8 @@
 <script>
-	import Help from './Help.svelte'
-	import Play from './Play.svelte'
+	import Help from './components/Help.svelte'
+	import Play from './components/Play.svelte'
 	import Router from 'svelte-spa-router'
-	import Viewer from './Viewer.svelte'
+	import Viewer from './components/Viewer.svelte'
 
 	const routes = {
 	  '/': Viewer,
