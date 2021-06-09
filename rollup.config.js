@@ -5,6 +5,7 @@ import livereload from 'rollup-plugin-livereload'
 import { terser } from 'rollup-plugin-terser'
 import css from 'rollup-plugin-css-only'
 import copy from 'rollup-plugin-copy-glob'
+import versionInjector from 'rollup-plugin-version-injector'
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -50,6 +51,9 @@ export default {
 
     // for katex
     copy([{ files: 'node_modules/katex/dist/fonts/*.*', dest: 'public/build/fonts' }]),
+
+    // inject version
+    versionInjector(),
 
     // If you have external dependencies installed from
     // npm, you'll most likely need these plugins. In
