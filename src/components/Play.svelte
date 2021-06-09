@@ -1,5 +1,5 @@
 <script>
-	import { qas } from './stores'
+	import { qas } from '../stores'
 
 	if ($qas.length === 0) {
 	  window.location.href = '/'
