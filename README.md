@@ -10,3 +10,12 @@
 [![GitHub tag](https://img.shields.io/github/v/tag/0wv/qa-viewer)](https://github.com/0wv/qa-viewer/tags)
 
 # QA Viewer
+
+## Get to try
+
+You can try app [here](https://qa-viewer.netlify.app).
+
+## Documents
+
+- [help inside app](https://qa-viewer.netlify.app/#/help)
+- [wiki](https://github.com/0wv/qa-viewer/wiki)
