@@ -39,7 +39,7 @@ export function qaEscape (qaString) {
   return qaString.replace(/:-/g, '[:__colon_hyphen__:]')
 }
 
-export function qaUnescape (qas) {
+export function qasUnescape (qas) {
   // eslint-disable-next-line array-callback-return
   return qas.map((qa) => {
     if (qa.type === 'exact-match') {

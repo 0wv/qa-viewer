@@ -11,7 +11,7 @@
     convertQAString,
     parseQAString,
     qaEscape,
-    qaUnescape
+    qasUnescape
   } from '../parser'
 
   let clipboardHandler, file
@@ -41,7 +41,7 @@
               }).replace(/\n/g, '')))
             })
 
-            qas.set(qaUnescape(parseQAString(result)))
+            qas.set(qasUnescape(parseQAString(result)))
           }
         })
         .catch((e) => {
@@ -71,7 +71,7 @@
               }).replace(/\n/g, '')))
             })
 
-            qas.set(qaUnescape(parseQAString(newResult)))
+            qas.set(qasUnescape(parseQAString(newResult)))
           }
         }
 
