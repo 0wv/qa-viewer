@@ -14,41 +14,35 @@
     qasUnescape
   } from '../parser'
 
-  let clipboardHandler, file
-  let playHandler
-  let printHandler
+  let file
 
-  function helpClick () {
-    window.location.href = '/#/help'
+  function loadFromClipboard () {
+    navigator.clipboard
+      .readText()
+      .then((text) => convertQAString(text))
+      .then((text) => {
+        if (!$config.isEnableKatex) {
+          qas.set(parseQAString(text))
+        } else {
+          let result = text
+          const matches = result.match(/\$.+?\$/g)
+
+          matches.forEach((match) => {
+            result = result.replace(match, qaEscape(katex.renderToString(match.slice(1).slice(0, -1), {
+              output: 'html',
+              throwOnError: false
+            }).replace(/\n/g, '')))
+          })
+
+          qas.set(qasUnescape(parseQAString(result)))
+        }
+      })
+      .catch((e) => {
+        alert(e)
+      })
   }
 
   onMount(() => {
-    clipboardHandler.addEventListener('click', () => {
-      navigator.clipboard
-        .readText()
-        .then((text) => convertQAString(text))
-        .then((text) => {
-          if (!$config.isEnableKatex) {
-            qas.set(parseQAString(text))
-          } else {
-            let result = text
-            const matches = result.match(/\$.+?\$/g)
-
-            matches.forEach((match) => {
-              result = result.replace(match, qaEscape(katex.renderToString(match.slice(1).slice(0, -1), {
-                output: 'html',
-                throwOnError: false
-              }).replace(/\n/g, '')))
-            })
-
-            qas.set(qasUnescape(parseQAString(result)))
-          }
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    })
-
     file.addEventListener('change', () => {
       const firstFile = file.files[0]
 
@@ -112,14 +106,6 @@
     },
     false
     )
-
-    playHandler.addEventListener('click', () => {
-      window.location.href = '/#/play'
-    })
-
-    printHandler.addEventListener('click', () => {
-      window.print()
-    })
   })
 </script>
 
@@ -131,11 +117,11 @@
   <h1>QA Viewer</h1>
   <hr>
   <input bind:this={file} type="file" />
-  <button bind:this={clipboardHandler}>クリップボードから読み込む</button>
+  <button on:click={loadFromClipboard}>クリップボードから読み込む</button>
   <hr>
-  <button on:click={helpClick}>ヘルプ</button>
-  <button bind:this={printHandler}>印刷</button>
-  <button bind:this={playHandler} disabled={$qas.length === 0}>Play!</button>
+  <button on:click={() => { window.location.href = '/#/help' }}>ヘルプ</button>
+  <button on:click={() => window.print()}>印刷</button>
+  <button disabled={$qas.length === 0} on:click={() => { window.location.href = '/#/play' }}>Play!</button>
   <hr>
   <details>
     <summary>追加の設定</summary>
