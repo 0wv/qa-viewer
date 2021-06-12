@@ -103,9 +103,7 @@
               })
           })
       }
-    },
-    false
-    )
+    }, false)
   })
 </script>
 
