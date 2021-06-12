@@ -7,6 +7,7 @@
   import '../../node_modules/katex/dist/katex.css'
   import '@exampledev/new.css'
   import ConfigBool from './ConfigBool.svelte'
+  import QATree from './QATree.svelte'
   import {
     convertQAString,
     parseQAString,
@@ -130,88 +131,12 @@
     <ConfigBool key="isEnableKatex">KaTeXを有効化</ConfigBool>
   </details>
 </header>
-{#each $qas as qa, i}
-  <div class="question">
-    {#if qa.type === 'exact-match'}
-      <p>
-        <span style="font-weight: bold;">＜問 {i + 1}＞</span>
-        {#if !$config.isEnableInnerHTML}
-          {qa.question}
-        {:else}
-          <span bind:innerHTML={qa.question} contenteditable />
-        {/if}
-      </p>
-      {#if $config.isAnswerForm}
-        <div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;" />
-      {/if}
-      {#if !$config.isHiddenAnswer}
-        <p><span style="font-weight: bold;">＜答え＞</span></p>
-        <ul>
-          {#each qa.answers as answer}
-            <li>
-              {#if !$config.isEnableInnerHTML}
-                {answer}
-              {:else}
-                <span bind:innerHTML={answer} contenteditable />
-              {/if}
-            </li>
-          {/each}
-        </ul>
-      {/if}
-      <br />
-    {:else if qa.type === 'exact-match-selection'}
-      <p>
-        <span style="font-weight: bold;">＜問 {i + 1}＞</span>
-        {#if !$config.isEnableInnerHTML}
-          {qa.question}
-        {:else}
-          <span bind:innerHTML={qa.question} contenteditable />
-        {/if}
-      </p>
-      {#if !$config.isHiddenSelection}
-        <p><span style="font-weight: bold;">＜選択肢＞</span></p>
-        <ol>
-          {#each qa.selections as selection}
-            <li>
-              {#if !$config.isEnableInnerHTML}
-                {selection}
-              {:else}
-                <span bind:innerHTML={selection} contenteditable />
-              {/if}
-            </li>
-          {/each}
-        </ol>
-      {/if}
-      {#if $config.isAnswerForm}
-        <div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;" />
-      {/if}
-      {#if !$config.isHiddenAnswer}
-        <p><span style="font-weight: bold;">＜答え＞</span></p>
-        <ul>
-          {#each qa.answers as answer}
-            <li>
-              {#if !$config.isEnableInnerHTML}
-                {answer}
-              {:else}
-                <span bind:innerHTML={qa.selections[answer - 1]} contenteditable />
-              {/if}
-            </li>
-          {/each}
-        </ul>
-      {/if}
-      <br />
-    {/if}
-  </div>
-{/each}
+<QATree></QATree>
 
 <style>
   @media print {
     header {
       display: none;
-    }
-
-    .question {
-      page-break-inside: avoid;
     }
   }
 </style>
