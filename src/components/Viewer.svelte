@@ -7,67 +7,43 @@
   import '../../node_modules/katex/dist/katex.css'
   import '@exampledev/new.css'
   import ConfigBool from './ConfigBool.svelte'
-  import { convertQAString, parseQAString } from '../parser'
+  import QATree from './QATree.svelte'
+  import {
+    convertQAString,
+    parseQAString,
+    qaEscape,
+    qasUnescape
+  } from '../parser'
 
-  let clipboardHandler, file
-  let playHandler
-  let printHandler
+  let file
 
-  function helpClick () {
-    window.location.href = '/#/help'
-  }
+  function loadFromClipboard () {
+    navigator.clipboard
+      .readText()
+      .then((text) => convertQAString(text))
+      .then((text) => {
+        if (!$config.isEnableKatex) {
+          qas.set(parseQAString(text))
+        } else {
+          let result = text
+          const matches = result.match(/\$.+?\$/g)
 
-  function qaEscape (qaString) {
-    return qaString.replace(/:-/g, '[:__colon_hyphen__:]')
-  }
+          matches.forEach((match) => {
+            result = result.replace(match, qaEscape(katex.renderToString(match.slice(1).slice(0, -1), {
+              output: 'html',
+              throwOnError: false
+            }).replace(/\n/g, '')))
+          })
 
-  function qaUnescape (qas) {
-    // eslint-disable-next-line array-callback-return
-    return qas.map((qa) => {
-      if (qa.type === 'exact-match') {
-        return {
-          answers: qa.answers.map((answer) => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
-          question: qa.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
-          type: qa.type
+          qas.set(qasUnescape(parseQAString(result)))
         }
-      } else if (qa.type === 'exact-match-selection') {
-        return {
-          answers: qa.answers.map((answer) => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
-          question: qa.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
-          selections: qa.selections.map((selection) => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
-          type: qa.type
-        }
-      }
-    })
+      })
+      .catch((e) => {
+        alert(e)
+      })
   }
 
   onMount(() => {
-    clipboardHandler.addEventListener('click', () => {
-      navigator.clipboard
-        .readText()
-        .then((text) => convertQAString(text))
-        .then((text) => {
-          if (!$config.isEnableKatex) {
-            qas.set(parseQAString(text))
-          } else {
-            let result = text
-            const matches = result.match(/\$.+?\$/g)
-
-            matches.forEach((match) => {
-              result = result.replace(match, qaEscape(katex.renderToString(match.slice(1).slice(0, -1), {
-                output: 'html',
-                throwOnError: false
-              }).replace(/\n/g, '')))
-            })
-
-            qas.set(qaUnescape(parseQAString(result)))
-          }
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    })
-
     file.addEventListener('change', () => {
       const firstFile = file.files[0]
 
@@ -90,7 +66,7 @@
               }).replace(/\n/g, '')))
             })
 
-            qas.set(qaUnescape(parseQAString(newResult)))
+            qas.set(qasUnescape(parseQAString(newResult)))
           }
         }
 
@@ -128,17 +104,7 @@
               })
           })
       }
-    },
-    false
-    )
-
-    playHandler.addEventListener('click', () => {
-      window.location.href = '/#/play'
-    })
-
-    printHandler.addEventListener('click', () => {
-      window.print()
-    })
+    }, false)
   })
 </script>
 
@@ -150,103 +116,33 @@
   <h1>QA Viewer</h1>
   <hr>
   <input bind:this={file} type="file" />
-  <button bind:this={clipboardHandler}>クリップボードから読み込む</button>
+  <button on:click={loadFromClipboard}>クリップボードから読み込む</button>
   <hr>
-  <button on:click={helpClick}>ヘルプ</button>
-  <button bind:this={printHandler}>印刷</button>
-  <button bind:this={playHandler} disabled={$qas.length === 0}>Play!</button>
+  <button on:click={() => { window.location.href = '/#/help' }}>ヘルプ</button>
+  <button on:click={() => window.print()}>印刷</button>
+  <button disabled={$qas.length === 0} on:click={() => { window.location.href = '/#/play' }}>Play!</button>
   <hr>
   <details>
     <summary>追加の設定</summary>
     <ConfigBool key="isHiddenSelection">選択肢を隠す</ConfigBool>
     <ConfigBool key="isHiddenAnswer">答えを隠す</ConfigBool>
     <ConfigBool key="isAnswerForm">解答欄を表示する</ConfigBool>
+    {#if $config.isAnswerForm}
+      <details>
+        <summary>詳細設定</summary>
+        <ConfigBool key="isAnswerFormBorder">解答欄をボーダーで囲む</ConfigBool>
+      </details>
+    {/if}
     <ConfigBool key="isEnableInnerHTML">innerHTMLを有効化</ConfigBool>
     <ConfigBool key="isEnableKatex">KaTeXを有効化</ConfigBool>
   </details>
 </header>
-{#each $qas as qa, i}
-  <div class="question">
-    {#if qa.type === 'exact-match'}
-      <p>
-        <span style="font-weight: bold;">＜問 {i + 1}＞</span>
-        {#if !$config.isEnableInnerHTML}
-          {qa.question}
-        {:else}
-          <span bind:innerHTML={qa.question} contenteditable />
-        {/if}
-      </p>
-      {#if $config.isAnswerForm}
-        <div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;" />
-      {/if}
-      {#if !$config.isHiddenAnswer}
-        <p><span style="font-weight: bold;">＜答え＞</span></p>
-        <ul>
-          {#each qa.answers as answer}
-            <li>
-              {#if !$config.isEnableInnerHTML}
-                {answer}
-              {:else}
-                <span bind:innerHTML={answer} contenteditable />
-              {/if}
-            </li>
-          {/each}
-        </ul>
-      {/if}
-      <br />
-    {:else if qa.type === 'exact-match-selection'}
-      <p>
-        <span style="font-weight: bold;">＜問 {i + 1}＞</span>
-        {#if !$config.isEnableInnerHTML}
-          {qa.question}
-        {:else}
-          <span bind:innerHTML={qa.question} contenteditable />
-        {/if}
-      </p>
-      {#if !$config.isHiddenSelection}
-        <p><span style="font-weight: bold;">＜選択肢＞</span></p>
-        <ol>
-          {#each qa.selections as selection}
-            <li>
-              {#if !$config.isEnableInnerHTML}
-                {selection}
-              {:else}
-                <span bind:innerHTML={selection} contenteditable />
-              {/if}
-            </li>
-          {/each}
-        </ol>
-      {/if}
-      {#if $config.isAnswerForm}
-        <div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;" />
-      {/if}
-      {#if !$config.isHiddenAnswer}
-        <p><span style="font-weight: bold;">＜答え＞</span></p>
-        <ul>
-          {#each qa.answers as answer}
-            <li>
-              {#if !$config.isEnableInnerHTML}
-                {answer}
-              {:else}
-                <span bind:innerHTML={qa.selections[answer - 1]} contenteditable />
-              {/if}
-            </li>
-          {/each}
-        </ul>
-      {/if}
-      <br />
-    {/if}
-  </div>
-{/each}
+<QATree qas={$qas}></QATree>
 
 <style>
   @media print {
     header {
       display: none;
-    }
-
-    .question {
-      page-break-inside: avoid;
     }
   }
 </style>

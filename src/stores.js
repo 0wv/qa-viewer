@@ -2,6 +2,7 @@ import { writable } from 'svelte/store'
 
 export const config = writable({
   isAnswerForm: false,
+  isAnswerFormBorder: true,
   isEnableInnerHTML: false,
   isEnableKatex: false,
   isHiddenAnswer: false,
