@@ -131,7 +131,7 @@
     <ConfigBool key="isEnableKatex">KaTeXを有効化</ConfigBool>
   </details>
 </header>
-<QATree></QATree>
+<QATree qas={$qas}></QATree>
 
 <style>
   @media print {

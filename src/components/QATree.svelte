@@ -1,8 +1,10 @@
 <script>
-  import { config, qas } from '../stores'
+  import { config } from '../stores'
+
+  export let qas
 </script>
 
-{#each $qas as qa, i}
+{#each qas as qa, i}
   <div class="question">
     {#if qa.type === 'exact-match'}
       <p>
