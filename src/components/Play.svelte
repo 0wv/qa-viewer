@@ -2,7 +2,7 @@
   import { config, qas } from '../stores'
 
   if ($qas.length === 0) {
-    window.location.href = '/'
+    window.location.href = '/#/'
   }
 
   let answer
@@ -37,7 +37,7 @@
 </script>
 
 {#if myAnswers.length !== currentIndex}
-  <button onclick="window.location.href = '/'">戻る</button>
+  <button onclick="window.location.href = '/#/'">戻る</button>
   {#if $qas[currentIndex].type === 'exact-match'}
     <p>
       ＜問 {currentIndex + 1}＞
@@ -120,5 +120,5 @@
       <li>{myResults[i] ? '正解' : '不正解'}</li>
     {/each}
   </ol>
-  <button onclick="window.location.href = '/'">戻る</button>
+  <button onclick="window.location.href = '/#/'">戻る</button>
 {/if}
