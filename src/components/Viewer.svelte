@@ -127,6 +127,12 @@
     <ConfigBool key="isHiddenSelection">選択肢を隠す</ConfigBool>
     <ConfigBool key="isHiddenAnswer">答えを隠す</ConfigBool>
     <ConfigBool key="isAnswerForm">解答欄を表示する</ConfigBool>
+    {#if $config.isAnswerForm}
+      <details>
+        <summary>詳細設定</summary>
+        <ConfigBool key="isAnswerFormBorder">解答欄をボーダーで囲む</ConfigBool>
+      </details>
+    {/if}
     <ConfigBool key="isEnableInnerHTML">innerHTMLを有効化</ConfigBool>
     <ConfigBool key="isEnableKatex">KaTeXを有効化</ConfigBool>
   </details>

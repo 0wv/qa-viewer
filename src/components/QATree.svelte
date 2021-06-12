@@ -16,7 +16,7 @@
         {/if}
       </p>
       {#if $config.isAnswerForm}
-        <div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;" />
+        <div class:answer-form-border={$config.isAnswerFormBorder} style="height: 2cm; margin-bottom: 1rem;" />
       {/if}
       {#if !$config.isHiddenAnswer}
         <p><span style="font-weight: bold;">＜答え＞</span></p>
@@ -57,7 +57,7 @@
         </ol>
       {/if}
       {#if $config.isAnswerForm}
-        <div style="border: 1px solid; height: 2cm; margin-bottom: 1rem;" />
+        <div class:answer-form-border={$config.isAnswerFormBorder} style="height: 2cm; margin-bottom: 1rem;" />
       {/if}
       {#if !$config.isHiddenAnswer}
         <p><span style="font-weight: bold;">＜答え＞</span></p>
@@ -83,5 +83,9 @@
     .question {
       page-break-inside: avoid;
     }
+  }
+
+  .answer-form-border {
+    border: 1px solid;
   }
 </style>
