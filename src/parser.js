@@ -50,7 +50,7 @@ export function qasUnescape (qas) {
       }
     } else if (qa.type === 'exact-match-selection') {
       return {
-        answers: qa.answers.map((answer) => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+        answers: qa.answers,
         question: qa.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
         selections: qa.selections.map((selection) => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
         type: qa.type
