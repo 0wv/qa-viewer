@@ -7,7 +7,12 @@
   import '../../node_modules/katex/dist/katex.css'
   import '@exampledev/new.css'
   import ConfigBool from './ConfigBool.svelte'
-  import { convertQAString, parseQAString } from '../parser'
+  import {
+    convertQAString,
+    parseQAString,
+    qaEscape,
+    qaUnescape
+  } from '../parser'
 
   let clipboardHandler, file
   let playHandler
@@ -15,30 +20,6 @@
 
   function helpClick () {
     window.location.href = '/#/help'
-  }
-
-  function qaEscape (qaString) {
-    return qaString.replace(/:-/g, '[:__colon_hyphen__:]')
-  }
-
-  function qaUnescape (qas) {
-    // eslint-disable-next-line array-callback-return
-    return qas.map((qa) => {
-      if (qa.type === 'exact-match') {
-        return {
-          answers: qa.answers.map((answer) => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
-          question: qa.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
-          type: qa.type
-        }
-      } else if (qa.type === 'exact-match-selection') {
-        return {
-          answers: qa.answers.map((answer) => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
-          question: qa.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
-          selections: qa.selections.map((selection) => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
-          type: qa.type
-        }
-      }
-    })
   }
 
   onMount(() => {

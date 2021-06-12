@@ -34,3 +34,27 @@ export function parseQAString (qaString) {
       }
     })
 }
+
+export function qaEscape (qaString) {
+  return qaString.replace(/:-/g, '[:__colon_hyphen__:]')
+}
+
+export function qaUnescape (qas) {
+  // eslint-disable-next-line array-callback-return
+  return qas.map((qa) => {
+    if (qa.type === 'exact-match') {
+      return {
+        answers: qa.answers.map((answer) => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+        question: qa.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
+        type: qa.type
+      }
+    } else if (qa.type === 'exact-match-selection') {
+      return {
+        answers: qa.answers.map((answer) => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+        question: qa.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
+        selections: qa.selections.map((selection) => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+        type: qa.type
+      }
+    }
+  })
+}
