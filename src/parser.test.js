@@ -1,4 +1,9 @@
-import { parseQAString } from './parser'
+import { convertQAString, parseQAString } from './parser'
+
+test('unify line feed code and ignore comment lines', () => {
+  expect(convertQAString('a:=b\r\n# c:=d\r\n\r\ne:=f'))
+    .toBe('a:=b\ne:=f')
+})
 
 test('q1 in example', () => {
   expect(parseQAString('q1:=a1')).toEqual([
