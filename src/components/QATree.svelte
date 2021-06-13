@@ -6,13 +6,13 @@
 
 {#each qas as qa, i}
   <div class="question">
-    {#if qa.type === 'exact-match'}
+    {#if qa.content.type === 'exact-match'}
       <p>
         <span style="font-weight: bold;">＜問 {i + 1}＞</span>
         {#if !$config.isEnableInnerHTML}
-          {qa.question}
+          {qa.content.question}
         {:else}
-          <span bind:innerHTML={qa.question} contenteditable />
+          <span bind:innerHTML={qa.content.question} contenteditable />
         {/if}
       </p>
       {#if $config.isAnswerForm}
@@ -21,7 +21,7 @@
       {#if !$config.isHiddenAnswer}
         <p><span style="font-weight: bold;">＜答え＞</span></p>
         <ul>
-          {#each qa.answers as answer}
+          {#each qa.content.answers as answer}
             <li>
               {#if !$config.isEnableInnerHTML}
                 {answer}
@@ -33,19 +33,19 @@
         </ul>
       {/if}
       <br />
-    {:else if qa.type === 'exact-match-selection'}
+    {:else if qa.content.type === 'exact-match-selection'}
       <p>
         <span style="font-weight: bold;">＜問 {i + 1}＞</span>
         {#if !$config.isEnableInnerHTML}
-          {qa.question}
+          {qa.content.question}
         {:else}
-          <span bind:innerHTML={qa.question} contenteditable />
+          <span bind:innerHTML={qa.content.question} contenteditable />
         {/if}
       </p>
       {#if !$config.isHiddenSelection}
         <p><span style="font-weight: bold;">＜選択肢＞</span></p>
         <ol>
-          {#each qa.selections as selection}
+          {#each qa.content.selections as selection}
             <li>
               {#if !$config.isEnableInnerHTML}
                 {selection}
@@ -62,12 +62,12 @@
       {#if !$config.isHiddenAnswer}
         <p><span style="font-weight: bold;">＜答え＞</span></p>
         <ul>
-          {#each qa.answers as answer}
+          {#each qa.content.answers as answer}
             <li>
               {#if !$config.isEnableInnerHTML}
                 {answer}
               {:else}
-                <span bind:innerHTML={qa.selections[answer - 1]} contenteditable />
+                <span bind:innerHTML={qa.content.selections[answer - 1]} contenteditable />
               {/if}
             </li>
           {/each}
