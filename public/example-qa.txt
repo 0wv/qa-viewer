@@ -49,12 +49,12 @@ q5:=$\sqrt{42}$
 
 # sqrt(42) を出力します。
 #
-# 例５）
+# 例６）
 $\frac{\sin{4}}{\sqrt{2}}$:=$\frac{\sin{4}\sqrt{2}}{2}$
 
 # 問にも数式を入力できます。
 #
-# 例６）
+# 例７）
 正しい数式を答えよう。:-$\sin{\theta}=\frac{\cos{\theta}}{\tan{\theta}}$:-$\tan{\theta}=\frac{\sin{\theta}}{\cos{\theta}}$:-$\cos{\theta}=\frac{\tan{\theta}}{\sin{\theta}}$:=2
 
 # 選択問題形式でも数式の入力ができます。
@@ -69,7 +69,7 @@ $\frac{\sin{4}}{\sqrt{2}}$:=$\frac{\sin{4}\sqrt{2}}{2}$
 # - ./a.png
 #
 # 2. main.txt には次のような内容を記述します。
-q7:=./a.png
+q8:=./a.png
 
 # ヒント: 画像ファイルが存在しない場合は文字列として出力されます。
 #
@@ -79,19 +79,19 @@ q7:=./a.png
 #
 # ！正しく表示するために "innerHTMLを有効化" を ON にします。
 #
-# 例８）
-q8:=<span style="color: red;">赤<span style="color: green;">緑<span style="color: blue;">青</span></span></span>
+# 例９）
+q9:=<span style="color: red;">赤<span style="color: green;">緑<span style="color: blue;">青</span></span></span>
 
 # 任意の HTML コードを入力できます。
 
 # fill問題形式
 #
-# 例９）
+# 例１０）
 fill:+This is an ((apple)).
 
 # 2つのかっこで囲まれた文字列が答えです。
 #
-# 例１０）
+# 例１１）
 fill:+This is a ((pen)) and an ((apple)).
 
 # 答えを複数にもできます。
