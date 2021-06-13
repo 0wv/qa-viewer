@@ -2,7 +2,7 @@ export function convertQAString (qaString) {
   return qaString
     .replace(/\r?\n/g, '\n')
     .split('\n')
-    .filter((v) => v !== '' && v[0] !== '#')
+    .filter(v => v !== '' && v[0] !== '#')
     .join('\n')
 }
 
@@ -25,7 +25,7 @@ export function parseQAString (qaString) {
 
       return {}
     })
-    .map((v) => {
+    .map(v => {
       if (v.type === 'qa') {
         return {
           content: v.content.split(':='),
@@ -35,8 +35,8 @@ export function parseQAString (qaString) {
         return v
       }
     })
-    .filter((v) => v.type !== 'qa' || v.content.length >= 2)
-    .map((v) => {
+    .filter(v => v.type !== 'qa' || v.content.length >= 2)
+    .map(v => {
       if (v.type === 'qa') {
         return {
           content: [v.content[0].split(':-'), v.content.slice(1, v.content.length)],
@@ -46,7 +46,7 @@ export function parseQAString (qaString) {
         return v
       }
     })
-    .map((v) => {
+    .map(v => {
       if (v.type === 'fill') {
         const matches = v.content.match(/\(\(.+?\)\)/g)
         let text = v.content
@@ -99,12 +99,11 @@ export function qaEscape (qaString) {
 }
 
 export function qasUnescape (qas) {
-  // eslint-disable-next-line array-callback-return
-  return qas.map((qa) => {
+  return qas.map(qa => {
     if (qa.content.type === 'exact-match') {
       return {
         content: {
-          answers: qa.content.answers.map((answer) => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+          answers: qa.content.answers.map(answer => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
           question: qa.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
           type: qa.content.type
         },
@@ -115,11 +114,13 @@ export function qasUnescape (qas) {
         content: {
           answers: qa.content.answers,
           question: qa.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
-          selections: qa.content.selections.map((selection) => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+          selections: qa.content.selections.map(selection => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
           type: qa.content.type
         },
         type: qa.type
       }
     }
+
+    return {}
   })
 }

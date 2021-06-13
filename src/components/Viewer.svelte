@@ -20,15 +20,15 @@
   function loadFromClipboard () {
     navigator.clipboard
       .readText()
-      .then((text) => convertQAString(text))
-      .then((text) => {
+      .then(text => convertQAString(text))
+      .then(text => {
         if (!$config.isEnableKatex) {
           qas.set(parseQAString(text))
         } else {
           let result = text
           const matches = result.match(/\$.+?\$/g)
 
-          matches.forEach((match) => {
+          matches.forEach(match => {
             result = result.replace(match, qaEscape(katex.renderToString(match.slice(1).slice(0, -1), {
               output: 'html',
               throwOnError: false
@@ -50,7 +50,7 @@
       if (firstFile.type === 'text/plain') {
         const reader = new FileReader()
 
-        reader.onload = (event) => {
+        reader.onload = event => {
           const result = event.target.result
 
           if (!$config.isEnableKatex) {
@@ -76,26 +76,26 @@
 
         reader
           .getEntries()
-          .then((entries) => entries.filter((entry) => entry.filename === 'main.txt')[0])
-          .then((qaString) => {
+          .then(entries => entries.filter(entry => entry.filename === 'main.txt')[0])
+          .then(qaString => {
             qaString
               .getData(new zip.TextWriter())
-              .then((data) => {
+              .then(data => {
                 let result = data
                 const matches = data.match(/\.\/[^\s]+/g)
 
-                matches.forEach((match) => {
+                matches.forEach(match => {
                   reader
                     .getEntries()
-                    .then((entries) => entries.filter((entry) => `./${entry.filename}` === match)[0])
-                    .then((matched) => {
+                    .then(entries => entries.filter(entry => `./${entry.filename}` === match)[0])
+                    .then(matched => {
                       if (!matched) {
                         return
                       }
 
                       matched
                         .getData(new zip.Uint8ArrayWriter())
-                        .then((data) => {
+                        .then(data => {
                           result = result.replace(match, `<img src="data:image/png;base64,${Base64.fromUint8Array(data)}">`)
                           qas.set(parseQAString(result))
                         })
@@ -128,10 +128,10 @@
     <ConfigBool key="isHiddenAnswer">答えを隠す</ConfigBool>
     <ConfigBool key="isAnswerForm">解答欄を表示する</ConfigBool>
     {#if $config.isAnswerForm}
-      <details>
-        <summary>詳細設定</summary>
-        <ConfigBool key="isAnswerFormBorder">解答欄をボーダーで囲む</ConfigBool>
-      </details>
+    <details>
+      <summary>詳細設定</summary>
+      <ConfigBool key="isAnswerFormBorder">解答欄をボーダーで囲む</ConfigBool>
+    </details>
     {/if}
     <ConfigBool key="isEnableInnerHTML">innerHTMLを有効化</ConfigBool>
     <ConfigBool key="isEnableKatex">KaTeXを有効化</ConfigBool>
