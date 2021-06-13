@@ -7,6 +7,7 @@
 #
 # - 完全一致問題形式
 # - 完全一致選択問題形式
+# - fill問題形式
 
 # 完全一致問題形式
 #
@@ -82,3 +83,15 @@ q7:=./a.png
 q8:=<span style="color: red;">赤<span style="color: green;">緑<span style="color: blue;">青</span></span></span>
 
 # 任意の HTML コードを入力できます。
+
+# fill問題形式
+#
+# 例９）
+fill:+This is an ((apple)).
+
+# 2つのかっこで囲まれた文字列が答えです。
+#
+# 例１０）
+fill:+This is a ((pen)) and an ((apple)).
+
+# 答えを複数にもできます。

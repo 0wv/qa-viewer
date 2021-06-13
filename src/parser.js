@@ -25,41 +25,72 @@ export function parseQAString (qaString) {
 
       return {}
     })
-    .map((v) => ({
-      content: v.content.split(':='),
-      type: v.type
-    }))
-    .filter((v) => v.content.length >= 2)
-    .map((v) => ({
-      content: [v.content[0].split(':-'), v.content.slice(1, v.content.length)],
-      type: v.type
-    }))
     .map((v) => {
-      const answers = v.content[1]
-      const question = v.content[0][0]
-
-      if (v.content[0].length >= 2) {
-        const selections = v.content[0].slice(1, v.content[0].length)
-
+      if (v.type === 'qa') {
         return {
-          content: {
-            answers,
-            question,
-            selections,
-            type: 'exact-match-selection'
-          },
+          content: v.content.split(':='),
           type: v.type
         }
       } else {
+        return v
+      }
+    })
+    .filter((v) => v.type !== 'qa' || v.content.length >= 2)
+    .map((v) => {
+      if (v.type === 'qa') {
+        return {
+          content: [v.content[0].split(':-'), v.content.slice(1, v.content.length)],
+          type: v.type
+        }
+      } else {
+        return v
+      }
+    })
+    .map((v) => {
+      if (v.type === 'fill') {
+        const matches = v.content.match(/\(\(.+?\)\)/g)
+        let text = v.content
+        matches.forEach((match, i) => {
+          text = text.replace(match, `(${i + 1})`)
+        })
+        const answers = matches.map(v => v.replace(/(^\(\(|\)\)$)/g, ''))
+
         return {
           content: {
             answers,
-            question,
-            type: 'exact-match'
+            text
           },
           type: v.type
         }
+      } else if (v.type === 'qa') {
+        const answers = v.content[1]
+        const question = v.content[0][0]
+
+        if (v.content[0].length >= 2) {
+          const selections = v.content[0].slice(1, v.content[0].length)
+
+          return {
+            content: {
+              answers,
+              question,
+              selections,
+              type: 'exact-match-selection'
+            },
+            type: v.type
+          }
+        } else {
+          return {
+            content: {
+              answers,
+              question,
+              type: 'exact-match'
+            },
+            type: v.type
+          }
+        }
       }
+
+      return {}
     })
 }
 
