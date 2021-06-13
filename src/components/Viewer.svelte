@@ -38,9 +38,6 @@
           qas.set(qasUnescape(parseQAString(result)))
         }
       })
-      .catch((e) => {
-        alert(e)
-      })
   }
 
   onMount(() => {
