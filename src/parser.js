@@ -79,13 +79,13 @@ export function qasUnescape (qas) {
         },
         type: qa.type
       }
-    } else if (qa.type === 'exact-match-selection') {
+    } else if (qa.content.type === 'exact-match-selection') {
       return {
         content: {
-          answers: qa.answers,
-          question: qa.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
-          selections: qa.selections.map((selection) => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
-          type: qa.type
+          answers: qa.content.answers,
+          question: qa.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
+          selections: qa.content.selections.map((selection) => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+          type: qa.content.type
         },
         type: qa.type
       }
