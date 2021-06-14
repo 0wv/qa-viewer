@@ -4,6 +4,8 @@ export function convertQAString (qaString) {
     .split('\n')
     .filter(v => v !== '' && v[0] !== '#')
     .join('\n')
+    .replace(/\n:-/g, ':-')
+    .replace(/\n:=/g, ':=')
 }
 
 export function parseQAString (qaString) {
