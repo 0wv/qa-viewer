@@ -95,3 +95,10 @@ fill:+This is an ((apple)).
 fill:+This is a ((pen)) and an ((apple)).
 
 # 答えを複数にもできます。
+
+# sectionフォーマット
+#
+# 例１２）
+section:+My section
+
+# "My section" という見出しです。
