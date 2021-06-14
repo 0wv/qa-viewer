@@ -90,7 +90,7 @@ export function parseQAString (qaString) {
             type: v.type
           }
         }
-      } else if (v.type === 'section') {
+      } else if (v.type === 'section' || v.type === 'text') {
         return {
           content: v.content,
           type: v.type
