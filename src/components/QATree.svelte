@@ -53,7 +53,7 @@
     {/each}
   </ul>
   {/if}
-  <br />
+  <br>
   {:else if qa.content.type === 'exact-match-selection'}
   <p>
     <span style="font-weight: bold;">＜問 {i + 1 - getQASkipCount()}＞</span>
@@ -94,7 +94,7 @@
     {/each}
   </ul>
   {/if}
-  <br />
+  <br>
   {/if}
 </div>
 {:else if qa.type === 'section'}
