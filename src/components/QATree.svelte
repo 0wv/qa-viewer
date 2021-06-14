@@ -1,5 +1,7 @@
 <script>
   import { config } from '../stores'
+  import { qaUnescape } from '../parser'
+  import HTMLCode from './HTMLCode.svelte'
 
   export let qas
 </script>
@@ -8,13 +10,13 @@
 {#if qa.type === 'fill'}
 <p>
   <span style="font-weight: bold;">＜問 {i + 1}＞</span>
-  {qa.content.text.replace(/\(\(.+?\)\)/, '()')}
+  {qaUnescape(qa.content.text.replace(/\(\(.+?\)\)/, '()'))}
 </p>
 {#if !$config.isHiddenAnswer}
 <p><span style="font-weight: bold;">＜答え＞</span></p>
 <ol>
   {#each qa.content.answers as answer}
-  <li>{answer}</li>
+  <li>{qaUnescape(answer)}</li>
   {/each}
 </ol>
 {/if}
@@ -24,9 +26,9 @@
   <p>
     <span style="font-weight: bold;">＜問 {i + 1}＞</span>
     {#if !$config.isEnableInnerHTML}
-    {qa.content.question}
+    {qaUnescape(qa.content.question)}
     {:else}
-    <span bind:innerHTML={qa.content.question} contenteditable />
+    <HTMLCode value={qaUnescape(qa.content.question)}></HTMLCode>
     {/if}
   </p>
   {#if $config.isAnswerForm}
@@ -38,9 +40,9 @@
     {#each qa.content.answers as answer}
     <li>
       {#if !$config.isEnableInnerHTML}
-      {answer}
+      {qaUnescape(answer)}
       {:else}
-      <span bind:innerHTML={answer} contenteditable />
+      <HTMLCode value={qaUnescape(answer)}></HTMLCode>
       {/if}
     </li>
     {/each}
@@ -51,9 +53,9 @@
   <p>
     <span style="font-weight: bold;">＜問 {i + 1}＞</span>
     {#if !$config.isEnableInnerHTML}
-    {qa.content.question}
+    {qaUnescape(qa.content.question)}
     {:else}
-    <span bind:innerHTML={qa.content.question} contenteditable />
+    <HTMLCode value={qaUnescape(qa.content.question)}></HTMLCode>
     {/if}
   </p>
   {#if !$config.isHiddenSelection}
@@ -62,9 +64,9 @@
     {#each qa.content.selections as selection}
     <li>
       {#if !$config.isEnableInnerHTML}
-      {selection}
+      {qaUnescape(selection)}
       {:else}
-      <span bind:innerHTML={selection} contenteditable />
+      <HTMLCode value={qaUnescape(selection)}></HTMLCode>
       {/if}
     </li>
     {/each}
@@ -79,9 +81,9 @@
     {#each qa.content.answers as answer}
     <li>
       {#if !$config.isEnableInnerHTML}
-      {answer}
+      {qaUnescape(answer)}
       {:else}
-      <span bind:innerHTML={qa.content.selections[answer - 1]} contenteditable />
+      <HTMLCode value={qa.content.selections[answer - 1]}></HTMLCode>
       {/if}
     </li>
     {/each}
