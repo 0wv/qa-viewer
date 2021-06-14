@@ -100,6 +100,14 @@ export function qaEscape (qaString) {
   return qaString.replace(/:-/g, '[:__colon_hyphen__:]')
 }
 
+export function qaUnescape (qaString) {
+  return qaString
+    .replace(/\[:__colon_equal__:\]/g, ':=')
+    .replace(/\[:__colon_hyphen__:\]/g, ':-')
+    .replace(/\[:__colon_plus__:\]/g, ':+')
+    .replace(/\[:__empty__:\]/g, '')
+}
+
 export function qasUnescape (qas) {
   return qas.map(qa => {
     if (qa.content.type === 'exact-match') {
