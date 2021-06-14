@@ -5,5 +5,5 @@
 </script>
 
 <div>
-  <p><slot></slot></p>
+  <slot></slot>
 </div>

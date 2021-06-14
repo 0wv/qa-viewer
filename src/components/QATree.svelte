@@ -2,7 +2,6 @@
   import { config, qaSkipCount } from '../stores'
   import { qaUnescape } from '../parser'
   import HTMLCode from './HTMLCode.svelte'
-  import QASection from './QASection.svelte'
   import QAText from './QAText.svelte'
 
   function getQASkipCount () {
@@ -99,9 +98,15 @@
   {/if}
 </div>
 {:else if qa.type === 'section'}
-<QASection>{qaUnescape(qa.content)}</QASection>
+<QAText>
+  <hr>
+  {qaUnescape(qa.content)}
+  <hr>
+</QAText>
 {:else if qa.type === 'text'}
-<QAText>{qaUnescape(qa.content)}</QAText>
+<QAText>
+  <p>{qaUnescape(qa.content)}</p>
+</QAText>
 {/if}
 {/each}
 
