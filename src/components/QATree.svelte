@@ -1,7 +1,12 @@
 <script>
-  import { config } from '../stores'
+  import { config, qaSkipCount } from '../stores'
   import { qaUnescape } from '../parser'
   import HTMLCode from './HTMLCode.svelte'
+  import QASection from './QASection.svelte'
+
+  function getQASkipCount () {
+    return $qaSkipCount
+  }
 
   export let qas
 </script>
@@ -9,7 +14,7 @@
 {#each qas as qa, i}
 {#if qa.type === 'fill'}
 <p>
-  <span style="font-weight: bold;">＜問 {i + 1}＞</span>
+  <span style="font-weight: bold;">＜問 {i + 1 - getQASkipCount()}＞</span>
   {qaUnescape(qa.content.text.replace(/\(\(.+?\)\)/, '()'))}
 </p>
 {#if !$config.isHiddenAnswer}
@@ -24,7 +29,7 @@
 <div class="question">
   {#if qa.content.type === 'exact-match'}
   <p>
-    <span style="font-weight: bold;">＜問 {i + 1}＞</span>
+    <span style="font-weight: bold;">＜問 {i + 1 - getQASkipCount()}＞</span>
     {#if !$config.isEnableInnerHTML}
     {qaUnescape(qa.content.question)}
     {:else}
@@ -51,7 +56,7 @@
   <br />
   {:else if qa.content.type === 'exact-match-selection'}
   <p>
-    <span style="font-weight: bold;">＜問 {i + 1}＞</span>
+    <span style="font-weight: bold;">＜問 {i + 1 - getQASkipCount()}＞</span>
     {#if !$config.isEnableInnerHTML}
     {qaUnescape(qa.content.question)}
     {:else}
@@ -92,6 +97,8 @@
   <br />
   {/if}
 </div>
+{:else if qa.type === 'section'}
+<QASection>{qaUnescape(qa.content)}</QASection>
 {/if}
 {/each}
 

@@ -90,6 +90,11 @@ export function parseQAString (qaString) {
             type: v.type
           }
         }
+      } else if (v.type === 'section') {
+        return {
+          content: v.content,
+          type: v.type
+        }
       }
 
       return {}
