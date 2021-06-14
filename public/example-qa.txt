@@ -102,3 +102,10 @@ fill:+This is a ((pen)) and an ((apple)).
 section:+My section
 
 # "My section" という見出しです。
+
+# textフォーマット
+#
+# 例１３）
+text:+un deux trois
+
+# 何も装飾せずに出力します。
