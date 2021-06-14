@@ -83,25 +83,29 @@
               .getData(new zip.TextWriter())
               .then(data => {
                 let result = data
-                const matches = data.match(/\.\/[^\s]+/g)
+                const matches = data.match(/\.\/[^\s]+/g) || []
 
-                matches.forEach(match => {
-                  reader
-                    .getEntries()
-                    .then(entries => entries.filter(entry => `./${entry.filename}` === match)[0])
-                    .then(matched => {
-                      if (!matched) {
-                        return
-                      }
+                if (matches.length !== 0) {
+                  matches.forEach(match => {
+                    reader
+                      .getEntries()
+                      .then(entries => entries.filter(entry => `./${entry.filename}` === match)[0])
+                      .then(matched => {
+                        if (!matched) {
+                          return
+                        }
 
-                      matched
-                        .getData(new zip.Uint8ArrayWriter())
-                        .then(data => {
-                          result = result.replace(match, `<img src="data:image/png;base64,${Base64.fromUint8Array(data)}">`)
-                          qas.set(parseQAString(result))
-                        })
-                    })
-                })
+                        matched
+                          .getData(new zip.Uint8ArrayWriter())
+                          .then(data => {
+                            result = result.replace(match, `<img src="data:image/png;base64,${Base64.fromUint8Array(data)}">`)
+                            qas.set(parseQAString(result))
+                          })
+                      })
+                  })
+                } else {
+                  qas.set(parseQAString(result))
+                }
               })
           })
       }
