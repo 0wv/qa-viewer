@@ -58,7 +58,7 @@
 {:else}
 <p>
   {#if filteredQAs[currentIndex].content.answers.filter((v, i) => {
-    return v === contentAnswers[i]
+    return pushToResultsAndReturn(v === contentAnswers[i])
   }).length === filteredQAs[currentIndex].content.answers.length}
   正解です！
   {:else}
