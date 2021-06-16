@@ -6,6 +6,7 @@
   }
 
   let answer
+  let contentAnswers = []
   let currentIndex = 0
   let isShowAnswer = false
   const myAnswers = Array($qas.length)
@@ -13,6 +14,7 @@
 
   function nextQuestion () {
     answer = ''
+    contentAnswers = []
     isShowAnswer = false
     currentIndex++
 
@@ -38,6 +40,32 @@
 
 {#if myAnswers.length !== currentIndex}
 <button onclick="window.location.href = '/#/'">戻る</button>
+{#if $qas[currentIndex].type === 'fill'}
+<p>
+  ＜問 {currentIndex + 1}＞
+  {$qas[currentIndex].content.text.replace(/\(\(.+?\)\)/, '()')}
+  {#each $qas[currentIndex].content.answers as answer, i}
+  <label>
+    {i + 1}:
+    <input bind:value={contentAnswers[i]} type="text">
+  </label>
+  {/each}
+</p>
+{#if !isShowAnswer}
+<button on:click={okClick}>OK</button>
+{:else}
+<p>
+  {#if $qas[currentIndex].content.answers.filter((v, i) => {
+    return v === contentAnswers[i]
+  }).length === $qas[currentIndex].content.answers.length}
+  正解です！
+  {:else}
+  不正解です…
+  {/if}
+</p>
+<button on:click={nextQuestion}>次の問題</button>
+{/if}
+{:else if $qas[currentIndex].type === 'qa'}
 {#if $qas[currentIndex].content.type === 'exact-match'}
 <p>
   ＜問 {currentIndex + 1}＞
@@ -111,6 +139,7 @@
   {/if}
 </p>
 <button on:click={nextQuestion}>次の問題</button>
+{/if}
 {/if}
 {/if}
 {/if}
