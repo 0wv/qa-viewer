@@ -1,7 +1,9 @@
 <script>
   import { config, qas } from '../stores'
 
-  if ($qas.length === 0) {
+  const filteredQAs = $qas.filter(v => v.type !== 'section' && v.type !== 'text')
+
+  if (filteredQAs.length === 0) {
     window.location.href = '/#/'
   }
 
@@ -9,7 +11,7 @@
   let contentAnswers = []
   let currentIndex = 0
   let isShowAnswer = false
-  const myAnswers = Array($qas.length)
+  const myAnswers = Array(filteredQAs.length)
   const myResults = []
 
   function nextQuestion () {
@@ -22,7 +24,7 @@
       return
     }
 
-    if ($qas[currentIndex].content.type === 'exact-match-selection' && $qas[currentIndex].content.answers.length >= 2) {
+    if (filteredQAs[currentIndex].content.type === 'exact-match-selection' && filteredQAs[currentIndex].content.answers.length >= 2) {
       myAnswers[currentIndex] = []
     }
   }
@@ -40,11 +42,11 @@
 
 {#if myAnswers.length !== currentIndex}
 <button onclick="window.location.href = '/#/'">戻る</button>
-{#if $qas[currentIndex].type === 'fill'}
+{#if filteredQAs[currentIndex].type === 'fill'}
 <p>
   ＜問 {currentIndex + 1}＞
-  {$qas[currentIndex].content.text.replace(/\(\(.+?\)\)/, '()')}
-  {#each $qas[currentIndex].content.answers as answer, i}
+  {filteredQAs[currentIndex].content.text.replace(/\(\(.+?\)\)/, '()')}
+  {#each filteredQAs[currentIndex].content.answers as answer, i}
   <label>
     {i + 1}:
     <input bind:value={contentAnswers[i]} type="text">
@@ -55,9 +57,9 @@
 <button on:click={okClick}>OK</button>
 {:else}
 <p>
-  {#if $qas[currentIndex].content.answers.filter((v, i) => {
+  {#if filteredQAs[currentIndex].content.answers.filter((v, i) => {
     return v === contentAnswers[i]
-  }).length === $qas[currentIndex].content.answers.length}
+  }).length === filteredQAs[currentIndex].content.answers.length}
   正解です！
   {:else}
   不正解です…
@@ -65,14 +67,14 @@
 </p>
 <button on:click={nextQuestion}>次の問題</button>
 {/if}
-{:else if $qas[currentIndex].type === 'qa'}
-{#if $qas[currentIndex].content.type === 'exact-match'}
+{:else if filteredQAs[currentIndex].type === 'qa'}
+{#if filteredQAs[currentIndex].content.type === 'exact-match'}
 <p>
   ＜問 {currentIndex + 1}＞
   {#if !$config.isEnableInnerHTML}
-  {$qas[currentIndex].content.question}
+  {filteredQAs[currentIndex].content.question}
   {:else}
-  <span bind:innerHTML={$qas[currentIndex].content.question} contenteditable="true"></span>
+  <span bind:innerHTML={filteredQAs[currentIndex].content.question} contenteditable="true"></span>
   {/if}
 </p>
 <textarea bind:value={answer} placeholder="答えを入力してください" />
@@ -81,7 +83,7 @@
 <button on:click={okClick}>OK</button>
 {:else}
 <p>
-  {#if pushToResultsAndReturn($qas[currentIndex].content.answers.includes(answer))}
+  {#if pushToResultsAndReturn(filteredQAs[currentIndex].content.answers.includes(answer))}
   正解です！
   {:else}
   不正解です…
@@ -89,11 +91,11 @@
 </p>
 <button on:click={nextQuestion}>次の問題</button>
 {/if}
-{:else if $qas[currentIndex].content.type === 'exact-match-selection'}
-<p>＜問 {currentIndex + 1}＞ {$qas[currentIndex].content.question}</p>
-{#if $qas[currentIndex].content.answers.length === 1}
+{:else if filteredQAs[currentIndex].content.type === 'exact-match-selection'}
+<p>＜問 {currentIndex + 1}＞ {filteredQAs[currentIndex].content.question}</p>
+{#if filteredQAs[currentIndex].content.answers.length === 1}
 <p>答えをひとつ選択してください</p>
-{#each $qas[currentIndex].content.selections as selection, i}
+{#each filteredQAs[currentIndex].content.selections as selection, i}
 <label>
   <input bind:group={myAnswers[currentIndex]} type="radio" value={i} />
   {#if !$config.isEnableInnerHTML}
@@ -107,7 +109,7 @@
 <button on:click={okClick}>OK</button>
 {:else}
 <p>
-  {#if pushToResultsAndReturn(myAnswers[currentIndex] === $qas[currentIndex].content.answers[0] - 1)}
+  {#if pushToResultsAndReturn(myAnswers[currentIndex] === filteredQAs[currentIndex].content.answers[0] - 1)}
   正解です！
   {:else}
   不正解です…
@@ -117,7 +119,7 @@
 {/if}
 {:else}
 <p>答えを選択してください</p>
-{#each $qas[currentIndex].content.selections as selection}
+{#each filteredQAs[currentIndex].content.selections as selection}
 <label>
   <input bind:group={myAnswers[currentIndex]} type="checkbox" value={selection} />
   {#if !$config.isEnableInnerHTML}
@@ -131,8 +133,8 @@
 <button on:click={okClick}>OK</button>
 {:else}
 <p>
-  {#if pushToResultsAndReturn(myAnswers[currentIndex].join('') === $qas[currentIndex].content.answers.map(v =>
-  $qas[currentIndex].content.selections[v - 1]).join(''))}
+  {#if pushToResultsAndReturn(myAnswers[currentIndex].join('') === filteredQAs[currentIndex].content.answers.map(v =>
+  filteredQAs[currentIndex].content.selections[v - 1]).join(''))}
   正解です！
   {:else}
   不正解です…
@@ -146,7 +148,7 @@
 {:else}
 <p>＜結果＞</p>
 <ol>
-  {#each $qas as _, i}
+  {#each filteredQAs as _, i}
   <li>{myResults[i] ? '正解' : '不正解'}</li>
   {/each}
 </ol>
