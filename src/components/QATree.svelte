@@ -100,12 +100,22 @@
 {:else if qa.type === 'section'}
 <QAText>
   <hr>
+  {#if !$config.isEnableInnerHTML}
   {qaUnescape(qa.content)}
+  {:else}
+  <HTMLCode value={qaUnescape(qa.content)}></HTMLCode>
+  {/if}
   <hr>
 </QAText>
 {:else if qa.type === 'text'}
 <QAText>
-  <p>{qaUnescape(qa.content)}</p>
+  <p>
+    {#if !$config.isEnableInnerHTML}
+    {qaUnescape(qa.content)}
+    {:else}
+    <HTMLCode value={qaUnescape(qa.content)}></HTMLCode>
+    {/if}
+  </p>
 </QAText>
 {/if}
 {/each}
