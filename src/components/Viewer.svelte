@@ -82,11 +82,24 @@
             qaString
               .getData(new zip.TextWriter())
               .then(data => {
-                let result = data
-                const matches = data.match(/\.\/[^\s]+/g) || []
+                const result = data
+                let newResult = result
 
-                if (matches.length !== 0) {
-                  matches.forEach(match => {
+                if ($config.isEnableKatex) {
+                  const katexExpressionMatches = newResult.match(/\$.+?\$/g)
+
+                  katexExpressionMatches.forEach((match) => {
+                    newResult = newResult.replace(match, qaEscape(katex.renderToString(match.slice(1).slice(0, -1), {
+                      output: 'html',
+                      throwOnError: false
+                    }).replace(/\n/g, '')))
+                  })
+                }
+
+                const filePathMatches = data.match(/\.\/[^\s]+/g) || []
+
+                if (filePathMatches.length !== 0) {
+                  filePathMatches.forEach(match => {
                     reader
                       .getEntries()
                       .then(entries => entries.filter(entry => `./${entry.filename}` === match)[0])
@@ -98,8 +111,8 @@
                         matched
                           .getData(new zip.Uint8ArrayWriter())
                           .then(data => {
-                            result = result.replace(match, `<img src="data:image/png;base64,${Base64.fromUint8Array(data)}">`)
-                            qas.set(parseQAString(result))
+                            newResult = newResult.replace(match, `<img src="data:image/png;base64,${Base64.fromUint8Array(data)}">`)
+                            qas.set(parseQAString(newResult))
                           })
                       })
                   })
