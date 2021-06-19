@@ -1,18 +1,17 @@
 import {
-  convertQAString,
-  parseQAString,
+  QAString,
   qaEscape,
   qaUnescape,
   qasUnescape
 } from './parser'
 
 test('unify line feed code and ignore comment lines', () => {
-  expect(convertQAString('a:=b\r\n# c:=d\r\n\r\ne:=f'))
+  expect((new QAString('a:=b\r\n# c:=d\r\n\r\ne:=f')).format().toString())
     .toBe('a:=b\ne:=f')
 })
 
 test('q1 in example', () => {
-  expect(parseQAString('q1:=a1')).toEqual([
+  expect((new QAString('q1:=a1')).format().items).toEqual([
     {
       content: {
         answers: ['a1'],
@@ -25,7 +24,7 @@ test('q1 in example', () => {
 })
 
 test('q2 in example', () => {
-  expect(parseQAString('q2:=a1:=a2')).toEqual([
+  expect((new QAString('q2:=a1:=a2')).format().items).toEqual([
     {
       content: {
         answers: ['a1', 'a2'],
@@ -38,7 +37,7 @@ test('q2 in example', () => {
 })
 
 test('q3 in example', () => {
-  expect(parseQAString('q3:-a1:-a2:-a3:=1')).toEqual([
+  expect((new QAString('q3:-a1:-a2:-a3:=1')).format().items).toEqual([
     {
       content: {
         answers: ['1'],
@@ -52,7 +51,7 @@ test('q3 in example', () => {
 })
 
 test('q4 in example', () => {
-  expect(parseQAString('q4:-a1:-a2:-a3:=1:=2')).toEqual([
+  expect((new QAString('q4:-a1:-a2:-a3:=1:=2')).format().items).toEqual([
     {
       content: {
         answers: ['1', '2'],
