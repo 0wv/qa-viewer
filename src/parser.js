@@ -15,99 +15,118 @@ export class QAString extends String {
         .replace(/\n:=/g, ':=')
     )
   }
-}
 
-export function parseQAString (qaString) {
-  return new QAString(qaString)
-    .split('\n')
-    .map(v => v.split(':+'))
-    .map(v => {
-      if (v.length === 2) {
-        return {
-          content: v[1],
-          type: v[0]
-        }
-      } else if (v.length === 1) {
-        return {
-          content: v[0],
-          type: 'qa'
-        }
-      }
-
-      return {}
-    })
-    .map(v => {
-      if (v.type === 'qa') {
-        return {
-          content: v.content.split(':='),
-          type: v.type
-        }
-      } else {
-        return v
-      }
-    })
-    .filter(v => v.type !== 'qa' || v.content.length >= 2)
-    .map(v => {
-      if (v.type === 'qa') {
-        return {
-          content: [v.content[0].split(':-'), v.content.slice(1, v.content.length)],
-          type: v.type
-        }
-      } else {
-        return v
-      }
-    })
-    .map(v => {
-      if (v.type === 'fill') {
-        const matches = v.content.match(/\(\(.+?\)\)/g)
-        let text = v.content
-        matches.forEach((match, i) => {
-          text = text.replace(match, `(${i + 1})`)
-        })
-        const answers = matches.map(v => v.replace(/(^\(\(|\)\)$)/g, ''))
-
-        return {
-          content: {
-            answers,
-            text
-          },
-          type: v.type
-        }
-      } else if (v.type === 'qa') {
-        const answers = v.content[1]
-        const question = v.content[0][0]
-
-        if (v.content[0].length >= 2) {
-          const selections = v.content[0].slice(1, v.content[0].length)
-
+  /**
+   * アイテムの配列を返します。
+   * @returns {{ content: any, type: string }[]} アイテムの配列。
+   */
+  get items () {
+    return this
+      .toString()
+      .split('\n')
+      .map(v => v.split(':+'))
+      .map(v => {
+        if (v.length === 2) {
           return {
-            content: {
-              answers,
-              question,
-              selections,
-              type: 'exact-match-selection'
-            },
+            content: v[1],
+            type: v[0]
+          }
+        } else if (v.length === 1) {
+          return {
+            content: v[0],
+            type: 'qa'
+          }
+        }
+
+        return {}
+      })
+      .map(v => {
+        if (v.type === 'qa') {
+          return {
+            content: v.content.split(':='),
             type: v.type
           }
         } else {
+          return v
+        }
+      })
+      .filter(v => v.type !== 'qa' || v.content.length >= 2)
+      .map(v => {
+        if (v.type === 'qa') {
+          return {
+            content: [v.content[0].split(':-'), v.content.slice(1, v.content.length)],
+            type: v.type
+          }
+        } else {
+          return v
+        }
+      })
+      .map(v => {
+        if (v.type === 'fill') {
+          const matches = v.content.match(/\(\(.+?\)\)/g)
+          let text = v.content
+          matches.forEach((match, i) => {
+            text = text.replace(match, `(${i + 1})`)
+          })
+          const answers = matches.map(v => v.replace(/(^\(\(|\)\)$)/g, ''))
+
           return {
             content: {
               answers,
-              question,
-              type: 'exact-match'
+              text
             },
             type: v.type
           }
-        }
-      } else if (v.type === 'section' || v.type === 'text') {
-        return {
-          content: v.content,
-          type: v.type
-        }
-      }
+        } else if (v.type === 'qa') {
+          const answers = v.content[1]
+          const question = v.content[0][0]
 
-      return {}
-    })
+          if (v.content[0].length >= 2) {
+            const selections = v.content[0].slice(1, v.content[0].length)
+
+            return {
+              content: {
+                answers,
+                question,
+                selections,
+                type: 'exact-match-selection'
+              },
+              type: v.type
+            }
+          } else {
+            return {
+              content: {
+                answers,
+                question,
+                type: 'exact-match'
+              },
+              type: v.type
+            }
+          }
+        } else if (v.type === 'section' || v.type === 'text') {
+          return {
+            content: v.content,
+            type: v.type
+          }
+        }
+
+        return {}
+      })
+  }
+
+  /**
+   * QAStringをフォーマットします。
+   * @returns {QAString} QAString。
+   */
+  static format (qaString) {
+    return qaString
+      .replace(/\r?\n/g, '\n')
+      .split('\n')
+      .filter(v => v !== '' && v[0] !== '#')
+      .join('\n')
+      .replace(/\n:-/g, ':-')
+      .replace(/\n:=/g, ':=')
+  }
 }
 
 export function qaEscape (qaString) {

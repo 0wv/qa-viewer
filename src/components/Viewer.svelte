@@ -10,7 +10,6 @@
   import QATree from './QATree.svelte'
   import {
     QAString,
-    parseQAString,
     qaEscape,
     qasUnescape
   } from '../parser'
@@ -20,12 +19,12 @@
   function loadFromClipboard () {
     navigator.clipboard
       .readText()
-      .then(text => new QAString(text))
-      .then(text => {
+      .then(text => (new QAString(text)).format())
+      .then(qaString => {
         if (!$config.isEnableKatex) {
-          qas.set(parseQAString(text))
+          qas.set(qaString.items)
         } else {
-          let result = text
+          let result = qaString
           const matches = result.match(/\$.+?\$/g)
 
           matches.forEach(match => {
@@ -35,7 +34,7 @@
             }).replace(/\n/g, '')))
           })
 
-          qas.set(qasUnescape(parseQAString(result)))
+          qas.set(qasUnescape((new QAString(result)).format().items))
         }
       })
   }
@@ -51,7 +50,7 @@
           const result = event.target.result
 
           if (!$config.isEnableKatex) {
-            qas.set(parseQAString(result))
+            qas.set((new QAString(result)).format().items)
           } else {
             let newResult = result
             const matches = result.match(/\$.+?\$/g)
@@ -63,7 +62,7 @@
               }).replace(/\n/g, '')))
             })
 
-            qas.set(qasUnescape(parseQAString(newResult)))
+            qas.set((new QAString(newResult)).format().items)
           }
         }
 
@@ -112,12 +111,12 @@
                           .getData(new zip.Uint8ArrayWriter())
                           .then(data => {
                             newResult = newResult.replace(match, `<img src="data:image/png;base64,${Base64.fromUint8Array(data)}">`)
-                            qas.set(parseQAString(newResult))
+                            qas.set((new QAString(result)).format().items)
                           })
                       })
                   })
                 } else {
-                  qas.set(parseQAString(result))
+                  qas.set((new QAString(result)).format().items)
                 }
               })
           })
