@@ -113,20 +113,6 @@ export class QAString extends String {
         return {}
       })
   }
-
-  /**
-   * QAStringをフォーマットします。
-   * @returns {QAString} QAString。
-   */
-  static format (qaString) {
-    return qaString
-      .replace(/\r?\n/g, '\n')
-      .split('\n')
-      .filter(v => v !== '' && v[0] !== '#')
-      .join('\n')
-      .replace(/\n:-/g, ':-')
-      .replace(/\n:=/g, ':=')
-  }
 }
 
 export function qaEscape (qaString) {
