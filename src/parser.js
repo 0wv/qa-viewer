@@ -1,15 +1,24 @@
-export function convertQAString (qaString) {
-  return qaString
-    .replace(/\r?\n/g, '\n')
-    .split('\n')
-    .filter(v => v !== '' && v[0] !== '#')
-    .join('\n')
-    .replace(/\n:-/g, ':-')
-    .replace(/\n:=/g, ':=')
+export class QAString extends String {
+  /**
+   * QAStringをフォーマットします。
+   * @returns {QAString} QAString。
+   */
+  format () {
+    return new QAString(
+      this
+        .toString()
+        .replace(/\r?\n/g, '\n')
+        .split('\n')
+        .filter(v => v !== '' && v[0] !== '#')
+        .join('\n')
+        .replace(/\n:-/g, ':-')
+        .replace(/\n:=/g, ':=')
+    )
+  }
 }
 
 export function parseQAString (qaString) {
-  return convertQAString(qaString)
+  return new QAString(qaString)
     .split('\n')
     .map(v => v.split(':+'))
     .map(v => {

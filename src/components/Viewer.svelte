@@ -9,7 +9,7 @@
   import ConfigBool from './ConfigBool.svelte'
   import QATree from './QATree.svelte'
   import {
-    convertQAString,
+    QAString,
     parseQAString,
     qaEscape,
     qasUnescape
@@ -20,7 +20,7 @@
   function loadFromClipboard () {
     navigator.clipboard
       .readText()
-      .then(text => convertQAString(text))
+      .then(text => new QAString(text))
       .then(text => {
         if (!$config.isEnableKatex) {
           qas.set(parseQAString(text))
