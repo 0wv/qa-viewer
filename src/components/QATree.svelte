@@ -1,6 +1,6 @@
 <script>
   import { config, qaSkipCount } from '../stores'
-  import { qaUnescape } from '../parser'
+  import { QAString } from '../parser'
   import HTMLCode from './HTMLCode.svelte'
   import QAText from './QAText.svelte'
 
@@ -15,13 +15,13 @@
 {#if qa.type === 'fill'}
 <p>
   <span style="font-weight: bold;">＜問 {i + 1 - getQASkipCount()}＞</span>
-  {qaUnescape(qa.content.text.replace(/\(\(.+?\)\)/, '()'))}
+  {QAString.unescape(qa.content.text.replace(/\(\(.+?\)\)/, '()'))}
 </p>
 {#if !$config.isHiddenAnswer}
 <p><span style="font-weight: bold;">＜答え＞</span></p>
 <ol>
   {#each qa.content.answers as answer}
-  <li>{qaUnescape(answer)}</li>
+  <li>{QAString.unescape(answer)}</li>
   {/each}
 </ol>
 {/if}
@@ -31,9 +31,9 @@
   <p>
     <span style="font-weight: bold;">＜問 {i + 1 - getQASkipCount()}＞</span>
     {#if !$config.isEnableInnerHTML}
-    {qaUnescape(qa.content.question)}
+    {QAString.unescape(qa.content.question)}
     {:else}
-    <HTMLCode value={qaUnescape(qa.content.question)}></HTMLCode>
+    <HTMLCode value={QAString.unescape(qa.content.question)}></HTMLCode>
     {/if}
   </p>
   {#if $config.isAnswerForm}
@@ -45,9 +45,9 @@
     {#each qa.content.answers as answer}
     <li>
       {#if !$config.isEnableInnerHTML}
-      {qaUnescape(answer)}
+      {QAString.unescape(answer)}
       {:else}
-      <HTMLCode value={qaUnescape(answer)}></HTMLCode>
+      <HTMLCode value={QAString.unescape(answer)}></HTMLCode>
       {/if}
     </li>
     {/each}
@@ -58,9 +58,9 @@
   <p>
     <span style="font-weight: bold;">＜問 {i + 1 - getQASkipCount()}＞</span>
     {#if !$config.isEnableInnerHTML}
-    {qaUnescape(qa.content.question)}
+    {QAString.unescape(qa.content.question)}
     {:else}
-    <HTMLCode value={qaUnescape(qa.content.question)}></HTMLCode>
+    <HTMLCode value={QAString.unescape(qa.content.question)}></HTMLCode>
     {/if}
   </p>
   {#if !$config.isHiddenSelection}
@@ -69,9 +69,9 @@
     {#each qa.content.selections as selection}
     <li>
       {#if !$config.isEnableInnerHTML}
-      {qaUnescape(selection)}
+      {QAString.unescape(selection)}
       {:else}
-      <HTMLCode value={qaUnescape(selection)}></HTMLCode>
+      <HTMLCode value={QAString.unescape(selection)}></HTMLCode>
       {/if}
     </li>
     {/each}
@@ -86,7 +86,7 @@
     {#each qa.content.answers as answer}
     <li>
       {#if !$config.isEnableInnerHTML}
-      {qaUnescape(answer)}
+      {QAString.unescape(answer)}
       {:else}
       <HTMLCode value={qa.content.selections[answer - 1]}></HTMLCode>
       {/if}
@@ -101,9 +101,9 @@
 <QAText>
   <hr>
   {#if !$config.isEnableInnerHTML}
-  {qaUnescape(qa.content)}
+  {QAString.unescape(qa.content)}
   {:else}
-  <HTMLCode value={qaUnescape(qa.content)}></HTMLCode>
+  <HTMLCode value={QAString.unescape(qa.content)}></HTMLCode>
   {/if}
   <hr>
 </QAText>
@@ -111,9 +111,9 @@
 <QAText>
   <p>
     {#if !$config.isEnableInnerHTML}
-    {qaUnescape(qa.content)}
+    {QAString.unescape(qa.content)}
     {:else}
-    <HTMLCode value={qaUnescape(qa.content)}></HTMLCode>
+    <HTMLCode value={QAString.unescape(qa.content)}></HTMLCode>
     {/if}
   </p>
 </QAText>

@@ -1,7 +1,5 @@
 import {
   QAString,
-  qaEscape,
-  qaUnescape,
   qasUnescape
 } from './parser'
 
@@ -65,14 +63,14 @@ test('q4 in example', () => {
 })
 
 test('escape for qa', () => {
-  expect(qaEscape('a:-b')).toBe('a[:__colon_hyphen__:]b')
+  expect(QAString.escape('a:-b').toString()).toBe('a[:__colon_hyphen__:]b')
 })
 
 test('unescape for qa', () => {
-  expect(qaUnescape('[:__colon_equal__:]')).toBe(':=')
-  expect(qaUnescape('[:__colon_hyphen__:]')).toBe(':-')
-  expect(qaUnescape('[:__colon_plus__:]')).toBe(':+')
-  expect(qaUnescape('[:__empty__:]')).toBe('')
+  expect(QAString.unescape('[:__colon_equal__:]').toString()).toBe(':=')
+  expect(QAString.unescape('[:__colon_hyphen__:]').toString()).toBe(':-')
+  expect(QAString.unescape('[:__colon_plus__:]').toString()).toBe(':+')
+  expect(QAString.unescape('[:__empty__:]').toString()).toBe('')
 })
 
 test('unescape for qas', () => {

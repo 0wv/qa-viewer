@@ -1,5 +1,17 @@
 export class QAString extends String {
   /**
+   * QAStringをエスケープします。
+   * @param {string} qaString - QAString。
+   * @returns {QAString} QAString。
+   */
+  static escape (qaString) {
+    const result = new QAString(
+      qaString.replace(/:-/g, '[:__colon_hyphen__:]')
+    )
+    return result
+  }
+
+  /**
    * QAStringをフォーマットします。
    * @returns {QAString} QAString。
    */
@@ -14,6 +26,22 @@ export class QAString extends String {
         .replace(/\n:-/g, ':-')
         .replace(/\n:=/g, ':=')
     )
+  }
+
+  /**
+   * QAStringをアンエスケープします。
+   * @param {string} qaString - QAString。
+   * @returns {QAString} QAString。
+   */
+  static unescape (qaString) {
+    const result = new QAString(
+      qaString
+        .replace(/\[:__colon_equal__:\]/g, ':=')
+        .replace(/\[:__colon_hyphen__:\]/g, ':-')
+        .replace(/\[:__colon_plus__:\]/g, ':+')
+        .replace(/\[:__empty__:\]/g, '')
+    )
+    return result
   }
 
   /**
@@ -113,18 +141,6 @@ export class QAString extends String {
         return {}
       })
   }
-}
-
-export function qaEscape (qaString) {
-  return qaString.replace(/:-/g, '[:__colon_hyphen__:]')
-}
-
-export function qaUnescape (qaString) {
-  return qaString
-    .replace(/\[:__colon_equal__:\]/g, ':=')
-    .replace(/\[:__colon_hyphen__:\]/g, ':-')
-    .replace(/\[:__colon_plus__:\]/g, ':+')
-    .replace(/\[:__empty__:\]/g, '')
 }
 
 export function qasUnescape (qas) {
