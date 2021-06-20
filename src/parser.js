@@ -2,6 +2,19 @@
 
 export class Prefix {
   /**
+   * アイテムをフォーマットします。
+   * @param {QAItem} qaItem - アイテム。
+   * @returns {QAItem} アイテム。
+   */
+  static format (qaItem) {
+    const result = {
+      content: qaItem.content,
+      type: qaItem.type
+    }
+    return result
+  }
+
+  /**
    * アイテムをトランスフォームします。
    * @param {QAItem} qaItem - アイテム。
    * @returns {QAItem} アイテム。
@@ -138,72 +151,82 @@ export class QAString extends String {
           : v
       ))
       .map(v => (
-        v.type === 'fill'
-          ? (() => {
-              const matches = v.content.match(/\(\(.+?\)\)/g)
-              let text = v.content
-              matches.forEach((match, i) => {
-                text = text.replace(match, `(${i + 1})`)
-              })
-              const answers = matches.map(v => v.replace(/(^\(\(|\)\)$)/g, ''))
-              const result = {
-                content: {
-                  answers,
-                  text
-                },
-                type: v.type
-              }
-              return result
-            })()
-          : v.type === 'qa'
-            ? (() => {
-                const answers = v.content[1]
-                const question = v.content[0][0]
-                const result = v.content[0].length >= 2
-                  ? (() => {
-                      const selections = v.content[0].slice(1, v.content[0].length)
-                      const result = {
-                        content: {
-                          answers,
-                          question,
-                          selections,
-                          type: 'exact-match-selection'
-                        },
-                        type: v.type
-                      }
-                      return result
-                    })()
-                  : {
-                      content: {
-                        answers,
-                        question,
-                        type: 'exact-match'
-                      },
-                      type: v.type
-                    }
-                return result
-              })()
-            : v.type === 'section' || v.type === 'text'
-              ? {
-                  content: v.content,
-                  type: v.type
-                }
-              : {
-                  content: 'unexisted type.',
-                  type: 'error'
-                }
+        v.type in prefixMap
+          ? prefixMap[v.type].format(v)
+          : {
+              content: 'unexisted type.',
+              type: 'error'
+            }
       ))
     return result
   }
 }
 
 export const prefixMap = {
+  fill: class extends Prefix {
+    static format (qaItem) {
+      const matches = qaItem.content.match(/\(\(.+?\)\)/g)
+      let text = qaItem.content
+      matches.forEach((match, i) => {
+        text = text.replace(match, `(${i + 1})`)
+      })
+      const answers = matches.map(v => v.replace(/(^\(\(|\)\)$)/g, ''))
+      const result = {
+        content: {
+          answers,
+          text
+        },
+        type: qaItem.type
+      }
+      return result
+    }
+  },
   qa: class extends Prefix {
+    static format (qaItem) {
+      const answers = qaItem.content[1]
+      const question = qaItem.content[0][0]
+      const result = qaItem.content[0].length >= 2
+        ? (() => {
+            const selections = qaItem.content[0].slice(1, qaItem.content[0].length)
+            const result = {
+              content: {
+                answers,
+                question,
+                selections,
+                type: 'exact-match-selection'
+              },
+              type: qaItem.type
+            }
+            return result
+          })()
+        : {
+            content: {
+              answers,
+              question,
+              type: 'exact-match'
+            },
+            type: qaItem.type
+          }
+      return result
+    }
+
     static transform (qaItem) {
       const result = {
         content: [qaItem.content[0].split(':-'), qaItem.content.slice(1, qaItem.content.length)],
         type: qaItem.type
       }
+      return result
+    }
+  },
+  section: class extends Prefix {
+    get transform () {
+      const result = super.transform
+      return result
+    }
+  },
+  text: class extends Prefix {
+    get transform () {
+      const result = super.transform
       return result
     }
   }
