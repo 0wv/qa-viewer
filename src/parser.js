@@ -51,30 +51,32 @@ export class QAString extends String {
    * @returns {{ content: any, type: string }[]} アイテムの配列。
    */
   static unescapeItems (items) {
-    return items.map(qa => {
-      if (qa.content.type === 'exact-match') {
-        return {
-          content: {
-            answers: qa.content.answers.map(answer => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
-            question: qa.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
-            type: qa.content.type
-          },
-          type: qa.type
-        }
-      } else if (qa.content.type === 'exact-match-selection') {
-        return {
-          content: {
-            answers: qa.content.answers,
-            question: qa.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
-            selections: qa.content.selections.map(selection => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
-            type: qa.content.type
-          },
-          type: qa.type
-        }
-      }
-
-      return {}
-    })
+    const result = items.map(item => (
+      item.content.type === 'exact-match'
+        ? {
+            content: {
+              answers: item.content.answers.map(answer => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+              question: item.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
+              type: item.content.type
+            },
+            type: item.type
+          }
+        : item.content.type === 'exact-match-selection'
+          ? {
+              content: {
+                answers: item.content.answers,
+                question: item.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
+                selections: item.content.selections.map(selection => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+                type: item.content.type
+              },
+              type: item.type
+            }
+          : {
+              content: 'unexisted type.',
+              type: 'error'
+            }
+    ))
+    return result
   }
 
   /**
