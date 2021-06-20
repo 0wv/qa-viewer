@@ -1,5 +1,17 @@
 /** @typedef {{ content: any, type: string }} QAItem */
 
+export class Prefix {
+  /**
+   * アイテムをトランスフォームします。
+   * @param {QAItem} qaItem - アイテム。
+   * @returns {QAItem} アイテム。
+   */
+  static transform (qaItem) {
+    const result = qaItem
+    return result
+  }
+}
+
 export class QAString extends String {
   /**
    * QAStringをエスケープします。
@@ -121,11 +133,8 @@ export class QAString extends String {
       ))
       .filter(v => v.type !== 'qa' || v.content.length >= 2)
       .map(v => (
-        v.type === 'qa'
-          ? {
-              content: [v.content[0].split(':-'), v.content.slice(1, v.content.length)],
-              type: v.type
-            }
+        v.type in prefixMap
+          ? prefixMap[v.type].transform(v)
           : v
       ))
       .map(v => (
@@ -185,5 +194,17 @@ export class QAString extends String {
                 }
       ))
     return result
+  }
+}
+
+export const prefixMap = {
+  qa: class extends Prefix {
+    static transform (qaItem) {
+      const result = {
+        content: [qaItem.content[0].split(':-'), qaItem.content.slice(1, qaItem.content.length)],
+        type: qaItem.type
+      }
+      return result
+    }
   }
 }
