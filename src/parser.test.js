@@ -1,7 +1,4 @@
-import {
-  QAString,
-  qasUnescape
-} from './parser'
+import { QAString } from './parser'
 
 test('unify line feed code and ignore comment lines', () => {
   expect((new QAString('a:=b\r\n# c:=d\r\n\r\ne:=f')).format().toString())
@@ -74,7 +71,7 @@ test('unescape for qa', () => {
 })
 
 test('unescape for qas', () => {
-  expect(qasUnescape([
+  expect(QAString.unescapeItems([
     {
       content: {
         answers: ['a[:__colon_hyphen__:]b'],

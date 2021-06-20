@@ -8,10 +8,7 @@
   import '@exampledev/new.css'
   import ConfigBool from './ConfigBool.svelte'
   import QATree from './QATree.svelte'
-  import {
-    QAString,
-    qasUnescape
-  } from '../parser'
+  import { QAString } from '../parser'
 
   let file
 
@@ -33,7 +30,7 @@
             }).replace(/\n/g, '')))
           })
 
-          qas.set(qasUnescape((new QAString(result)).format().items))
+          qas.set(QAString.unescapeItems((new QAString(result)).format().items))
         }
       })
   }

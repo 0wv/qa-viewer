@@ -46,6 +46,38 @@ export class QAString extends String {
   }
 
   /**
+   * アイテムの配列をアンエスケープします。
+   * @param {{ content: any, type: string }[]} items - アイテムの配列。
+   * @returns {{ content: any, type: string }[]} アイテムの配列。
+   */
+  static unescapeItems (items) {
+    return items.map(qa => {
+      if (qa.content.type === 'exact-match') {
+        return {
+          content: {
+            answers: qa.content.answers.map(answer => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+            question: qa.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
+            type: qa.content.type
+          },
+          type: qa.type
+        }
+      } else if (qa.content.type === 'exact-match-selection') {
+        return {
+          content: {
+            answers: qa.content.answers,
+            question: qa.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
+            selections: qa.content.selections.map(selection => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
+            type: qa.content.type
+          },
+          type: qa.type
+        }
+      }
+
+      return {}
+    })
+  }
+
+  /**
    * アイテムの配列を返します。
    * @returns {{ content: any, type: string }[]} アイテムの配列。
    */
@@ -143,31 +175,4 @@ export class QAString extends String {
       })
     return result
   }
-}
-
-export function qasUnescape (qas) {
-  return qas.map(qa => {
-    if (qa.content.type === 'exact-match') {
-      return {
-        content: {
-          answers: qa.content.answers.map(answer => answer.replace(/\[:__colon_hyphen__:\]/g, ':-')),
-          question: qa.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
-          type: qa.content.type
-        },
-        type: qa.type
-      }
-    } else if (qa.content.type === 'exact-match-selection') {
-      return {
-        content: {
-          answers: qa.content.answers,
-          question: qa.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
-          selections: qa.content.selections.map(selection => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
-          type: qa.content.type
-        },
-        type: qa.type
-      }
-    }
-
-    return {}
-  })
 }
