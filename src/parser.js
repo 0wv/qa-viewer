@@ -1,3 +1,5 @@
+/** @typedef {{ content: any, type: string }} QAItem */
+
 export class QAString extends String {
   /**
    * QAStringをエスケープします。
@@ -47,8 +49,8 @@ export class QAString extends String {
 
   /**
    * アイテムの配列をアンエスケープします。
-   * @param {{ content: any, type: string }[]} items - アイテムの配列。
-   * @returns {{ content: any, type: string }[]} アイテムの配列。
+   * @param {QAItem[]} items - アイテムの配列。
+   * @returns {QAItem[]} アイテムの配列。
    */
   static unescapeItems (items) {
     const result = items.map(item => (
@@ -81,7 +83,7 @@ export class QAString extends String {
 
   /**
    * アイテムの配列を返します。
-   * @returns {{ content: any, type: string }[]} アイテムの配列。
+   * @returns {QAItem[]} アイテムの配列。
    */
   get items () {
     const result = this
