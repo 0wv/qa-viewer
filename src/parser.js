@@ -16,7 +16,7 @@ export class QAString extends String {
    * @returns {QAString} QAString。
    */
   format () {
-    return new QAString(
+    const result = new QAString(
       this
         .toString()
         .replace(/\r?\n/g, '\n')
@@ -26,6 +26,7 @@ export class QAString extends String {
         .replace(/\n:-/g, ':-')
         .replace(/\n:=/g, ':=')
     )
+    return result
   }
 
   /**
@@ -49,7 +50,7 @@ export class QAString extends String {
    * @returns {{ content: any, type: string }[]} アイテムの配列。
    */
   get items () {
-    return this
+    const result = this
       .toString()
       .split('\n')
       .map(v => v.split(':+'))
@@ -140,6 +141,7 @@ export class QAString extends String {
 
         return {}
       })
+    return result
   }
 }
 
