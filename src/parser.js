@@ -90,93 +90,100 @@ export class QAString extends String {
       .toString()
       .split('\n')
       .map(v => v.split(':+'))
-      .map(v => {
-        if (v.length === 2) {
-          return {
-            content: v[1],
-            type: v[0]
-          }
-        } else if (v.length === 1) {
-          return {
-            content: v[0],
-            type: 'qa'
-          }
-        }
-
-        return {}
-      })
-      .map(v => {
-        if (v.type === 'qa') {
-          return {
-            content: v.content.split(':='),
-            type: v.type
-          }
-        } else {
-          return v
-        }
-      })
+      .map(v => (
+        v.length === 2
+          ? {
+              content: v[1],
+              type: v[0]
+            }
+          : v.length === 1
+            ? {
+                content: v[0],
+                type: 'qa'
+              }
+            : v.length >= 3
+              ? {
+                  content: 'too longer length. must be 1 or 2 in length.',
+                  type: 'error'
+                }
+              : {
+                  content: 'length is zero. must be 1 or 2 in length.',
+                  type: 'error'
+                }
+      ))
+      .map(v => (
+        v.type === 'qa'
+          ? {
+              content: v.content.split(':='),
+              type: v.type
+            }
+          : v
+      ))
       .filter(v => v.type !== 'qa' || v.content.length >= 2)
-      .map(v => {
-        if (v.type === 'qa') {
-          return {
-            content: [v.content[0].split(':-'), v.content.slice(1, v.content.length)],
-            type: v.type
-          }
-        } else {
-          return v
-        }
-      })
-      .map(v => {
-        if (v.type === 'fill') {
-          const matches = v.content.match(/\(\(.+?\)\)/g)
-          let text = v.content
-          matches.forEach((match, i) => {
-            text = text.replace(match, `(${i + 1})`)
-          })
-          const answers = matches.map(v => v.replace(/(^\(\(|\)\)$)/g, ''))
-
-          return {
-            content: {
-              answers,
-              text
-            },
-            type: v.type
-          }
-        } else if (v.type === 'qa') {
-          const answers = v.content[1]
-          const question = v.content[0][0]
-
-          if (v.content[0].length >= 2) {
-            const selections = v.content[0].slice(1, v.content[0].length)
-
-            return {
-              content: {
-                answers,
-                question,
-                selections,
-                type: 'exact-match-selection'
-              },
+      .map(v => (
+        v.type === 'qa'
+          ? {
+              content: [v.content[0].split(':-'), v.content.slice(1, v.content.length)],
               type: v.type
             }
-          } else {
-            return {
-              content: {
-                answers,
-                question,
-                type: 'exact-match'
-              },
-              type: v.type
-            }
-          }
-        } else if (v.type === 'section' || v.type === 'text') {
-          return {
-            content: v.content,
-            type: v.type
-          }
-        }
-
-        return {}
-      })
+          : v
+      ))
+      .map(v => (
+        v.type === 'fill'
+          ? (() => {
+              const matches = v.content.match(/\(\(.+?\)\)/g)
+              let text = v.content
+              matches.forEach((match, i) => {
+                text = text.replace(match, `(${i + 1})`)
+              })
+              const answers = matches.map(v => v.replace(/(^\(\(|\)\)$)/g, ''))
+              const result = {
+                content: {
+                  answers,
+                  text
+                },
+                type: v.type
+              }
+              return result
+            })()
+          : v.type === 'qa'
+            ? (() => {
+                const answers = v.content[1]
+                const question = v.content[0][0]
+                const result = v.content[0].length >= 2
+                  ? (() => {
+                      const selections = v.content[0].slice(1, v.content[0].length)
+                      const result = {
+                        content: {
+                          answers,
+                          question,
+                          selections,
+                          type: 'exact-match-selection'
+                        },
+                        type: v.type
+                      }
+                      return result
+                    })()
+                  : {
+                      content: {
+                        answers,
+                        question,
+                        type: 'exact-match'
+                      },
+                      type: v.type
+                    }
+                return result
+              })()
+            : v.type === 'section' || v.type === 'text'
+              ? {
+                  content: v.content,
+                  type: v.type
+                }
+              : {
+                  content: 'unexisted type.',
+                  type: 'error'
+                }
+      ))
     return result
   }
 }
