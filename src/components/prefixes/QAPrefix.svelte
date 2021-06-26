@@ -17,7 +17,6 @@
   {#if !$config.isHiddenAnswer}
   <Answer {qa}></Answer>
   {/if}
-  <br>
   {:else if qa.content.type === 'exact-match-selection'}
   <Question {qa}></Question>
   {#if !$config.isHiddenSelection}
@@ -40,7 +39,6 @@
   {#if !$config.isHiddenAnswer}
   <Answer {qa}></Answer>
   {/if}
-  <br>
   {/if}
 </div>
 
