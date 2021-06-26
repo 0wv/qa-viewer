@@ -1,14 +1,12 @@
 <script>
   import { QAString } from '../../parser'
   import { config } from '../../stores'
+  import Question from '../Question.svelte'
 
   export let qa
 </script>
 
-<p>
-  <span style="font-weight: bold;">＜問 {qa.meta.questionIndex}＞</span>
-  {QAString.unescape(qa.content.text.replace(/\(\(.+?\)\)/, '()'))}
-</p>
+<Question {qa}></Question>
 {#if !$config.isHiddenAnswer}
 <p><span style="font-weight: bold;">＜答え＞</span></p>
 <ol>
