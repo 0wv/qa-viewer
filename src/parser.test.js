@@ -6,7 +6,7 @@ test('unify line feed code and ignore comment lines', () => {
 })
 
 test('q1 in example', () => {
-  const { questionIndex: _, ...items } = (new QAString('q1:=a1')).format().items[0]
+  const { meta: _, ...items } = (new QAString('q1:=a1')).format().items[0]
   expect(items).toEqual({
     content: {
       answers: ['a1'],
@@ -18,7 +18,7 @@ test('q1 in example', () => {
 })
 
 test('q2 in example', () => {
-  const { questionIndex: _, ...items } = (new QAString('q2:=a1:=a2')).format().items[0]
+  const { meta: _, ...items } = (new QAString('q2:=a1:=a2')).format().items[0]
   expect(items).toEqual({
     content: {
       answers: ['a1', 'a2'],
@@ -30,7 +30,7 @@ test('q2 in example', () => {
 })
 
 test('q3 in example', () => {
-  const { questionIndex: _, ...items } = (new QAString('q3:-a1:-a2:-a3:=1')).format().items[0]
+  const { meta: _, ...items } = (new QAString('q3:-a1:-a2:-a3:=1')).format().items[0]
   expect(items).toEqual({
     content: {
       answers: ['1'],
@@ -43,7 +43,7 @@ test('q3 in example', () => {
 })
 
 test('q4 in example', () => {
-  const { questionIndex: _, ...items } = (new QAString('q4:-a1:-a2:-a3:=1:=2')).format().items[0]
+  const { meta: _, ...items } = (new QAString('q4:-a1:-a2:-a3:=1:=2')).format().items[0]
   expect(items).toEqual({
     content: {
       answers: ['1', '2'],

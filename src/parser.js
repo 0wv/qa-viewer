@@ -90,7 +90,7 @@ export class QAString extends String {
               question: item.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
               type: item.content.type
             },
-            questionIndex: item.questionIndex,
+            meta: item.meta,
             type: item.type
           }
         : item.content.type === 'exact-match-selection'
@@ -101,7 +101,7 @@ export class QAString extends String {
                 selections: item.content.selections.map(selection => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
                 type: item.content.type
               },
-              questionIndex: item.questionIndex,
+              meta: item.meta,
               type: item.type
             }
           : {
@@ -164,16 +164,17 @@ export class QAString extends String {
               type: 'error'
             }
       ))
+      .map(v => Object.assign(v, { meta: {} }))
       .map((v, i, a) => (
         i === 0
-          ? Object.assign(v, { questionIndex: 1 })
+          ? Object.assign(v, { meta: { questionIndex: 1 } })
           : (
               (
                 Object.keys(prefixMap)
                   .filter(k => prefixMap[k].hasQuestionIndex)
                   .includes(v.type)
-              ) && Object.assign(v, { questionIndex: a[i - 1].questionIndex + 1 })
-            ) || Object.assign(v, { questionIndex: a[i - 1].questionIndex })
+              ) && Object.assign(v, { meta: { questionIndex: a[i - 1].meta.questionIndex + 1 } })
+            ) || Object.assign(v, { meta: { questionIndex: a[i - 1].meta.questionIndex } })
       ))
     return result
   }

@@ -9,7 +9,7 @@
 <div class="question">
   {#if qa.content.type === 'exact-match'}
   <p>
-    <span style="font-weight: bold;">＜問 {qa.questionIndex}＞</span>
+    <span style="font-weight: bold;">＜問 {qa.meta.questionIndex}＞</span>
     {#if !$config.isEnableInnerHTML}
     {QAString.unescape(qa.content.question)}
     {:else}
@@ -36,7 +36,7 @@
   <br>
   {:else if qa.content.type === 'exact-match-selection'}
   <p>
-    <span style="font-weight: bold;">＜問 {qa.questionIndex}＞</span>
+    <span style="font-weight: bold;">＜問 {qa.meta.questionIndex}＞</span>
     {#if !$config.isEnableInnerHTML}
     {QAString.unescape(qa.content.question)}
     {:else}

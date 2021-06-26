@@ -6,7 +6,7 @@
 </script>
 
 <p>
-  <span style="font-weight: bold;">＜問 {qa.questionIndex}＞</span>
+  <span style="font-weight: bold;">＜問 {qa.meta.questionIndex}＞</span>
   {QAString.unescape(qa.content.text.replace(/\(\(.+?\)\)/, '()'))}
 </p>
 {#if !$config.isHiddenAnswer}
