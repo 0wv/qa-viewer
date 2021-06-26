@@ -5,7 +5,6 @@
   import katex from 'katex'
   import * as zip from '@zip.js/zip.js'
   import '../../node_modules/katex/dist/katex.css'
-  import '@exampledev/new.css'
   import ConfigBool from './ConfigBool.svelte'
   import QATree from './QATree.svelte'
   import { QAString } from '../parser'
