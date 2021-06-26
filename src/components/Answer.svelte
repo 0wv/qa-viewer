@@ -14,10 +14,10 @@
       {#if !$config.isEnableInnerHTML}
       {QAString.unescape(answer)}
       {:else}
-      {#if qa.content.type === 'exact-match'}
-      <HTMLCode value={QAString.unescape(answer)}></HTMLCode>
-      {:else if qa.content.type === 'exact-match-selection'}
+      {#if qa.content.type === 'exact-match-selection'}
       <HTMLCode value={qa.content.selections[answer - 1]}></HTMLCode>
+      {:else}
+      <HTMLCode value={QAString.unescape(answer)}></HTMLCode>
       {/if}
       {/if}
     </li>
