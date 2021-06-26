@@ -23,6 +23,10 @@ export class Prefix {
     const result = qaItem
     return result
   }
+
+  static get hasQuestionIndex () {
+    return true
+  }
 }
 
 export class QAString extends String {
@@ -158,6 +162,17 @@ export class QAString extends String {
               type: 'error'
             }
       ))
+      .map((v, i, a) => (
+        i === 0
+          ? Object.assign(v, { questionIndex: 1 })
+          : (
+              (
+                Object.keys(prefixMap)
+                  .filter(k => prefixMap[k].hasQuestionIndex)
+                  .includes(v.type)
+              ) && Object.assign(v, { questionIndex: a[i - 1].questionIndex + 1 })
+            ) || Object.assign(v, { questionIndex: a[i - 1].questionIndex })
+      ))
     return result
   }
 }
@@ -219,12 +234,20 @@ export const prefixMap = {
     }
   },
   section: class extends Prefix {
+    static get hasQuestionIndex () {
+      return false
+    }
+
     get transform () {
       const result = super.transform
       return result
     }
   },
   text: class extends Prefix {
+    static get hasQuestionIndex () {
+      return false
+    }
+
     get transform () {
       const result = super.transform
       return result
