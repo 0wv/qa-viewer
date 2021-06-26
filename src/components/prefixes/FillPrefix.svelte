@@ -6,7 +6,9 @@
   export let qa
 </script>
 
-<Question {qa}></Question>
-{#if !$config.isHiddenAnswer}
-<Answer {qa}></Answer>
-{/if}
+<div class="border mb-6 p-4 rounded shadow-md">
+  <Question {qa}></Question>
+  {#if !$config.isHiddenAnswer}
+  <Answer {qa}></Answer>
+  {/if}
+</div>
