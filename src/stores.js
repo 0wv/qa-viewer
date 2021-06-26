@@ -8,5 +8,4 @@ export const config = writable({
   isHiddenAnswer: false,
   isHiddenSelection: false
 })
-export const qaSkipCount = writable(0)
 export const qas = writable([])
