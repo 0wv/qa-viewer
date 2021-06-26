@@ -51,6 +51,7 @@ export class QAString extends String {
       this
         .toString()
         .replace(/\r?\n/g, '\n')
+        .replace(/&\n/g, '') // 行内で改行できるようにする
         .split('\n')
         .filter(v => v !== '' && v[0] !== '#')
         .join('\n')
