@@ -105,3 +105,9 @@ test('unescape for qas', () => {
     }
   ])
 })
+
+test('allow line breaks inside lines', () => {
+  expect(
+    new QAString('text:+un &\ndeux &\ntrois').format().items[0].content
+  ).toBe('un deux trois')
+})
