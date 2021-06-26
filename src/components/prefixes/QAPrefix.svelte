@@ -1,6 +1,7 @@
 <script>
   import { QAString } from '../../parser'
   import { config } from '../../stores'
+  import Answer from '../Answer.svelte'
   import HTMLCode from '../HTMLCode.svelte'
   import Question from '../Question.svelte'
 
@@ -14,18 +15,7 @@
   <div class:answer-form-border={$config.isAnswerFormBorder} style="height: 2cm; margin-bottom: 1rem;" />
   {/if}
   {#if !$config.isHiddenAnswer}
-  <p><span style="font-weight: bold;">＜答え＞</span></p>
-  <ul>
-    {#each qa.content.answers as answer}
-    <li>
-      {#if !$config.isEnableInnerHTML}
-      {QAString.unescape(answer)}
-      {:else}
-      <HTMLCode value={QAString.unescape(answer)}></HTMLCode>
-      {/if}
-    </li>
-    {/each}
-  </ul>
+  <Answer {qa}></Answer>
   {/if}
   <br>
   {:else if qa.content.type === 'exact-match-selection'}
@@ -48,18 +38,7 @@
   <div class:answer-form-border={$config.isAnswerFormBorder} style="height: 2cm; margin-bottom: 1rem;" />
   {/if}
   {#if !$config.isHiddenAnswer}
-  <p><span style="font-weight: bold;">＜答え＞</span></p>
-  <ul>
-    {#each qa.content.answers as answer}
-    <li>
-      {#if !$config.isEnableInnerHTML}
-      {QAString.unescape(answer)}
-      {:else}
-      <HTMLCode value={qa.content.selections[answer - 1]}></HTMLCode>
-      {/if}
-    </li>
-    {/each}
-  </ul>
+  <Answer {qa}></Answer>
   {/if}
   <br>
   {/if}
