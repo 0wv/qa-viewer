@@ -11,6 +11,14 @@
   }
 </script>
 
+<svelte:head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
+    body { font-family: 'Noto Sans JP', sans-serif; }
+  </style>
+</svelte:head>
+
 <main>
   <Router {routes} />
 </main>

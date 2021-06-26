@@ -4,6 +4,12 @@
 
     return await responce.text()
   })()
+
+  const fetchLicense = (async () => {
+    const responce = await fetch('/license.txt')
+
+    return await responce.text()
+  })()
 </script>
 
 <button onclick="window.location.href = '/#/'">戻る</button>
@@ -19,3 +25,9 @@
 {/await}
 <h2>バージョン</h2>
 <p>{'[VI]{version}[/VI]'}</p>
+{#await fetchLicense}
+<p>...waiting</p>
+{:then text}
+<h2>ライセンス</h2>
+<pre>{text}</pre>
+{/await}
