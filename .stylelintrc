@@ -8,6 +8,12 @@
       }
     ],
     "block-no-empty": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
+    ],
     "unit-allowed-list": ["em", "rem", "s"]
   }
 }
