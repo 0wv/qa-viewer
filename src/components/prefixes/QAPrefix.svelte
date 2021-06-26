@@ -8,7 +8,7 @@
   export let qa
 </script>
 
-<div class="border mb-6 p-4 question rounded shadow-md">
+<div class="border mb-6 p-4 question rounded-3xl shadow-md">
   {#if qa.content.type === 'exact-match'}
   <Question {qa}></Question>
   {#if $config.isAnswerForm}

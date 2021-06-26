@@ -6,8 +6,8 @@
   export let qa
 </script>
 
-<div class="bg-blue-50 mb-3 p-4 pl-2 rounded-full shadow">
-  <span class="bg-blue-200 mr-2 p-2 rounded-full shadow-inner">問 {qa.meta.questionIndex}</span>
+<div class="bg-blue-50 mb-3 p-4 pl-2 rounded-2xl shadow">
+  <span class="bg-blue-200 mr-2 p-2 rounded-2xl shadow-inner">問 {qa.meta.questionIndex}</span>
   {#if !$config.isEnableInnerHTML}
   {#if qa.type !== 'fill'}
   {QAString.unescape(qa.content.question)}
