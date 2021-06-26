@@ -90,6 +90,7 @@ export class QAString extends String {
               question: item.content.question.replace(/\[:__colon_hyphen__:\]/g, ':-'),
               type: item.content.type
             },
+            questionIndex: item.questionIndex,
             type: item.type
           }
         : item.content.type === 'exact-match-selection'
@@ -100,6 +101,7 @@ export class QAString extends String {
                 selections: item.content.selections.map(selection => selection.replace(/\[:__colon_hyphen__:\]/g, ':-')),
                 type: item.content.type
               },
+              questionIndex: item.questionIndex,
               type: item.type
             }
           : {
