@@ -106,8 +106,9 @@ export class QAString extends String {
               type: item.type
             }
           : {
-              content: 'unexisted type.',
-              type: 'error'
+              content: item.content,
+              meta: item.meta,
+              type: item.type
             }
     ))
     return result
