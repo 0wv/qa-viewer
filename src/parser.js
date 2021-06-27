@@ -169,7 +169,7 @@ export class QAString extends String {
       .map(v => Object.assign(v, { meta: {} }))
       .map((v, i, a) => (
         i === 0
-          ? Object.assign(v, { meta: { questionIndex: 1 } })
+          ? Object.assign(v, { meta: { questionIndex: 0 } })
           : (
               (
                 Object.keys(prefixMap)
