@@ -1,6 +1,7 @@
 <script>
   import { config } from '../../stores'
   import Answer from '../Answer.svelte'
+  import AnswerBox from '../AnswerBox.svelte'
   import Question from '../Question.svelte'
   import Selection from '../Selection.svelte'
 
@@ -11,7 +12,7 @@
   {#if qa.content.type === 'exact-match'}
   <Question {qa}></Question>
   {#if $config.isAnswerForm}
-  <div class:answer-form-border={$config.isAnswerFormBorder} style="height: 2cm; margin-bottom: 1rem;" />
+  <AnswerBox></AnswerBox>
   {/if}
   {#if !$config.isHiddenAnswer}
   <Answer {qa}></Answer>
@@ -22,7 +23,7 @@
   <Selection {qa}></Selection>
   {/if}
   {#if $config.isAnswerForm}
-  <div class:answer-form-border={$config.isAnswerFormBorder} style="height: 2cm; margin-bottom: 1rem;" />
+  <AnswerBox></AnswerBox>
   {/if}
   {#if !$config.isHiddenAnswer}
   <Answer {qa}></Answer>
@@ -35,9 +36,5 @@
     .question {
       page-break-inside: avoid;
     }
-  }
-
-  .answer-form-border {
-    border: 1px solid;
   }
 </style>
