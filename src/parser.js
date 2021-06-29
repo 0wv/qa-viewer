@@ -168,15 +168,17 @@ export class QAString extends String {
       ))
       .map(v => Object.assign(v, { meta: {} }))
       .map((v, i, a) => (
-        i === 0
-          ? Object.assign(v, { meta: { questionIndex: 0 } })
-          : (
-              (
-                Object.keys(prefixMap)
-                  .filter(k => prefixMap[k].hasQuestionIndex)
-                  .includes(v.type)
-              ) && Object.assign(v, { meta: { questionIndex: a[i - 1].meta.questionIndex + 1 } })
-            ) || Object.assign(v, { meta: { questionIndex: a[i - 1].meta.questionIndex } })
+        (
+          Object.keys(prefixMap)
+            .filter(k => prefixMap[k].hasQuestionIndex)
+            .includes(v.type)
+        )
+          ? i === 0
+            ? Object.assign(v, { meta: { questionIndex: 1 } })
+            : Object.assign(v, { meta: { questionIndex: a[i - 1].meta.questionIndex + 1 } })
+          : i === 0
+            ? Object.assign(v, { meta: { questionIndex: 0 } })
+            : Object.assign(v, { meta: { questionIndex: a[i - 1].meta.questionIndex } })
       ))
     return result
   }
