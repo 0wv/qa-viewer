@@ -1,7 +1,12 @@
 <script>
   import { config, qas } from '../stores'
+  import { prefixMap } from '../parser'
 
-  const filteredQAs = $qas.filter(v => v.type !== 'section' && v.type !== 'text')
+  const filteredQAs = $qas.filter(v => (
+    Object.keys(prefixMap)
+      .filter(k => prefixMap[k].hasQuestionIndex)
+      .includes(v.type)
+  ))
 
   if (filteredQAs.length === 0) {
     window.location.href = '/#/'
