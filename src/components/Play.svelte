@@ -15,21 +15,25 @@
   let contentAnswers = []
   let currentIndex = 0
   let isShowAnswer = false
-  const myAnswers = Array(filteredQAs.length)
+  const myAnswers = [...Array(filteredQAs.length)]
+    .map((_, i) => (
+      filteredQAs[i].type === 'qa'
+        ? (
+            filteredQAs[i].content.type === 'exact-match-selection' &&
+            filteredQAs[i].content.answers.length >= 2
+          )
+            ? []
+            : filteredQAs[i].content.type === 'exact-match-selection'
+              ? 0
+              : ''
+        : undefined
+    ))
   const myResults = []
 
   function nextQuestion () {
     contentAnswers = []
     isShowAnswer = false
     currentIndex++
-
-    if (myAnswers.length === currentIndex) {
-      return
-    }
-
-    if (filteredQAs[currentIndex].content.type === 'exact-match-selection' && filteredQAs[currentIndex].content.answers.length >= 2) {
-      myAnswers[currentIndex] = []
-    }
   }
 
   function okClick () {
