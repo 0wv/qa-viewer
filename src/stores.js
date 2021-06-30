@@ -9,3 +9,4 @@ export const config = writable({
   isHiddenSelection: false
 })
 export const qas = writable([])
+export const user = writable({})
