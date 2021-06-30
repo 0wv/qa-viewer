@@ -12,7 +12,6 @@
     window.location.href = '/#/'
   }
 
-  let contentAnswers = []
   let currentIndex = 0
   let isShowAnswer = false
   const myAnswers = [...Array(filteredQAs.length)]
@@ -26,12 +25,13 @@
             : filteredQAs[i].content.type === 'exact-match-selection'
               ? 0
               : ''
-        : undefined
+        : filteredQAs[i].type === 'fill'
+          ? []
+          : undefined
     ))
   const myResults = []
 
   function nextQuestion () {
-    contentAnswers = []
     isShowAnswer = false
     currentIndex++
   }
@@ -56,7 +56,7 @@
   {#each filteredQAs[currentIndex].content.answers as answer, i}
   <label>
     {i + 1}:
-    <input bind:value={contentAnswers[i]} type="text">
+    <input bind:value={myAnswers[currentIndex][i]} type="text">
   </label>
   {/each}
 </p>
@@ -65,7 +65,7 @@
 {:else}
 <p>
   {#if filteredQAs[currentIndex].content.answers.filter((v, i) => {
-    return pushToResultsAndReturn(v === contentAnswers[i])
+    return pushToResultsAndReturn(v === myAnswers[currentIndex][i])
   }).length === filteredQAs[currentIndex].content.answers.length}
   正解です！
   {:else}
