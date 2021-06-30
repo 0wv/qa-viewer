@@ -1,6 +1,7 @@
 <script>
   import { config, qas, user } from '../stores'
   import { prefixMap } from '../parser'
+  import Question from './Question.svelte'
 
   const filteredQAs = $qas.filter(v => (
     Object.keys(prefixMap)
@@ -83,8 +84,7 @@
 <button onclick="window.location.href = '/#/'">戻る</button>
 {#if filteredQAs[currentIndex].type === 'fill'}
 <p>
-  ＜問 {currentIndex + 1}＞
-  {filteredQAs[currentIndex].content.text.replace(/\(\(.+?\)\)/, '()')}
+  <Question qa={filteredQAs[currentIndex]}></Question>
   {#each filteredQAs[currentIndex].content.answers as answer, i}
   <label>
     {i + 1}:
@@ -107,12 +107,7 @@
 {:else if filteredQAs[currentIndex].type === 'qa'}
 {#if filteredQAs[currentIndex].content.type === 'exact-match'}
 <p>
-  ＜問 {currentIndex + 1}＞
-  {#if !$config.isEnableInnerHTML}
-  {filteredQAs[currentIndex].content.question}
-  {:else}
-  <span bind:innerHTML={filteredQAs[currentIndex].content.question} contenteditable="true"></span>
-  {/if}
+  <Question qa={filteredQAs[currentIndex]}></Question>
 </p>
 <textarea bind:value={$user.answers[currentIndex]} placeholder="答えを入力してください" />
 {#if !isShowAnswer}
@@ -129,7 +124,7 @@
 <button on:click={nextQuestion}>次の問題</button>
 {/if}
 {:else if filteredQAs[currentIndex].content.type === 'exact-match-selection'}
-<p>＜問 {currentIndex + 1}＞ {filteredQAs[currentIndex].content.question}</p>
+<p><Question qa={filteredQAs[currentIndex]}></Question></p>
 {#if filteredQAs[currentIndex].content.answers.length === 1}
 <p>答えをひとつ選択してください</p>
 {#each filteredQAs[currentIndex].content.selections as selection, i}
