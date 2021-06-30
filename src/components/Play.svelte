@@ -53,8 +53,8 @@
                     : (
                         pushToResultsAndReturn(
                           $user.answers[currentIndex].join('') === filteredQAs[currentIndex].content.answers.map(v => (
-                            filteredQAs[currentIndex].content.selections[v - 1]).join('')
-                          )
+                            filteredQAs[currentIndex].content.selections[v - 1])
+                          ).join('')
                         )
                       )
                   : false
