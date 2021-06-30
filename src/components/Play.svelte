@@ -39,26 +39,27 @@
         )).length === filteredQAs[currentIndex].content.answers.length
         : filteredQAs[currentIndex].type === 'qa'
           ? (
-              filteredQAs[currentIndex].content.type === 'exact-match' &&
-              pushToResultsAndReturn(
-                filteredQAs[currentIndex].content.answers.includes($user.answers[currentIndex])
-              )
+              filteredQAs[currentIndex].content.type === 'exact-match'
+                ? pushToResultsAndReturn(
+                  filteredQAs[currentIndex].content.answers.includes($user.answers[currentIndex])
+                )
+                : filteredQAs[currentIndex].content.type === 'exact-match-selection'
+                  ? filteredQAs[currentIndex].content.answers.length === 1
+                    ? (
+                        pushToResultsAndReturn(
+                          $user.answers[currentIndex] === filteredQAs[currentIndex].content.answers[0] - 1
+                        )
+                      )
+                    : (
+                        pushToResultsAndReturn(
+                          $user.answers[currentIndex].join('') === filteredQAs[currentIndex].content.answers.map(v => (
+                            filteredQAs[currentIndex].content.selections[v - 1]).join('')
+                          )
+                        )
+                      )
+                  : false
             )
-          : filteredQAs[currentIndex].content.type === 'exact-match-selection'
-            ? filteredQAs[currentIndex].content.answers.length === 1
-              ? (
-                  pushToResultsAndReturn(
-                    $user.answers[currentIndex] === filteredQAs[currentIndex].content.answers[0] - 1
-                  )
-                )
-              : (
-                  pushToResultsAndReturn(
-                    $user.answers[currentIndex].join('') === filteredQAs[currentIndex].content.answers.map(v => (
-                      filteredQAs[currentIndex].content.selections[v - 1]).join('')
-                    )
-                  )
-                )
-            : false
+          : false
     )
   }
 
