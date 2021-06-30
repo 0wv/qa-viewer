@@ -12,7 +12,6 @@
     window.location.href = '/#/'
   }
 
-  let answer
   let contentAnswers = []
   let currentIndex = 0
   let isShowAnswer = false
@@ -20,7 +19,6 @@
   const myResults = []
 
   function nextQuestion () {
-    answer = ''
     contentAnswers = []
     isShowAnswer = false
     currentIndex++
@@ -82,13 +80,13 @@
   <span bind:innerHTML={filteredQAs[currentIndex].content.question} contenteditable="true"></span>
   {/if}
 </p>
-<textarea bind:value={answer} placeholder="答えを入力してください" />
+<textarea bind:value={myAnswers[currentIndex]} placeholder="答えを入力してください" />
 {#if !isShowAnswer}
 <br />
 <button on:click={okClick}>OK</button>
 {:else}
 <p>
-  {#if pushToResultsAndReturn(filteredQAs[currentIndex].content.answers.includes(answer))}
+  {#if pushToResultsAndReturn(filteredQAs[currentIndex].content.answers.includes(myAnswers[currentIndex]))}
   正解です！
   {:else}
   不正解です…
