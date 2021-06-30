@@ -29,7 +29,7 @@
           ? []
           : undefined
     ))
-  const myResults = []
+  $user.results = []
 
   function nextQuestion () {
     isShowAnswer = false
@@ -41,7 +41,7 @@
   }
 
   function pushToResultsAndReturn (v) {
-    myResults.push(v)
+    $user.results.push(v)
 
     return v
   }
@@ -156,7 +156,7 @@
 <p>＜結果＞</p>
 <ol>
   {#each filteredQAs as _, i}
-  <li>{myResults[i] ? '正解' : '不正解'}</li>
+  <li>{$user.results[i] ? '正解' : '不正解'}</li>
   {/each}
 </ol>
 <button onclick="window.location.href = '/#/'">戻る</button>
