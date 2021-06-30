@@ -31,6 +31,37 @@
     ))
   $user.results = []
 
+  function checkAnswer () {
+    return (
+      filteredQAs[currentIndex].type === 'fill'
+        ? filteredQAs[currentIndex].content.answers.filter((v, i) => (
+          pushToResultsAndReturn(v === $user.answers[currentIndex][i])
+        )).length === filteredQAs[currentIndex].content.answers.length
+        : filteredQAs[currentIndex].type === 'qa'
+          ? (
+              filteredQAs[currentIndex].content.type === 'exact-match' &&
+              pushToResultsAndReturn(
+                filteredQAs[currentIndex].content.answers.includes($user.answers[currentIndex])
+              )
+            )
+          : filteredQAs[currentIndex].content.type === 'exact-match-selection'
+            ? filteredQAs[currentIndex].content.answers.length === 1
+              ? (
+                  pushToResultsAndReturn(
+                    $user.answers[currentIndex] === filteredQAs[currentIndex].content.answers[0] - 1
+                  )
+                )
+              : (
+                  pushToResultsAndReturn(
+                    $user.answers[currentIndex].join('') === filteredQAs[currentIndex].content.answers.map(v => (
+                      filteredQAs[currentIndex].content.selections[v - 1]).join('')
+                    )
+                  )
+                )
+            : false
+    )
+  }
+
   function nextQuestion () {
     isShowAnswer = false
     currentIndex++
@@ -64,9 +95,7 @@
 <button on:click={okClick}>OK</button>
 {:else}
 <p>
-  {#if filteredQAs[currentIndex].content.answers.filter((v, i) => {
-    return pushToResultsAndReturn(v === $user.answers[currentIndex][i])
-  }).length === filteredQAs[currentIndex].content.answers.length}
+  {#if checkAnswer()}
   正解です！
   {:else}
   不正解です…
@@ -90,7 +119,7 @@
 <button on:click={okClick}>OK</button>
 {:else}
 <p>
-  {#if pushToResultsAndReturn(filteredQAs[currentIndex].content.answers.includes($user.answers[currentIndex]))}
+  {#if checkAnswer()}
   正解です！
   {:else}
   不正解です…
@@ -116,7 +145,7 @@
 <button on:click={okClick}>OK</button>
 {:else}
 <p>
-  {#if pushToResultsAndReturn($user.answers[currentIndex] === filteredQAs[currentIndex].content.answers[0] - 1)}
+  {#if checkAnswer()}
   正解です！
   {:else}
   不正解です…
@@ -140,8 +169,7 @@
 <button on:click={okClick}>OK</button>
 {:else}
 <p>
-  {#if pushToResultsAndReturn($user.answers[currentIndex].join('') === filteredQAs[currentIndex].content.answers.map(v =>
-  filteredQAs[currentIndex].content.selections[v - 1]).join(''))}
+  {#if checkAnswer()}
   正解です！
   {:else}
   不正解です…
