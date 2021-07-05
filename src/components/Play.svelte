@@ -1,6 +1,7 @@
 <script>
   import { config, qas, user } from '../stores'
   import { prefixMap } from '../parser'
+  import InputAnswer from './InputAnswer.svelte'
   import Question from './Question.svelte'
 
   const filteredQAs = $qas.filter(v => (
@@ -85,12 +86,7 @@
 {#if filteredQAs[currentIndex].type === 'fill'}
 <p>
   <Question qa={filteredQAs[currentIndex]}></Question>
-  {#each filteredQAs[currentIndex].content.answers as answer, i}
-  <label>
-    {i + 1}:
-    <input bind:value={$user.answers[currentIndex][i]} type="text">
-  </label>
-  {/each}
+  <InputAnswer qa={filteredQAs[currentIndex]}></InputAnswer>
 </p>
 {#if !isShowAnswer}
 <button on:click={okClick}>OK</button>
