@@ -84,12 +84,12 @@
 {#if $user.answers.length !== currentIndex}
 <button onclick="window.location.href = '/#/'">戻る</button>
 {#if filteredQAs[currentIndex].type === 'fill'}
-<div>
+<div class="mb-3">
   <Question qa={filteredQAs[currentIndex]}></Question>
   <InputAnswer qa={filteredQAs[currentIndex]}></InputAnswer>
 </div>
 {#if !isShowAnswer}
-<button on:click={okClick}>OK</button>
+<button class="bg-gray-50 px-4 py-2 rounded-full shadow-md w-full" on:click={okClick}>OK</button>
 {:else}
 <p>
   {#if checkAnswer()}
