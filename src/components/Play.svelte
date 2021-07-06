@@ -83,7 +83,7 @@
 
 <div class="bg-gradient-to-br from-indigo-300 h-full to-blue-300 w-full">
   {#if $user.answers.length !== currentIndex}
-  <nav class="bg-gray-50 flex mb-3 px-4 py-2 shadow">
+  <nav class="bg-gray-50 bg-opacity-80 flex mb-3 px-4 py-2 shadow">
     <ul>
       <li>
         <button class="bg-gray-200 px-4 py-2 rounded-full" onclick="window.location.href = '/#/'">戻る</button>
