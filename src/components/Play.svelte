@@ -82,7 +82,13 @@
 </script>
 
 {#if $user.answers.length !== currentIndex}
-<button onclick="window.location.href = '/#/'">戻る</button>
+<nav class="bg-gray-50 flex mb-3 px-4 py-2 shadow">
+  <ul>
+    <li>
+      <button class="bg-gray-200 px-4 py-2 rounded-full" onclick="window.location.href = '/#/'">戻る</button>
+    </li>
+  </ul>
+</nav>
 {#if filteredQAs[currentIndex].type === 'fill'}
 <div class="mb-3 mx-4">
   <Question qa={filteredQAs[currentIndex]}></Question>
