@@ -19,7 +19,7 @@
   </style>
 </svelte:head>
 
-<main class="m-4">
+<main class="h-full w-full">
   <Router {routes} />
 </main>
 
@@ -29,6 +29,6 @@
 	@tailwind utilities;
 
   :global(body) {
-    @apply h-auto p-0 w-auto;
+    @apply h-full p-0 w-full;
   }
 </style>
