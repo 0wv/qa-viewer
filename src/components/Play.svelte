@@ -81,9 +81,9 @@
   }
 </script>
 
-<div class="bg-gradient-to-br from-indigo-300 h-full to-blue-300 w-full">
+<div class="bg-gradient-to-br flex flex-col from-indigo-300 min-h-full to-blue-300 min-w-full">
   {#if $user.answers.length !== currentIndex}
-  <nav class="bg-gray-50 bg-opacity-80 flex mb-3 px-4 py-2 shadow">
+  <nav class="bg-gray-50 bg-opacity-80 flex mb-3 px-4 py-2 shadow sticky top-0">
     <ul>
       <li>
         <button class="bg-gray-200 px-4 py-2 rounded-full" onclick="window.location.href = '/#/'">戻る</button>
@@ -91,13 +91,13 @@
     </ul>
   </nav>
   {#if filteredQAs[currentIndex].type === 'fill'}
-  <div class="mb-3 mx-4">
+  <div class="flex-grow mb-3 mx-4">
     <Question qa={filteredQAs[currentIndex]}></Question>
     <InputAnswer qa={filteredQAs[currentIndex]}></InputAnswer>
   </div>
   {#if !isShowAnswer}
-  <div class="mx-4">
-    <button class="bg-gray-50 px-4 py-2 rounded-full shadow-md w-full" on:click={okClick}>OK</button>
+  <div class="bg-gray-50 bg-opacity-80 bottom-0 px-4 py-2 shadow sticky">
+    <button class="bg-gray-200 px-4 py-2 rounded-full shadow-md w-full" on:click={okClick}>OK</button>
   </div>
   {:else}
   <p>
