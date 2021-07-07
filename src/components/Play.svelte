@@ -97,7 +97,7 @@
   </div>
   {#if !isShowAnswer}
   <div class="bg-gray-50 bg-opacity-80 bottom-0 px-4 py-2 shadow sticky">
-    <button class="bg-gray-200 px-4 py-2 rounded-full shadow-md w-full" on:click={okClick}>OK</button>
+    <button class="bg-gray-200 px-4 py-2 rounded-full w-full" on:click={okClick}>OK</button>
   </div>
   {:else}
   <p>
