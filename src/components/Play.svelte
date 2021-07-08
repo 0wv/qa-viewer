@@ -87,7 +87,7 @@
   <nav class="bg-gray-50 bg-opacity-80 flex mb-3 px-4 py-2 shadow sticky top-0">
     <ul>
       <li>
-        <button class="bg-gray-200 px-4 py-2 rounded-full" onclick="window.location.href = '/#/'">戻る</button>
+        <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full" onclick="window.location.href = '/#/'">戻る</button>
       </li>
     </ul>
   </nav>
@@ -98,7 +98,7 @@
   </div>
   {#if !isShowAnswer}
   <div class="bg-gray-50 bg-opacity-80 bottom-0 px-4 py-2 shadow sticky">
-    <button class="bg-gray-200 px-4 py-2 rounded-full w-full" on:click={okClick}>OK</button>
+    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" on:click={okClick}>OK</button>
   </div>
   {:else}
   <div class="bg-gray-50 bg-opacity-80 bottom-0 px-4 py-2 shadow sticky">
@@ -112,7 +112,7 @@
       {/if}
     </p>
     <AnswerTable qa={filteredQAs[currentIndex]}></AnswerTable>
-    <button class="bg-gray-200 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
+    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
   </div>
   {/if}
   {:else if filteredQAs[currentIndex].type === 'qa'}
