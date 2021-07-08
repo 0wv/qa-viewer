@@ -6,7 +6,10 @@
   export let qa
 </script>
 
-<div class="bg-blue-50 leading-loose mb-3 p-4 pl-2 rounded-2xl shadow">
+<div
+  class="bg-blue-50 leading-loose mb-3 p-4 pl-2 rounded-2xl shadow"
+  style="-webkit-print-color-adjust: exact;"
+>
   <span class="bg-blue-200 mr-2 px-4 py-2 rounded-2xl shadow-inner">問 {qa.meta.questionIndex}</span>
   {#if !$config.isEnableInnerHTML}
   <span class="break-words">
