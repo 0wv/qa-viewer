@@ -1,6 +1,7 @@
 <script>
   import { config, qas, user } from '../stores'
   import { prefixMap } from '../parser'
+  import AnswerTable from './AnswerTable.svelte'
   import InputAnswer from './InputAnswer.svelte'
   import Question from './Question.svelte'
 
@@ -100,14 +101,19 @@
     <button class="bg-gray-200 px-4 py-2 rounded-full w-full" on:click={okClick}>OK</button>
   </div>
   {:else}
-  <p>
-    {#if checkAnswer()}
-    正解です！
-    {:else}
-    不正解です…
-    {/if}
-  </p>
-  <button on:click={nextQuestion}>次の問題</button>
+  <div class="bg-gray-50 bg-opacity-80 bottom-0 px-4 py-2 shadow sticky">
+    <p>
+      {#if checkAnswer()}
+      すべて正解です！
+      {:else}
+      {$user.answers[currentIndex].length}個中{filteredQAs[currentIndex].content.answers.filter((v, i) => (
+        v !== $user.answers[currentIndex][i]
+      )).length}個不正解です…
+      {/if}
+    </p>
+    <AnswerTable qa={filteredQAs[currentIndex]}></AnswerTable>
+    <button class="bg-gray-200 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
+  </div>
   {/if}
   {:else if filteredQAs[currentIndex].type === 'qa'}
   {#if filteredQAs[currentIndex].content.type === 'exact-match'}
