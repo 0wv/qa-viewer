@@ -7,7 +7,7 @@
 </script>
 
 <div
-  class="border-4 border-gray-200 bg-gray-50 leading-loose mb-6 mx-4 p-4 pl-2 rounded-2xl shadow"
+  class="border-4 border-gray-200 bg-gray-50 leading-loose mb-6 mx-4 p-4 pl-2 question rounded-2xl shadow"
   style="-webkit-print-color-adjust: exact;"
 >
   {#if !$config.isEnableInnerHTML}
@@ -16,3 +16,11 @@
   <HTMLCode value={QAString.unescape(qa.content)}></HTMLCode>
   {/if}
 </div>
+
+<style>
+  @media print {
+    .question {
+      page-break-inside: avoid;
+    }
+  }
+</style>
