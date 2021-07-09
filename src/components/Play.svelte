@@ -29,7 +29,7 @@
               ? 0
               : ''
         : filteredQAs[i].type === 'fill'
-          ? []
+          ? Array(filteredQAs[i].content.answers.length).fill('')
           : undefined
     ))
   $user.results = []
