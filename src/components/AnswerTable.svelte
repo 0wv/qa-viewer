@@ -47,6 +47,7 @@
     {/each}
   </tbody>
   {:else if qa.type === 'qa'}
+  {#if qa.content.type === 'exact-match'}
   <tbody class="table">
     {#each qa.content.answers as answer, i}
     <tr class="border-b-2 border-gray-400">
@@ -82,5 +83,35 @@
     </tr>
     {/each}
   </tbody>
+  {:else if qa.content.type === 'exact-match-selection'}
+  {#if qa.content.answers.length === 1}
+  <tbody class="table">
+    <tr class="border-b-2 border-gray-400">
+      <td
+        class="px-4 py-2"
+        class:bg-green-200={qa.content.answers[0] - 1 === $user.answers[qa.meta.questionIndex - 1]}
+        class:bg-red-200={qa.content.answers[0] - 1 !== $user.answers[qa.meta.questionIndex - 1]}
+        class:bg-opacity-50={typeof $user.results[qa.meta.questionIndex - 1] === 'boolean'}
+        class:text-green-600={qa.content.answers[0] - 1 === $user.answers[qa.meta.questionIndex - 1]}
+        class:text-red-600={qa.content.answers[0] - 1 !== $user.answers[qa.meta.questionIndex - 1]}
+        style="width: 50%;"
+      >{qa.content.selections[$user.answers[qa.meta.questionIndex - 1]]}</td>
+      <td
+        class="px-4 py-2"
+        class:bg-green-200={qa.content.answers[0] - 1 === $user.answers[qa.meta.questionIndex - 1]}
+        class:bg-opacity-50={typeof $user.results[qa.meta.questionIndex - 1] === 'boolean'}
+        class:text-green-600={qa.content.answers[0] - 1 === $user.answers[qa.meta.questionIndex - 1]}
+        style="width: 50%;"
+      >
+        {#if !$config.isEnableInnerHTML}
+        {QAString.unescape(qa.content.selections[qa.content.answers[0] - 1])}
+        {:else}
+        <HTMLCode value={QAString.unescape(qa.content.selections[qa.content.answers[0] - 1])}></HTMLCode>
+        {/if}
+      </td>
+    </tr>
+  </tbody>
+  {/if}
+  {/if}
   {/if}
 </table>
