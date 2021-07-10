@@ -82,7 +82,7 @@
   }
 </script>
 
-<div class="bg-gradient-to-br flex flex-col from-indigo-300 min-h-full to-blue-300 min-w-full">
+<div class="bg-gradient-to-br flex flex-col from-indigo-300 min-h-inherit to-blue-300 min-w-full">
   {#if $user.answers.length !== currentIndex}
   <nav class="bg-gray-50 bg-opacity-80 flex mb-3 px-4 py-2 shadow sticky top-0">
     <ul>
@@ -197,3 +197,7 @@
   <button onclick="window.location.href = '/#/'">戻る</button>
   {/if}
 </div>
+
+<style>
+  .min-h-inherit { min-height: inherit; }
+</style>

@@ -19,7 +19,7 @@
   </style>
 </svelte:head>
 
-<main class="min-h-full min-w-full">
+<main class="min-h-screen min-w-screen">
   <Router {routes} />
 </main>
 
