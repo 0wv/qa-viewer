@@ -11,11 +11,14 @@
 >
   <thead>
     <tr class="border-b-4 border-gray-400 flex">
+      {#if qa.type !== 'qa'}
       <th class="flex-initial px-4 py-2 w-16">番号</th>
+      {/if}
       <th class="flex-1 px-4 py-2">入力した答え</th>
       <th class="flex-1 px-4 py-2">解答</th>
     </tr>
   </thead>
+  {#if qa.type === 'fill'}
   <tbody>
     {#each qa.content.answers as answer, i}
     <tr class="border-b-2 border-gray-400 flex">
@@ -37,6 +40,38 @@
         {#if !$config.isEnableInnerHTML}
         {QAString.unescape(answer)}
         {:else}
+        <HTMLCode value={QAString.unescape(answer)}></HTMLCode>
+        {/if}
+      </td>
+    </tr>
+    {/each}
+  </tbody>
+  {:else if qa.type === 'qa'}
+  <tbody class="table">
+    {#each qa.content.answers as answer, i}
+    <tr class="border-b-2 border-gray-400">
+      {#if i === 0}
+      <td
+        class="px-4 py-2"
+        class:bg-green-200={qa.content.answers.includes($user.answers[qa.meta.questionIndex - 1])}
+        class:bg-red-200={!qa.content.answers.includes($user.answers[qa.meta.questionIndex - 1])}
+        class:bg-opacity-50={typeof $user.results[i] === 'boolean'}
+        class:text-green-600={qa.content.answers.includes($user.answers[qa.meta.questionIndex - 1])}
+        class:text-red-600={!qa.content.answers.includes($user.answers[qa.meta.questionIndex - 1])}
+        rowspan={qa.content.answers.length}
+        style="width: 50%;"
+      >{$user.answers[qa.meta.questionIndex - 1]}</td>
+      {/if}
+      <td
+        class="px-4 py-2"
+        class:bg-green-200={!qa.content.answers.includes($user.answers[qa.meta.questionIndex - 1])}
+        class:bg-opacity-50={typeof $user.results[i] === 'boolean'}
+        class:text-green-600={!qa.content.answers.includes($user.answers[qa.meta.questionIndex - 1])}
+        style="width: 50%;"
+      >
+        {#if !$config.isEnableInnerHTML}
+        {QAString.unescape(answer)}
+        {:else}
         {#if qa.content.type === 'exact-match-selection'}
         <HTMLCode value={qa.content.selections[answer - 1]}></HTMLCode>
         {:else}
@@ -47,4 +82,5 @@
     </tr>
     {/each}
   </tbody>
+  {/if}
 </table>

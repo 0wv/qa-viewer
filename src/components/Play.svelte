@@ -117,22 +117,26 @@
   {/if}
   {:else if filteredQAs[currentIndex].type === 'qa'}
   {#if filteredQAs[currentIndex].content.type === 'exact-match'}
-  <p>
+  <div class="flex-grow mb-3 mx-4">
     <Question qa={filteredQAs[currentIndex]}></Question>
-  </p>
-  <textarea bind:value={$user.answers[currentIndex]} placeholder="答えを入力してください" />
+    <InputAnswer qa={filteredQAs[currentIndex]}></InputAnswer>
+  </div>
   {#if !isShowAnswer}
-  <br />
-  <button on:click={okClick}>OK</button>
+  <div class="bg-gray-50 bg-opacity-80 bottom-0 px-4 py-2 shadow sticky">
+    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" on:click={okClick}>OK</button>
+  </div>
   {:else}
-  <p>
-    {#if checkAnswer()}
-    正解です！
-    {:else}
-    不正解です…
-    {/if}
-  </p>
-  <button on:click={nextQuestion}>次の問題</button>
+  <div class="bg-gray-50 bg-opacity-80 bottom-0 px-4 py-2 shadow sticky">
+    <p>
+      {#if checkAnswer()}
+      正解です！
+      {:else}
+      不正解です…
+      {/if}
+    </p>
+    <AnswerTable qa={filteredQAs[currentIndex]}></AnswerTable>
+    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
+  </div>
   {/if}
   {:else if filteredQAs[currentIndex].content.type === 'exact-match-selection'}
   <p><Question qa={filteredQAs[currentIndex]}></Question></p>
