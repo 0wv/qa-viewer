@@ -1,6 +1,6 @@
 {
   "name": "qa-viewer",
-  "version": "0.44.2",
+  "version": "0.44.3",
   "private": true,
   "scripts": {
     "build": "rollup -c",
