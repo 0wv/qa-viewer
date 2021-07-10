@@ -1,8 +1,9 @@
 <script>
-  import { config, qas, user } from '../stores'
+  import { qas, user } from '../stores'
   import { prefixMap } from '../parser'
   import AnswerTable from './AnswerTable.svelte'
   import InputAnswer from './InputAnswer.svelte'
+  import InputSelection from './InputSelection.svelte'
   import Question from './Question.svelte'
 
   const filteredQAs = $qas.filter(v => (
@@ -139,54 +140,49 @@
   </div>
   {/if}
   {:else if filteredQAs[currentIndex].content.type === 'exact-match-selection'}
-  <p><Question qa={filteredQAs[currentIndex]}></Question></p>
   {#if filteredQAs[currentIndex].content.answers.length === 1}
-  <p>答えをひとつ選択してください</p>
-  {#each filteredQAs[currentIndex].content.selections as selection, i}
-  <label>
-    <input bind:group={$user.answers[currentIndex]} type="radio" value={i} />
-    {#if !$config.isEnableInnerHTML}
-    {selection}
-    {:else}
-    <span bind:innerHTML={selection} contenteditable="true"></span>
-    {/if}
-  </label>
-  {/each}
+  <div class="flex-grow mb-3 mx-4">
+    <Question qa={filteredQAs[currentIndex]}></Question>
+    <InputSelection qa={filteredQAs[currentIndex]}></InputSelection>
+  </div>
   {#if !isShowAnswer}
-  <button on:click={okClick}>OK</button>
+  <div class="bg-gray-50 bg-opacity-80 bottom-0 px-4 py-2 shadow sticky">
+    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" on:click={okClick}>OK</button>
+  </div>
   {:else}
-  <p>
-    {#if checkAnswer()}
-    正解です！
-    {:else}
-    不正解です…
-    {/if}
-  </p>
-  <button on:click={nextQuestion}>次の問題</button>
+  <div class="bg-gray-50 bg-opacity-80 bottom-0 px-4 py-2 shadow sticky">
+    <p>
+      {#if checkAnswer()}
+      正解です！
+      {:else}
+      不正解です…
+      {/if}
+    </p>
+    <AnswerTable qa={filteredQAs[currentIndex]}></AnswerTable>
+    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
+  </div>
   {/if}
   {:else}
-  <p>答えを選択してください</p>
-  {#each filteredQAs[currentIndex].content.selections as selection}
-  <label>
-    <input bind:group={$user.answers[currentIndex]} type="checkbox" value={selection} />
-    {#if !$config.isEnableInnerHTML}
-    {selection}
-    {:else}
-    <span bind:innerHTML={selection} contenteditable="true"></span>
-    {/if}
-  </label>
-  {/each}
+  <div class="flex-grow mb-3 mx-4">
+    <Question qa={filteredQAs[currentIndex]}></Question>
+    <InputSelection qa={filteredQAs[currentIndex]}></InputSelection>
+  </div>
   {#if !isShowAnswer}
-  <button on:click={okClick}>OK</button>
+  <div class="bg-gray-50 bg-opacity-80 bottom-0 px-4 py-2 shadow sticky">
+    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" on:click={okClick}>OK</button>
+  </div>
   {:else}
-  <p>
-    {#if checkAnswer()}
-    正解です！
-    {:else}
-    不正解です…
-    {/if}
-  </p>
-  <button on:click={nextQuestion}>次の問題</button>
+  <div class="bg-gray-50 bg-opacity-80 bottom-0 px-4 py-2 shadow sticky">
+    <p>
+      {#if checkAnswer()}
+      正解です！
+      {:else}
+      不正解です…
+      {/if}
+    </p>
+    <AnswerTable qa={filteredQAs[currentIndex]}></AnswerTable>
+    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
+  </div>
   {/if}
   {/if}
   {/if}
