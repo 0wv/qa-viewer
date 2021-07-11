@@ -194,7 +194,10 @@
     {#each filteredQAs as filteredQA}
     <div class="bg-gray-50 bg-opacity-50 mb-6 mx-2 p-4 question rounded-3xl shadow-md">
       <Question dynamicColor={true} qa={filteredQA}></Question>
-      <AnswerTable qa={filteredQA}></AnswerTable>
+      <details>
+        <summary>詳しい結果を見る</summary>
+        <AnswerTable qa={filteredQA}></AnswerTable>
+      </details>
     </div>
     {/each}
   </div>
