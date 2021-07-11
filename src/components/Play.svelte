@@ -113,7 +113,7 @@
       {/if}
     </p>
     <AnswerTable qa={filteredQAs[currentIndex]}></AnswerTable>
-    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
+    <button class="bg-gray-50 border-2 border-gray-400 mt-2 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
   </div>
   {/if}
   {:else if filteredQAs[currentIndex].type === 'qa'}
@@ -136,7 +136,7 @@
       {/if}
     </p>
     <AnswerTable qa={filteredQAs[currentIndex]}></AnswerTable>
-    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
+    <button class="bg-gray-50 border-2 border-gray-400 mt-2 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
   </div>
   {/if}
   {:else if filteredQAs[currentIndex].content.type === 'exact-match-selection'}
@@ -159,7 +159,7 @@
       {/if}
     </p>
     <AnswerTable qa={filteredQAs[currentIndex]}></AnswerTable>
-    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
+    <button class="bg-gray-50 border-2 border-gray-400 mt-2 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
   </div>
   {/if}
   {:else}
@@ -181,7 +181,7 @@
       {/if}
     </p>
     <AnswerTable qa={filteredQAs[currentIndex]}></AnswerTable>
-    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
+    <button class="bg-gray-50 border-2 border-gray-400 mt-2 px-4 py-2 rounded-full w-full" on:click={nextQuestion}>次の問題</button>
   </div>
   {/if}
   {/if}

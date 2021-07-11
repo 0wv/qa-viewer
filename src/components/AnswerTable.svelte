@@ -7,7 +7,7 @@
 </script>
 
 <table
-  class="bg-gray-50 border-2 border-b-0 border-gray-400 flex flex-col mb-2 shadow-md w-full"
+  class="bg-gray-50 border-2 border-b-0 border-gray-400 flex flex-col shadow-md w-full"
 >
   <thead>
     <tr class="border-b-4 border-gray-400 flex">
