@@ -193,7 +193,7 @@
     <SectionPrefix qa={{ content: '結果' }}></SectionPrefix>
     {#each filteredQAs as filteredQA}
     <div class="bg-gray-50 bg-opacity-50 mb-6 mx-2 p-4 question rounded-3xl shadow-md">
-      <Question qa={filteredQA}></Question>
+      <Question dynamicColor={true} qa={filteredQA}></Question>
       <AnswerTable qa={filteredQA}></AnswerTable>
     </div>
     {/each}
