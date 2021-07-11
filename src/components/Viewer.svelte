@@ -125,28 +125,61 @@
 </svelte:head>
 
 <header class="bg-gray-50 bg-opacity-80 mb-3 px-4 py-2 shadow sticky top-0">
-  <h1>QA Viewer</h1>
-  <hr>
-  <input bind:this={file} type="file" />
-  <button on:click={loadFromClipboard}>クリップボードから読み込む</button>
-  <hr>
-  <button on:click={() => { window.location.href = '/#/help' }}>ヘルプ</button>
-  <button on:click={() => window.print()}>印刷</button>
-  <button disabled={$qas.length === 0} on:click={() => { window.location.href = '/#/play' }}>Play!</button>
-  <hr>
-  <details>
-    <summary>追加の設定</summary>
-    <ConfigBool key="isHiddenSelection">選択肢を隠す</ConfigBool>
-    <ConfigBool key="isHiddenAnswer">答えを隠す</ConfigBool>
-    <ConfigBool key="isAnswerForm">解答欄を表示する</ConfigBool>
-    {#if $config.isAnswerForm}
-    <details>
-      <summary>詳細設定</summary>
-      <ConfigBool key="isAnswerFormBorder">解答欄をボーダーで囲む</ConfigBool>
+  <h1 class="text-xl">QA Viewer</h1>
+  <details class="border-l-4 border-gray-500 my-2 px-2 py-1" open>
+    <summary>メニュー</summary>
+    <details class="border-l-4 border-red-500 my-2 px-2 py-1" open>
+      <summary>入力</summary>
+      <div class="my-1">
+        <input
+          bind:this={file}
+          class="px-4 py-2 max-w-full"
+          type="file"
+        >
+      </div>
+      <div class="my-1">
+        <button
+          class="px-4 py-2 max-w-full"
+          on:click={loadFromClipboard}
+        >クリップボードから読み込む</button>
+      </div>
     </details>
-    {/if}
-    <ConfigBool key="isEnableInnerHTML">innerHTMLを有効化</ConfigBool>
-    <ConfigBool key="isEnableKatex">KaTeXを有効化</ConfigBool>
+    <details class="border-l-4 border-green-500 my-2 px-2 py-1" open>
+      <summary>出力</summary>
+      <div class="my-1">
+        <button
+          class="px-4 py-2 max-w-full"
+          disabled={$qas.length === 0}
+          on:click={() => { window.location.href = '/#/play' }}
+        >Play!</button>
+      </div>
+      <div class="my-1">
+        <button
+          class="px-4 py-2 max-w-full"
+          on:click={() => window.print()}
+        >印刷</button>
+      </div>
+    </details>
+    <details class="border-l-4 border-blue-500 my-2 px-2">
+      <summary>設定</summary>
+      <ConfigBool key="isHiddenSelection">選択肢を隠す</ConfigBool>
+      <ConfigBool key="isHiddenAnswer">答えを隠す</ConfigBool>
+      <ConfigBool key="isAnswerForm">解答欄を表示する</ConfigBool>
+      {#if $config.isAnswerForm}
+      <details>
+        <summary>詳細設定</summary>
+        <ConfigBool key="isAnswerFormBorder">解答欄をボーダーで囲む</ConfigBool>
+      </details>
+      {/if}
+      <ConfigBool key="isEnableInnerHTML">innerHTMLを有効化</ConfigBool>
+      <ConfigBool key="isEnableKatex">KaTeXを有効化</ConfigBool>
+    </details>
+    <div class="my-1">
+      <button
+        class="px-4 py-2 max-w-full"
+        on:click={() => { window.location.href = '/#/help' }}
+      >ヘルプ</button>
+    </div>
   </details>
 </header>
 <QATree qas={$qas}></QATree>
