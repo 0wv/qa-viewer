@@ -8,7 +8,7 @@
 
 <div class="bg-yellow-50 leading-loose mb-3 p-2 pt-4 rounded-2xl shadow">
   {#if qa.content.answers.length === 1}
-  <span class="bg-yellow-200 px-4 py-2 rounded-2xl shadow-inner">選択肢</span>
+  <span class="bg-yellow-200 font-bold px-4 py-2 rounded-2xl shadow-inner">選択肢</span>
   <ol class="mt-4">
     {#each qa.content.selections as selection, i}
     <li class="bg-yellow-100 mt-2 px-4 py-2 rounded-2xl shadow-inner">
@@ -24,7 +24,7 @@
     {/each}
   </ol>
   {:else}
-  <span class="bg-yellow-200 px-4 py-2 rounded-2xl shadow-inner">選択肢</span>
+  <span class="bg-yellow-200 font-bold px-4 py-2 rounded-2xl shadow-inner">選択肢</span>
   <ol class="mt-4">
     {#each qa.content.selections as selection, i}
     <li class="bg-yellow-100 mt-2 px-4 py-2 rounded-2xl shadow-inner">
