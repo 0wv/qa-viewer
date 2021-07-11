@@ -24,7 +24,7 @@
     <tr class="border-b-2 border-gray-400 flex">
       <td class="flex-initial text-center px-4 py-2 w-16">{i + 1}</td>
       <td
-        class="flex-1 px-4 py-2"
+        class="break-all flex-1 px-4 py-2"
         class:bg-green-200={$qas[qa.meta.questionIndex - 1].content.answers[i] === $user.answers[qa.meta.questionIndex - 1][i]}
         class:bg-red-200={$qas[qa.meta.questionIndex - 1].content.answers[i] !== $user.answers[qa.meta.questionIndex - 1][i]}
         class:bg-opacity-50={typeof $user.results[i] === 'boolean'}
@@ -32,7 +32,7 @@
         class:text-red-600={$qas[qa.meta.questionIndex - 1].content.answers[i] !== $user.answers[qa.meta.questionIndex - 1][i]}
       >{$user.answers[qa.meta.questionIndex - 1][i]}</td>
       <td
-        class="flex-1 px-4 py-2"
+        class="break-all flex-1 px-4 py-2"
         class:bg-green-200={$qas[qa.meta.questionIndex - 1].content.answers[i] !== $user.answers[qa.meta.questionIndex - 1][i]}
         class:bg-opacity-50={typeof $user.results[i] === 'boolean'}
         class:text-green-600={$qas[qa.meta.questionIndex - 1].content.answers[i] !== $user.answers[qa.meta.questionIndex - 1][i]}
@@ -53,7 +53,7 @@
     <tr class="border-b-2 border-gray-400">
       {#if i === 0}
       <td
-        class="px-4 py-2"
+        class="break-all px-4 py-2"
         class:bg-green-200={qa.content.answers.includes($user.answers[qa.meta.questionIndex - 1])}
         class:bg-red-200={!qa.content.answers.includes($user.answers[qa.meta.questionIndex - 1])}
         class:bg-opacity-50={typeof $user.results[i] === 'boolean'}
@@ -64,7 +64,7 @@
       >{$user.answers[qa.meta.questionIndex - 1]}</td>
       {/if}
       <td
-        class="px-4 py-2"
+        class="break-all px-4 py-2"
         class:bg-green-200={!qa.content.answers.includes($user.answers[qa.meta.questionIndex - 1])}
         class:bg-opacity-50={typeof $user.results[i] === 'boolean'}
         class:text-green-600={!qa.content.answers.includes($user.answers[qa.meta.questionIndex - 1])}
@@ -88,7 +88,7 @@
   <tbody class="table">
     <tr class="border-b-2 border-gray-400">
       <td
-        class="px-4 py-2"
+        class="break-all px-4 py-2"
         class:bg-green-200={qa.content.answers[0] - 1 === $user.answers[qa.meta.questionIndex - 1]}
         class:bg-red-200={qa.content.answers[0] - 1 !== $user.answers[qa.meta.questionIndex - 1]}
         class:bg-opacity-50={typeof $user.results[qa.meta.questionIndex - 1] === 'boolean'}
@@ -97,7 +97,7 @@
         style="width: 50%;"
       >{qa.content.selections[$user.answers[qa.meta.questionIndex - 1]]}</td>
       <td
-        class="px-4 py-2"
+        class="break-all px-4 py-2"
         class:bg-green-200={qa.content.answers[0] - 1 !== $user.answers[qa.meta.questionIndex - 1]}
         class:bg-opacity-50={typeof $user.results[qa.meta.questionIndex - 1] === 'boolean'}
         class:text-green-600={qa.content.answers[0] - 1 !== $user.answers[qa.meta.questionIndex - 1]}
@@ -117,7 +117,7 @@
     <tr class="border-b-2 border-gray-400">
       {#if i === 0}
       <td
-        class="px-4 py-2"
+        class="break-all px-4 py-2"
         class:bg-green-200={JSON.stringify(qa.content.answers.map(v => qa.content.selections[v - 1])) === JSON.stringify($user.answers[qa.meta.questionIndex - 1])}
         class:bg-red-200={JSON.stringify(qa.content.answers.map(v => qa.content.selections[v - 1])) !== JSON.stringify($user.answers[qa.meta.questionIndex - 1])}
         class:bg-opacity-50={typeof $user.results[qa.meta.questionIndex - 1] === 'boolean'}
@@ -128,7 +128,7 @@
       >{$user.answers[qa.meta.questionIndex - 1]}</td>
       {/if}
       <td
-        class="px-4 py-2"
+        class="break-all px-4 py-2"
         class:bg-green-200={JSON.stringify(qa.content.answers.map(v => qa.content.selections[v - 1])) !== JSON.stringify($user.answers[qa.meta.questionIndex - 1])}
         class:bg-opacity-50={typeof $user.results[qa.meta.questionIndex - 1] === 'boolean'}
         class:text-green-600={JSON.stringify(qa.content.answers.map(v => qa.content.selections[v - 1])) !== JSON.stringify($user.answers[qa.meta.questionIndex - 1])}
