@@ -13,7 +13,7 @@
 
 <svelte:head>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 
     body { font-family: 'Noto Sans JP', sans-serif; }
   </style>
