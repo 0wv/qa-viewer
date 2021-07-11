@@ -124,7 +124,7 @@
   <title>QA Viewer</title>
 </svelte:head>
 
-<header>
+<header class="bg-gray-50 bg-opacity-80 mb-3 px-4 py-2 shadow sticky top-0">
   <h1>QA Viewer</h1>
   <hr>
   <input bind:this={file} type="file" />
