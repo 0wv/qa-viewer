@@ -111,6 +111,38 @@
       </td>
     </tr>
   </tbody>
+  {:else}
+  <tbody class="table">
+    {#each qa.content.answers as answer, i}
+    <tr class="border-b-2 border-gray-400">
+      {#if i === 0}
+      <td
+        class="px-4 py-2"
+        class:bg-green-200={JSON.stringify(qa.content.answers.map(v => qa.content.selections[v - 1])) === JSON.stringify($user.answers[qa.meta.questionIndex - 1])}
+        class:bg-red-200={JSON.stringify(qa.content.answers.map(v => qa.content.selections[v - 1])) !== JSON.stringify($user.answers[qa.meta.questionIndex - 1])}
+        class:bg-opacity-50={typeof $user.results[qa.meta.questionIndex - 1] === 'boolean'}
+        class:text-green-600={JSON.stringify(qa.content.answers.map(v => qa.content.selections[v - 1])) === JSON.stringify($user.answers[qa.meta.questionIndex - 1])}
+        class:text-red-600={JSON.stringify(qa.content.answers.map(v => qa.content.selections[v - 1])) !== JSON.stringify($user.answers[qa.meta.questionIndex - 1])}
+        rowspan={qa.content.answers.length}
+        style="width: 50%;"
+      >{$user.answers[qa.meta.questionIndex - 1]}</td>
+      {/if}
+      <td
+        class="px-4 py-2"
+        class:bg-green-200={JSON.stringify(qa.content.answers.map(v => qa.content.selections[v - 1])) !== JSON.stringify($user.answers[qa.meta.questionIndex - 1])}
+        class:bg-opacity-50={typeof $user.results[qa.meta.questionIndex - 1] === 'boolean'}
+        class:text-green-600={JSON.stringify(qa.content.answers.map(v => qa.content.selections[v - 1])) !== JSON.stringify($user.answers[qa.meta.questionIndex - 1])}
+        style="width: 50%;"
+      >
+        {#if !$config.isEnableInnerHTML}
+        {QAString.unescape(qa.content.selections[answer - 1])}
+        {:else}
+        <HTMLCode value={QAString.unescape(qa.content.selections[answer - 1])}></HTMLCode>
+        {/if}
+      </td>
+    </tr>
+    {/each}
+  </tbody>
   {/if}
   {/if}
   {/if}
