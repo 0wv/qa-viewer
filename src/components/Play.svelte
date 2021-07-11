@@ -189,10 +189,10 @@
   {/if}
   {/if}
   {:else}
-  <div class="flex-grow mb-3 mx-4">
+  <div class="flex-grow mx-4">
     <SectionPrefix qa={{ content: '結果' }}></SectionPrefix>
     {#each filteredQAs as filteredQA}
-    <div class="bg-gray-50 bg-opacity-50 mb-6 mx-4 p-4 question rounded-3xl shadow-md">
+    <div class="bg-gray-50 bg-opacity-50 mb-6 mx-2 p-4 question rounded-3xl shadow-md">
       <Question qa={filteredQA}></Question>
       <AnswerTable qa={filteredQA}></AnswerTable>
     </div>
