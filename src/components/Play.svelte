@@ -5,6 +5,7 @@
   import InputAnswer from './InputAnswer.svelte'
   import InputSelection from './InputSelection.svelte'
   import Question from './Question.svelte'
+  import SectionPrefix from './prefixes/SectionPrefix.svelte'
 
   const filteredQAs = $qas.filter(v => (
     Object.keys(prefixMap)
@@ -84,7 +85,6 @@
 </script>
 
 <div class="bg-gradient-to-br flex flex-col from-indigo-300 min-h-inherit to-blue-300 min-w-full">
-  {#if $user.answers.length !== currentIndex}
   <nav class="bg-gray-50 bg-opacity-80 flex mb-3 px-4 py-2 shadow sticky top-0">
     <ul>
       <li>
@@ -92,6 +92,7 @@
       </li>
     </ul>
   </nav>
+  {#if $user.answers.length !== currentIndex}
   {#if filteredQAs[currentIndex].type === 'fill'}
   <div class="flex-grow mb-3 mx-4">
     <Question qa={filteredQAs[currentIndex]}></Question>
@@ -188,13 +189,18 @@
   {/if}
   {/if}
   {:else}
-  <p>＜結果＞</p>
-  <ol>
-    {#each filteredQAs as _, i}
-    <li>{$user.results[i] ? '正解' : '不正解'}</li>
+  <div class="flex-grow mb-3 mx-4">
+    <SectionPrefix qa={{ content: '結果' }}></SectionPrefix>
+    {#each filteredQAs as filteredQA}
+    <div class="bg-gray-50 bg-opacity-50 mb-6 mx-4 p-4 question rounded-3xl shadow-md">
+      <Question qa={filteredQA}></Question>
+      <AnswerTable qa={filteredQA}></AnswerTable>
+    </div>
     {/each}
-  </ol>
-  <button onclick="window.location.href = '/#/'">戻る</button>
+  </div>
+  <div class="bg-gray-50 bg-opacity-80 bottom-0 px-4 py-2 shadow sticky">
+    <button class="bg-gray-50 border-2 border-gray-400 px-4 py-2 rounded-full w-full" onclick="window.location.href = '/#/'">戻る</button>
+  </div>
   {/if}
 </div>
 
