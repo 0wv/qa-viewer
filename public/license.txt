@@ -1,5 +1,10 @@
 Google Fonts :
 
+  Name : Chelsea Market
+  Author : Tart Workshop
+  License : SIL Open Font License, 1.1
+  License URL : https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL
+
   Name : Noto Sans JP
   Author: Google
   License : SIL Open Font License, 1.1

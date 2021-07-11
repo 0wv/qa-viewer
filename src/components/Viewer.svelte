@@ -125,7 +125,10 @@
 </svelte:head>
 
 <header class="bg-gray-50 bg-opacity-80 mb-3 px-4 py-2 shadow sticky top-0">
-  <h1 class="text-xl">QA Viewer</h1>
+  <h1
+    class="text-4xl"
+    style="font-family: 'Chelsea Market', cursive;"
+  >QA Viewer</h1>
   <details class="border-l-4 border-gray-500 my-2 px-2 py-1" open>
     <summary>メニュー</summary>
     <details class="border-l-4 border-red-500 my-2 px-2 py-1" open>
@@ -185,6 +188,8 @@
 <QATree qas={$qas}></QATree>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Chelsea+Market&display=swap');
+
   @media print {
     header {
       display: none;
