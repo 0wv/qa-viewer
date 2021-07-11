@@ -98,9 +98,9 @@
       >{qa.content.selections[$user.answers[qa.meta.questionIndex - 1]]}</td>
       <td
         class="px-4 py-2"
-        class:bg-green-200={qa.content.answers[0] - 1 === $user.answers[qa.meta.questionIndex - 1]}
+        class:bg-green-200={qa.content.answers[0] - 1 !== $user.answers[qa.meta.questionIndex - 1]}
         class:bg-opacity-50={typeof $user.results[qa.meta.questionIndex - 1] === 'boolean'}
-        class:text-green-600={qa.content.answers[0] - 1 === $user.answers[qa.meta.questionIndex - 1]}
+        class:text-green-600={qa.content.answers[0] - 1 !== $user.answers[qa.meta.questionIndex - 1]}
         style="width: 50%;"
       >
         {#if !$config.isEnableInnerHTML}
