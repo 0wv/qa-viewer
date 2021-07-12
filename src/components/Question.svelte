@@ -21,7 +21,7 @@
     class:bg-red-200={dynamicColor && !$user.results[qa.meta.questionIndex - 1]}
   >問 {qa.meta.questionIndex}</span>
   {#if !$config.isEnableInnerHTML}
-  <span class="break-words">
+  <span class="break-words whitespace-pre-line">
     {#if qa.type !== 'fill'}
     {QAString.unescape(qa.content.question)}
     {:else}

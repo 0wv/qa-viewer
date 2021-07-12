@@ -73,6 +73,7 @@ export class QAString extends String {
         .replace(/\[:__colon_hyphen__:\]/g, ':-')
         .replace(/\[:__colon_plus__:\]/g, ':+')
         .replace(/\[:__empty__:\]/g, '')
+        .replace(/\[:__new_line__:\]/g, '\n')
     )
     return result
   }

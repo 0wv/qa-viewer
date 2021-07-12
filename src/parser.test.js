@@ -64,6 +64,7 @@ test('unescape for qa', () => {
   expect(QAString.unescape('[:__colon_hyphen__:]').toString()).toBe(':-')
   expect(QAString.unescape('[:__colon_plus__:]').toString()).toBe(':+')
   expect(QAString.unescape('[:__empty__:]').toString()).toBe('')
+  expect(QAString.unescape('[:__new_line__:]').toString()).toBe('\n')
 })
 
 test('unescape for qas', () => {
