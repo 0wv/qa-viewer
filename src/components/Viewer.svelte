@@ -106,7 +106,7 @@
                           .getData(new zip.Uint8ArrayWriter())
                           .then(data => {
                             newResult = newResult.replace(match, `<img src="data:image/png;base64,${Base64.fromUint8Array(data)}">`)
-                            qas.set((new QAString(result)).format().items)
+                            qas.set((new QAString(newResult)).format().items)
                           })
                       })
                   })
