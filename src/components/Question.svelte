@@ -29,10 +29,12 @@
     {/if}
   </span>
   {:else}
-  {#if qa.type !== 'fill'}
-  <HTMLCode value={QAString.unescape(qa.content.question)}></HTMLCode>
-  {:else}
-  <HTMLCode value={QAString.unescape(qa.content.text.replace(/\(\(.+?\)\)/, '()'))}></HTMLCode>
-  {/if}
+  <span class="break-words whitespace-pre-line">
+    {#if qa.type !== 'fill'}
+    <HTMLCode value={QAString.unescape(qa.content.question)}></HTMLCode>
+    {:else}
+    <HTMLCode value={QAString.unescape(qa.content.text.replace(/\(\(.+?\)\)/, '()'))}></HTMLCode>
+    {/if}
+  </span>
   {/if}
 </div>
