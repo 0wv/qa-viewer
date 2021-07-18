@@ -8,7 +8,7 @@
 </script>
 
 <div
-  class="leading-loose mb-3 p-4 pl-2 rounded-2xl shadow"
+  class="leading-loose mb-3 p-4 px-2 rounded-2xl shadow"
   class:bg-blue-50={!dynamicColor}
   class:bg-green-50={dynamicColor && $user.results[qa.meta.questionIndex - 1]}
   class:bg-red-50={dynamicColor && !$user.results[qa.meta.questionIndex - 1]}
