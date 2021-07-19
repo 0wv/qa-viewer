@@ -95,7 +95,13 @@
         class:text-green-600={qa.content.answers[0] - 1 === $user.answers[qa.meta.questionIndex - 1]}
         class:text-red-600={qa.content.answers[0] - 1 !== $user.answers[qa.meta.questionIndex - 1]}
         style="width: 50%;"
-      >{qa.content.selections[$user.answers[qa.meta.questionIndex - 1]]}</td>
+      >
+        {#if !$config.isEnableInnerHTML}
+        {qa.content.selections[$user.answers[qa.meta.questionIndex - 1]]}
+        {:else}
+        <HTMLCode value={qa.content.selections[$user.answers[qa.meta.questionIndex - 1]]}></HTMLCode>
+        {/if}
+      </td>
       <td
         class="break-all px-4 py-2"
         class:bg-green-200={qa.content.answers[0] - 1 !== $user.answers[qa.meta.questionIndex - 1]}
