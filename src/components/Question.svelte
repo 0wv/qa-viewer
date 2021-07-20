@@ -14,7 +14,7 @@
   style="-webkit-print-color-adjust: exact;"
 >
   <span
-    class="font-bold mr-2 px-4 py-2 rounded-2xl shadow-inner"
+    class="font-bold mr-2 px-4 py-2 rounded-2xl"
     class:bg-blue-200={!dynamicColor}
     class:bg-green-200={dynamicColor && $user.results[qa.meta.questionIndex - 1]}
     class:bg-red-200={dynamicColor && !$user.results[qa.meta.questionIndex - 1]}
