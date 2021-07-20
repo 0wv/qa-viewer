@@ -11,7 +11,7 @@
   <ol class="mt-4">
     {#each qa.content.selections as selection, i}
     <li
-      class="bg-yellow-100 mt-2 px-4 py-2 ring-yellow-300 rounded-2xl shadow-inner"
+      class="bg-yellow-100 mt-2 px-4 py-2 ring-inset ring-yellow-300 rounded-2xl shadow-inner"
       class:ring-4={$user.answers[qa.meta.questionIndex - 1] === i}
       on:click={() => { $user.answers[qa.meta.questionIndex - 1] = i }}
     >
