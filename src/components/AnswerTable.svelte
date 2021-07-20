@@ -1,7 +1,6 @@
 <script>
   import { QAString } from '../parser'
   import { config, qas, user } from '../stores'
-  import HTMLCode from './HTMLCode.svelte'
 
   export let qa
 </script>
@@ -40,7 +39,7 @@
         {#if !$config.isEnableInnerHTML}
         {QAString.unescape(answer)}
         {:else}
-        <HTMLCode value={QAString.unescape(answer)}></HTMLCode>
+        {@html QAString.unescape(answer)}
         {/if}
       </td>
     </tr>
@@ -74,9 +73,9 @@
         {QAString.unescape(answer)}
         {:else}
         {#if qa.content.type === 'exact-match-selection'}
-        <HTMLCode value={qa.content.selections[answer - 1]}></HTMLCode>
+        {@html qa.content.selections[answer - 1]}
         {:else}
-        <HTMLCode value={QAString.unescape(answer)}></HTMLCode>
+        {@html QAString.unescape(answer)}
         {/if}
         {/if}
       </td>
@@ -99,7 +98,7 @@
         {#if !$config.isEnableInnerHTML}
         {qa.content.selections[$user.answers[qa.meta.questionIndex - 1]]}
         {:else}
-        <HTMLCode value={qa.content.selections[$user.answers[qa.meta.questionIndex - 1]]}></HTMLCode>
+        {@html qa.content.selections[$user.answers[qa.meta.questionIndex - 1]]}
         {/if}
       </td>
       <td
@@ -112,7 +111,7 @@
         {#if !$config.isEnableInnerHTML}
         {QAString.unescape(qa.content.selections[qa.content.answers[0] - 1])}
         {:else}
-        <HTMLCode value={QAString.unescape(qa.content.selections[qa.content.answers[0] - 1])}></HTMLCode>
+        {@html QAString.unescape(qa.content.selections[qa.content.answers[0] - 1])}
         {/if}
       </td>
     </tr>
@@ -143,7 +142,7 @@
         {#if !$config.isEnableInnerHTML}
         {QAString.unescape(qa.content.selections[answer - 1])}
         {:else}
-        <HTMLCode value={QAString.unescape(qa.content.selections[answer - 1])}></HTMLCode>
+        {@html QAString.unescape(qa.content.selections[answer - 1])}
         {/if}
       </td>
     </tr>

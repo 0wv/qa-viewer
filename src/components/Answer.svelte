@@ -1,7 +1,6 @@
 <script>
   import { QAString } from '../parser'
   import { config } from '../stores'
-  import HTMLCode from './HTMLCode.svelte'
 
   export let qa
 </script>
@@ -22,9 +21,9 @@
       {/if}
       {:else}
       {#if qa.content.type === 'exact-match-selection'}
-      <HTMLCode value={qa.content.selections[answer - 1]}></HTMLCode>
+      {@html qa.content.selections[answer - 1]}
       {:else}
-      <HTMLCode value={QAString.unescape(answer)}></HTMLCode>
+      {@html QAString.unescape(answer)}
       {/if}
       {/if}
     </li>

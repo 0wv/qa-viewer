@@ -1,7 +1,6 @@
 <script>
   import { QAString } from '../parser'
   import { config, user } from '../stores'
-  import HTMLCode from './HTMLCode.svelte'
 
   export let dynamicColor = false
   export let qa
@@ -31,9 +30,9 @@
   {:else}
   <span class="break-words whitespace-pre-line">
     {#if qa.type !== 'fill'}
-    <HTMLCode value={QAString.unescape(qa.content.question)}></HTMLCode>
+    {@html QAString.unescape(qa.content.question)}
     {:else}
-    <HTMLCode value={QAString.unescape(qa.content.text.replace(/\(\(.+?\)\)/, '()'))}></HTMLCode>
+    {@html QAString.unescape(qa.content.text.replace(/\(\(.+?\)\)/, '()'))}
     {/if}
   </span>
   {/if}

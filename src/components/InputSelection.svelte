@@ -1,7 +1,6 @@
 <script>
   import { QAString } from '../parser'
   import { config, user } from '../stores'
-  import HTMLCode from './HTMLCode.svelte'
 
   export let qa
 </script>
@@ -22,7 +21,7 @@
       {#if !$config.isEnableInnerHTML}
       {QAString.unescape(selection)}
       {:else}
-      <HTMLCode value={QAString.unescape(selection)}></HTMLCode>
+      {@html QAString.unescape(selection)}
       {/if}
     </li>
     {/each}
@@ -38,7 +37,7 @@
       {#if !$config.isEnableInnerHTML}
       {QAString.unescape(selection)}
       {:else}
-      <HTMLCode value={QAString.unescape(selection)}></HTMLCode>
+      {@html QAString.unescape(selection)}
       {/if}
     </li>
     {/each}
