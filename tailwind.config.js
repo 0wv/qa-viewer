@@ -13,7 +13,7 @@ module.exports = {
       'bg-green-200',
       'bg-red-200',
       'bg-opacity-50',
-      'ring',
+      'ring-4',
       'text-green-600',
       'text-red-600'
     ]
