@@ -79,6 +79,19 @@ export class QAString extends String {
   }
 
   /**
+   * KaTeXの数式をアンエスケープします。
+   * @param {string} katexExpression - KaTeXの数式。
+   * @returns {QAString} QAString。
+   */
+  static unescapeForKatex (katexExpression) {
+    const result = new QAString(
+      katexExpression
+        .replace(/\[:__dollar__:\]/g, '$')
+    )
+    return result
+  }
+
+  /**
    * アイテムの配列をアンエスケープします。
    * @param {QAItem[]} items - アイテムの配列。
    * @returns {QAItem[]} アイテムの配列。

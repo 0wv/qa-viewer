@@ -67,6 +67,10 @@ test('unescape for qa', () => {
   expect(QAString.unescape('[:__new_line__:]').toString()).toBe('\n')
 })
 
+test('unescape for katex', () => {
+  expect(QAString.unescapeForKatex('[:__dollar__:]').toString()).toBe('$')
+})
+
 test('unescape for qas', () => {
   expect(QAString.unescapeItems([
     {

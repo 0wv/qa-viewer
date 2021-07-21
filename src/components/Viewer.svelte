@@ -23,7 +23,9 @@
           const matches = result.match(/\$.+?\$/g)
 
           matches.forEach(match => {
-            result = result.replace(match, QAString.escape(katex.renderToString(match.slice(1).slice(0, -1), {
+            result = result.replace(match, QAString.escape(katex.renderToString(QAString.unescapeForKatex(
+              match.slice(1).slice(0, -1)
+            ), {
               output: 'html',
               throwOnError: false
             }).replace(/\n/g, '')))
@@ -51,7 +53,9 @@
             const matches = result.match(/\$.+?\$/g)
 
             matches.forEach((match) => {
-              newResult = newResult.replace(match, QAString.escape(katex.renderToString(match.slice(1).slice(0, -1), {
+              newResult = newResult.replace(match, QAString.escape(katex.renderToString(QAString.unescapeForKatex(
+                match.slice(1).slice(0, -1)
+              ), {
                 output: 'html',
                 throwOnError: false
               }).replace(/\n/g, '')))
@@ -83,7 +87,9 @@
                   const katexExpressionMatches = newResult.match(/\$.+?\$/g)
 
                   katexExpressionMatches.forEach((match) => {
-                    newResult = newResult.replace(match, QAString.escape(katex.renderToString(match.slice(1).slice(0, -1), {
+                    newResult = newResult.replace(match, QAString.escape(katex.renderToString(QAString.unescapeForKatex(
+                      match.slice(1).slice(0, -1)
+                    ), {
                       output: 'html',
                       throwOnError: false
                     }).replace(/\n/g, '')))
